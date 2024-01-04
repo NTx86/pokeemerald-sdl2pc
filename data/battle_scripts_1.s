@@ -16,244 +16,222 @@
 	.section script_data, "aw"
 	
 .align 2
-gBattleScriptsForMoveEffects:: /* 82D86A8*/
-	.int BattleScript_EffectHit
-	.int BattleScript_EffectSleep
-	.int BattleScript_EffectPoisonHit
-	.int BattleScript_EffectAbsorb
-	.int BattleScript_EffectBurnHit
-	.int BattleScript_EffectFreezeHit
-	.int BattleScript_EffectParalyzeHit
-	.int BattleScript_EffectExplosion
-	.int BattleScript_EffectDreamEater
-	.int BattleScript_EffectMirrorMove
-	.int BattleScript_EffectAttackUp
-	.int BattleScript_EffectDefenseUp
-	.int BattleScript_EffectSpeedUp
-	.int BattleScript_EffectSpecialAttackUp
-	.int BattleScript_EffectSpecialDefenseUp
-	.int BattleScript_EffectAccuracyUp
-	.int BattleScript_EffectEvasionUp
-	.int BattleScript_EffectAlwaysHit
-	.int BattleScript_EffectAttackDown
-	.int BattleScript_EffectDefenseDown
-	.int BattleScript_EffectSpeedDown
-	.int BattleScript_EffectSpecialAttackDown
-	.int BattleScript_EffectSpecialDefenseDown
-	.int BattleScript_EffectAccuracyDown
-	.int BattleScript_EffectEvasionDown
-	.int BattleScript_EffectHaze
-	.int BattleScript_EffectBide
-	.int BattleScript_EffectRampage
-	.int BattleScript_EffectRoar
-	.int BattleScript_EffectMultiHit
-	.int BattleScript_EffectConversion
-	.int BattleScript_EffectFlinchHit
-	.int BattleScript_EffectRestoreHp
-	.int BattleScript_EffectToxic
-	.int BattleScript_EffectPayDay
-	.int BattleScript_EffectLightScreen
-	.int BattleScript_EffectTriAttack
-	.int BattleScript_EffectRest
-	.int BattleScript_EffectOHKO
-	.int BattleScript_EffectRazorWind
-	.int BattleScript_EffectSuperFang
-	.int BattleScript_EffectDragonRage
-	.int BattleScript_EffectTrap
-	.int BattleScript_EffectHighCritical
-	.int BattleScript_EffectDoubleHit
-	.int BattleScript_EffectRecoilIfMiss
-	.int BattleScript_EffectMist
-	.int BattleScript_EffectFocusEnergy
-	.int BattleScript_EffectRecoil
-	.int BattleScript_EffectConfuse
-	.int BattleScript_EffectAttackUp2
-	.int BattleScript_EffectDefenseUp2
-	.int BattleScript_EffectSpeedUp2
-	.int BattleScript_EffectSpecialAttackUp2
-	.int BattleScript_EffectSpecialDefenseUp2
-	.int BattleScript_EffectAccuracyUp2
-	.int BattleScript_EffectEvasionUp2
-	.int BattleScript_EffectTransform
-	.int BattleScript_EffectAttackDown2
-	.int BattleScript_EffectDefenseDown2
-	.int BattleScript_EffectSpeedDown2
-	.int BattleScript_EffectSpecialAttackDown2
-	.int BattleScript_EffectSpecialDefenseDown2
-	.int BattleScript_EffectAccuracyDown2
-	.int BattleScript_EffectEvasionDown2
-	.int BattleScript_EffectReflect
-	.int BattleScript_EffectPoison
-	.int BattleScript_EffectParalyze
-	.int BattleScript_EffectAttackDownHit
-	.int BattleScript_EffectDefenseDownHit
-	.int BattleScript_EffectSpeedDownHit
-	.int BattleScript_EffectSpecialAttackDownHit
-	.int BattleScript_EffectSpecialDefenseDownHit
-	.int BattleScript_EffectAccuracyDownHit
-	.int BattleScript_EffectEvasionDownHit
-	.int BattleScript_EffectSkyAttack
-	.int BattleScript_EffectConfuseHit
-	.int BattleScript_EffectTwineedle
-	.int BattleScript_EffectVitalThrow
-	.int BattleScript_EffectSubstitute
-	.int BattleScript_EffectRecharge
-	.int BattleScript_EffectRage
-	.int BattleScript_EffectMimic
-	.int BattleScript_EffectMetronome
-	.int BattleScript_EffectLeechSeed
-	.int BattleScript_EffectSplash
-	.int BattleScript_EffectDisable
-	.int BattleScript_EffectLevelDamage
-	.int BattleScript_EffectPsywave
-	.int BattleScript_EffectCounter
-	.int BattleScript_EffectEncore
-	.int BattleScript_EffectPainSplit
-	.int BattleScript_EffectSnore
-	.int BattleScript_EffectConversion2
-	.int BattleScript_EffectLockOn
-	.int BattleScript_EffectSketch
-	.int BattleScript_EffectUnused60//Thaw
-	.int BattleScript_EffectSleepTalk
-	.int BattleScript_EffectDestinyBond
-	.int BattleScript_EffectFlail
-	.int BattleScript_EffectSpite
-	.int BattleScript_EffectFalseSwipe
-	.int BattleScript_EffectHealBell
-	.int BattleScript_EffectQuickAttack
-	.int BattleScript_EffectTripleKick
-	.int BattleScript_EffectThief
-	.int BattleScript_EffectMeanLook
-	.int BattleScript_EffectNightmare
-	.int BattleScript_EffectMinimize
-	.int BattleScript_EffectCurse
-	.int BattleScript_EffectUnused6e
-	.int BattleScript_EffectProtect
-	.int BattleScript_EffectSpikes
-	.int BattleScript_EffectForesight
-	.int BattleScript_EffectPerishSong
-	.int BattleScript_EffectSandstorm
-	.int BattleScript_EffectEndure
-	.int BattleScript_EffectRollout
-	.int BattleScript_EffectSwagger
-	.int BattleScript_EffectFuryCutter
-	.int BattleScript_EffectAttract
-	.int BattleScript_EffectReturn
-	.int BattleScript_EffectPresent
-	.int BattleScript_EffectFrustration
-	.int BattleScript_EffectSafeguard
-	.int BattleScript_EffectThawHit
-	.int BattleScript_EffectMagnitude
-	.int BattleScript_EffectBatonPass
-	.int BattleScript_EffectPursuit
-	.int BattleScript_EffectRapidSpin
-	.int BattleScript_EffectSonicboom
-	.int BattleScript_EffectUnused83
-	.int BattleScript_EffectMorningSun
-	.int BattleScript_EffectSynthesis
-	.int BattleScript_EffectMoonlight
-	.int BattleScript_EffectHiddenPower
-	.int BattleScript_EffectRainDance
-	.int BattleScript_EffectSunnyDay
-	.int BattleScript_EffectDefenseUpHit
-	.int BattleScript_EffectAttackUpHit
-	.int BattleScript_EffectAllStatsUpHit
-	.int BattleScript_EffectUnused8d
-	.int BattleScript_EffectBellyDrum
-	.int BattleScript_EffectPsychUp
-	.int BattleScript_EffectMirrorCoat
-	.int BattleScript_EffectSkullBash
-	.int BattleScript_EffectTwister
-	.int BattleScript_EffectEarthquake
-	.int BattleScript_EffectFutureSight
-	.int BattleScript_EffectGust
-	.int BattleScript_EffectStomp
-	.int BattleScript_EffectSolarbeam
-	.int BattleScript_EffectThunder
-	.int BattleScript_EffectTeleport
-	.int BattleScript_EffectBeatUp
-	.int BattleScript_EffectSemiInvulnerable
-	.int BattleScript_EffectDefenseCurl
-	.int BattleScript_EffectSoftboiled
-	.int BattleScript_EffectFakeOut
-	.int BattleScript_EffectUproar
-	.int BattleScript_EffectStockpile
-	.int BattleScript_EffectSpitUp
-	.int BattleScript_EffectSwallow
-	.int BattleScript_EffectUnusedA3
-	.int BattleScript_EffectHail
-	.int BattleScript_EffectTorment
-	.int BattleScript_EffectFlatter
-	.int BattleScript_EffectWillOWisp
-	.int BattleScript_EffectMemento
-	.int BattleScript_EffectFacade
-	.int BattleScript_EffectFocusPunch
-	.int BattleScript_EffectSmellingsalt
-	.int BattleScript_EffectFollowMe
-	.int BattleScript_EffectNaturePower
-	.int BattleScript_EffectCharge
-	.int BattleScript_EffectTaunt
-	.int BattleScript_EffectHelpingHand
-	.int BattleScript_EffectTrick
-	.int BattleScript_EffectRolePlay
-	.int BattleScript_EffectWish
-	.int BattleScript_EffectAssist
-	.int BattleScript_EffectIngrain
-	.int BattleScript_EffectSuperpower
-	.int BattleScript_EffectMagicCoat
-	.int BattleScript_EffectRecycle
-	.int BattleScript_EffectRevenge
-	.int BattleScript_EffectBrickBreak
-	.int BattleScript_EffectYawn
-	.int BattleScript_EffectKnockOff
-	.int BattleScript_EffectEndeavor
-	.int BattleScript_EffectEruption
-	.int BattleScript_EffectSkillSwap
-	.int BattleScript_EffectImprison
-	.int BattleScript_EffectRefresh
-	.int BattleScript_EffectGrudge
-	.int BattleScript_EffectSnatch
-	.int BattleScript_EffectLowKick
-	.int BattleScript_EffectSecretPower
-	.int BattleScript_EffectDoubleEdge
-	.int BattleScript_EffectTeeterDance
-	.int BattleScript_EffectBlazeKick
-	.int BattleScript_EffectMudSport
-	.int BattleScript_EffectPoisonFang
-	.int BattleScript_EffectWeatherBall
-	.int BattleScript_EffectOverheat
-	.int BattleScript_EffectTickle
-	.int BattleScript_EffectCosmicPower
-	.int BattleScript_EffectSkyUppercut
-	.int BattleScript_EffectBulkUp
-	.int BattleScript_EffectPoisonTail
-	.int BattleScript_EffectWaterSport
-	.int BattleScript_EffectCalmMind
-	.int BattleScript_EffectDragonDance
-	.int BattleScript_EffectCamouflage
+gBattleScriptsForMoveEffects::
+	.int BattleScript_EffectHit                    /* EFFECT_HIT*/
+	.int BattleScript_EffectSleep                  /* EFFECT_SLEEP*/
+	.int BattleScript_EffectPoisonHit              /* EFFECT_POISON_HIT*/
+	.int BattleScript_EffectAbsorb                 /* EFFECT_ABSORB*/
+	.int BattleScript_EffectBurnHit                /* EFFECT_BURN_HIT*/
+	.int BattleScript_EffectFreezeHit              /* EFFECT_FREEZE_HIT*/
+	.int BattleScript_EffectParalyzeHit            /* EFFECT_PARALYZE_HIT*/
+	.int BattleScript_EffectExplosion              /* EFFECT_EXPLOSION*/
+	.int BattleScript_EffectDreamEater             /* EFFECT_DREAM_EATER*/
+	.int BattleScript_EffectMirrorMove             /* EFFECT_MIRROR_MOVE*/
+	.int BattleScript_EffectAttackUp               /* EFFECT_ATTACK_UP*/
+	.int BattleScript_EffectDefenseUp              /* EFFECT_DEFENSE_UP*/
+	.int BattleScript_EffectHit                    /* EFFECT_SPEED_UP*/
+	.int BattleScript_EffectSpecialAttackUp        /* EFFECT_SPECIAL_ATTACK_UP*/
+	.int BattleScript_EffectHit                    /* EFFECT_SPECIAL_DEFENSE_UP*/
+	.int BattleScript_EffectHit                    /* EFFECT_ACCURACY_UP*/
+	.int BattleScript_EffectEvasionUp              /* EFFECT_EVASION_UP*/
+	.int BattleScript_EffectHit                    /* EFFECT_ALWAYS_HIT*/
+	.int BattleScript_EffectAttackDown             /* EFFECT_ATTACK_DOWN*/
+	.int BattleScript_EffectDefenseDown            /* EFFECT_DEFENSE_DOWN*/
+	.int BattleScript_EffectSpeedDown              /* EFFECT_SPEED_DOWN*/
+	.int BattleScript_EffectHit                    /* EFFECT_SPECIAL_ATTACK_DOWN*/
+	.int BattleScript_EffectHit                    /* EFFECT_SPECIAL_DEFENSE_DOWN*/
+	.int BattleScript_EffectAccuracyDown           /* EFFECT_ACCURACY_DOWN*/
+	.int BattleScript_EffectEvasionDown            /* EFFECT_EVASION_DOWN*/
+	.int BattleScript_EffectHaze                   /* EFFECT_HAZE*/
+	.int BattleScript_EffectBide                   /* EFFECT_BIDE*/
+	.int BattleScript_EffectRampage                /* EFFECT_RAMPAGE*/
+	.int BattleScript_EffectRoar                   /* EFFECT_ROAR*/
+	.int BattleScript_EffectMultiHit               /* EFFECT_MULTI_HIT*/
+	.int BattleScript_EffectConversion             /* EFFECT_CONVERSION*/
+	.int BattleScript_EffectFlinchHit              /* EFFECT_FLINCH_HIT*/
+	.int BattleScript_EffectRestoreHp              /* EFFECT_RESTORE_HP*/
+	.int BattleScript_EffectToxic                  /* EFFECT_TOXIC*/
+	.int BattleScript_EffectPayDay                 /* EFFECT_PAY_DAY*/
+	.int BattleScript_EffectLightScreen            /* EFFECT_LIGHT_SCREEN*/
+	.int BattleScript_EffectTriAttack              /* EFFECT_TRI_ATTACK*/
+	.int BattleScript_EffectRest                   /* EFFECT_REST*/
+	.int BattleScript_EffectOHKO                   /* EFFECT_OHKO*/
+	.int BattleScript_EffectRazorWind              /* EFFECT_RAZOR_WIND*/
+	.int BattleScript_EffectSuperFang              /* EFFECT_SUPER_FANG*/
+	.int BattleScript_EffectDragonRage             /* EFFECT_DRAGON_RAGE*/
+	.int BattleScript_EffectTrap                   /* EFFECT_TRAP*/
+	.int BattleScript_EffectHit                    /* EFFECT_HIGH_CRITICAL*/
+	.int BattleScript_EffectDoubleHit              /* EFFECT_DOUBLE_HIT*/
+	.int BattleScript_EffectRecoilIfMiss           /* EFFECT_RECOIL_IF_MISS*/
+	.int BattleScript_EffectMist                   /* EFFECT_MIST*/
+	.int BattleScript_EffectFocusEnergy            /* EFFECT_FOCUS_ENERGY*/
+	.int BattleScript_EffectRecoil                 /* EFFECT_RECOIL*/
+	.int BattleScript_EffectConfuse                /* EFFECT_CONFUSE*/
+	.int BattleScript_EffectAttackUp2              /* EFFECT_ATTACK_UP_2*/
+	.int BattleScript_EffectDefenseUp2             /* EFFECT_DEFENSE_UP_2*/
+	.int BattleScript_EffectSpeedUp2               /* EFFECT_SPEED_UP_2*/
+	.int BattleScript_EffectSpecialAttackUp2       /* EFFECT_SPECIAL_ATTACK_UP_2*/
+	.int BattleScript_EffectSpecialDefenseUp2      /* EFFECT_SPECIAL_DEFENSE_UP_2*/
+	.int BattleScript_EffectHit                    /* EFFECT_ACCURACY_UP_2*/
+	.int BattleScript_EffectHit                    /* EFFECT_EVASION_UP_2*/
+	.int BattleScript_EffectTransform              /* EFFECT_TRANSFORM*/
+	.int BattleScript_EffectAttackDown2            /* EFFECT_ATTACK_DOWN_2*/
+	.int BattleScript_EffectDefenseDown2           /* EFFECT_DEFENSE_DOWN_2*/
+	.int BattleScript_EffectSpeedDown2             /* EFFECT_SPEED_DOWN_2*/
+	.int BattleScript_EffectHit                    /* EFFECT_SPECIAL_ATTACK_DOWN_2*/
+	.int BattleScript_EffectSpecialDefenseDown2    /* EFFECT_SPECIAL_DEFENSE_DOWN_2*/
+	.int BattleScript_EffectHit                    /* EFFECT_ACCURACY_DOWN_2*/
+	.int BattleScript_EffectHit                    /* EFFECT_EVASION_DOWN_2*/
+	.int BattleScript_EffectReflect                /* EFFECT_REFLECT*/
+	.int BattleScript_EffectPoison                 /* EFFECT_POISON*/
+	.int BattleScript_EffectParalyze               /* EFFECT_PARALYZE*/
+	.int BattleScript_EffectAttackDownHit          /* EFFECT_ATTACK_DOWN_HIT*/
+	.int BattleScript_EffectDefenseDownHit         /* EFFECT_DEFENSE_DOWN_HIT*/
+	.int BattleScript_EffectSpeedDownHit           /* EFFECT_SPEED_DOWN_HIT*/
+	.int BattleScript_EffectSpecialAttackDownHit   /* EFFECT_SPECIAL_ATTACK_DOWN_HIT*/
+	.int BattleScript_EffectSpecialDefenseDownHit  /* EFFECT_SPECIAL_DEFENSE_DOWN_HIT*/
+	.int BattleScript_EffectAccuracyDownHit        /* EFFECT_ACCURACY_DOWN_HIT*/
+	.int BattleScript_EffectHit                    /* EFFECT_EVASION_DOWN_HIT*/
+	.int BattleScript_EffectSkyAttack              /* EFFECT_SKY_ATTACK*/
+	.int BattleScript_EffectConfuseHit             /* EFFECT_CONFUSE_HIT*/
+	.int BattleScript_EffectTwineedle              /* EFFECT_TWINEEDLE*/
+	.int BattleScript_EffectHit                    /* EFFECT_VITAL_THROW*/
+	.int BattleScript_EffectSubstitute             /* EFFECT_SUBSTITUTE*/
+	.int BattleScript_EffectRecharge               /* EFFECT_RECHARGE*/
+	.int BattleScript_EffectRage                   /* EFFECT_RAGE*/
+	.int BattleScript_EffectMimic                  /* EFFECT_MIMIC*/
+	.int BattleScript_EffectMetronome              /* EFFECT_METRONOME*/
+	.int BattleScript_EffectLeechSeed              /* EFFECT_LEECH_SEED*/
+	.int BattleScript_EffectSplash                 /* EFFECT_SPLASH*/
+	.int BattleScript_EffectDisable                /* EFFECT_DISABLE*/
+	.int BattleScript_EffectLevelDamage            /* EFFECT_LEVEL_DAMAGE*/
+	.int BattleScript_EffectPsywave                /* EFFECT_PSYWAVE*/
+	.int BattleScript_EffectCounter                /* EFFECT_COUNTER*/
+	.int BattleScript_EffectEncore                 /* EFFECT_ENCORE*/
+	.int BattleScript_EffectPainSplit              /* EFFECT_PAIN_SPLIT*/
+	.int BattleScript_EffectSnore                  /* EFFECT_SNORE*/
+	.int BattleScript_EffectConversion2            /* EFFECT_CONVERSION_2*/
+	.int BattleScript_EffectLockOn                 /* EFFECT_LOCK_ON*/
+	.int BattleScript_EffectSketch                 /* EFFECT_SKETCH*/
+	.int BattleScript_EffectHit                    /* EFFECT_UNUSED_60*/
+	.int BattleScript_EffectSleepTalk              /* EFFECT_SLEEP_TALK*/
+	.int BattleScript_EffectDestinyBond            /* EFFECT_DESTINY_BOND*/
+	.int BattleScript_EffectFlail                  /* EFFECT_FLAIL*/
+	.int BattleScript_EffectSpite                  /* EFFECT_SPITE*/
+	.int BattleScript_EffectHit                    /* EFFECT_FALSE_SWIPE*/
+	.int BattleScript_EffectHealBell               /* EFFECT_HEAL_BELL*/
+	.int BattleScript_EffectHit                    /* EFFECT_QUICK_ATTACK*/
+	.int BattleScript_EffectTripleKick             /* EFFECT_TRIPLE_KICK*/
+	.int BattleScript_EffectThief                  /* EFFECT_THIEF*/
+	.int BattleScript_EffectMeanLook               /* EFFECT_MEAN_LOOK*/
+	.int BattleScript_EffectNightmare              /* EFFECT_NIGHTMARE*/
+	.int BattleScript_EffectMinimize               /* EFFECT_MINIMIZE*/
+	.int BattleScript_EffectCurse                  /* EFFECT_CURSE*/
+	.int BattleScript_EffectHit                    /* EFFECT_UNUSED_6E*/
+	.int BattleScript_EffectProtect                /* EFFECT_PROTECT*/
+	.int BattleScript_EffectSpikes                 /* EFFECT_SPIKES*/
+	.int BattleScript_EffectForesight              /* EFFECT_FORESIGHT*/
+	.int BattleScript_EffectPerishSong             /* EFFECT_PERISH_SONG*/
+	.int BattleScript_EffectSandstorm              /* EFFECT_SANDSTORM*/
+	.int BattleScript_EffectEndure                 /* EFFECT_ENDURE*/
+	.int BattleScript_EffectRollout                /* EFFECT_ROLLOUT*/
+	.int BattleScript_EffectSwagger                /* EFFECT_SWAGGER*/
+	.int BattleScript_EffectFuryCutter             /* EFFECT_FURY_CUTTER*/
+	.int BattleScript_EffectAttract                /* EFFECT_ATTRACT*/
+	.int BattleScript_EffectReturn                 /* EFFECT_RETURN*/
+	.int BattleScript_EffectPresent                /* EFFECT_PRESENT*/
+	.int BattleScript_EffectFrustration            /* EFFECT_FRUSTRATION*/
+	.int BattleScript_EffectSafeguard              /* EFFECT_SAFEGUARD*/
+	.int BattleScript_EffectThawHit                /* EFFECT_THAW_HIT*/
+	.int BattleScript_EffectMagnitude              /* EFFECT_MAGNITUDE*/
+	.int BattleScript_EffectBatonPass              /* EFFECT_BATON_PASS*/
+	.int BattleScript_EffectHit                    /* EFFECT_PURSUIT*/
+	.int BattleScript_EffectRapidSpin              /* EFFECT_RAPID_SPIN*/
+	.int BattleScript_EffectSonicboom              /* EFFECT_SONICBOOM*/
+	.int BattleScript_EffectHit                    /* EFFECT_UNUSED_83*/
+	.int BattleScript_EffectMorningSun             /* EFFECT_MORNING_SUN*/
+	.int BattleScript_EffectSynthesis              /* EFFECT_SYNTHESIS*/
+	.int BattleScript_EffectMoonlight              /* EFFECT_MOONLIGHT*/
+	.int BattleScript_EffectHiddenPower            /* EFFECT_HIDDEN_POWER*/
+	.int BattleScript_EffectRainDance              /* EFFECT_RAIN_DANCE*/
+	.int BattleScript_EffectSunnyDay               /* EFFECT_SUNNY_DAY*/
+	.int BattleScript_EffectDefenseUpHit           /* EFFECT_DEFENSE_UP_HIT*/
+	.int BattleScript_EffectAttackUpHit            /* EFFECT_ATTACK_UP_HIT*/
+	.int BattleScript_EffectAllStatsUpHit          /* EFFECT_ALL_STATS_UP_HIT*/
+	.int BattleScript_EffectHit                    /* EFFECT_UNUSED_8D*/
+	.int BattleScript_EffectBellyDrum              /* EFFECT_BELLY_DRUM*/
+	.int BattleScript_EffectPsychUp                /* EFFECT_PSYCH_UP*/
+	.int BattleScript_EffectMirrorCoat             /* EFFECT_MIRROR_COAT*/
+	.int BattleScript_EffectSkullBash              /* EFFECT_SKULL_BASH*/
+	.int BattleScript_EffectTwister                /* EFFECT_TWISTER*/
+	.int BattleScript_EffectEarthquake             /* EFFECT_EARTHQUAKE*/
+	.int BattleScript_EffectFutureSight            /* EFFECT_FUTURE_SIGHT*/
+	.int BattleScript_EffectGust                   /* EFFECT_GUST*/
+	.int BattleScript_EffectStomp                  /* EFFECT_FLINCH_MINIMIZE_HIT*/
+	.int BattleScript_EffectSolarbeam              /* EFFECT_SOLARBEAM*/
+	.int BattleScript_EffectThunder                /* EFFECT_THUNDER*/
+	.int BattleScript_EffectTeleport               /* EFFECT_TELEPORT*/
+	.int BattleScript_EffectBeatUp                 /* EFFECT_BEAT_UP*/
+	.int BattleScript_EffectSemiInvulnerable       /* EFFECT_SEMI_INVULNERABLE*/
+	.int BattleScript_EffectDefenseCurl            /* EFFECT_DEFENSE_CURL*/
+	.int BattleScript_EffectSoftboiled             /* EFFECT_SOFTBOILED*/
+	.int BattleScript_EffectFakeOut                /* EFFECT_FAKE_OUT*/
+	.int BattleScript_EffectUproar                 /* EFFECT_UPROAR*/
+	.int BattleScript_EffectStockpile              /* EFFECT_STOCKPILE*/
+	.int BattleScript_EffectSpitUp                 /* EFFECT_SPIT_UP*/
+	.int BattleScript_EffectSwallow                /* EFFECT_SWALLOW*/
+	.int BattleScript_EffectHit                    /* EFFECT_UNUSED_A3*/
+	.int BattleScript_EffectHail                   /* EFFECT_HAIL*/
+	.int BattleScript_EffectTorment                /* EFFECT_TORMENT*/
+	.int BattleScript_EffectFlatter                /* EFFECT_FLATTER*/
+	.int BattleScript_EffectWillOWisp              /* EFFECT_WILL_O_WISP*/
+	.int BattleScript_EffectMemento                /* EFFECT_MEMENTO*/
+	.int BattleScript_EffectFacade                 /* EFFECT_FACADE*/
+	.int BattleScript_EffectFocusPunch             /* EFFECT_FOCUS_PUNCH*/
+	.int BattleScript_EffectSmellingsalt           /* EFFECT_SMELLINGSALT*/
+	.int BattleScript_EffectFollowMe               /* EFFECT_FOLLOW_ME*/
+	.int BattleScript_EffectNaturePower            /* EFFECT_NATURE_POWER*/
+	.int BattleScript_EffectCharge                 /* EFFECT_CHARGE*/
+	.int BattleScript_EffectTaunt                  /* EFFECT_TAUNT*/
+	.int BattleScript_EffectHelpingHand            /* EFFECT_HELPING_HAND*/
+	.int BattleScript_EffectTrick                  /* EFFECT_TRICK*/
+	.int BattleScript_EffectRolePlay               /* EFFECT_ROLE_PLAY*/
+	.int BattleScript_EffectWish                   /* EFFECT_WISH*/
+	.int BattleScript_EffectAssist                 /* EFFECT_ASSIST*/
+	.int BattleScript_EffectIngrain                /* EFFECT_INGRAIN*/
+	.int BattleScript_EffectSuperpower             /* EFFECT_SUPERPOWER*/
+	.int BattleScript_EffectMagicCoat              /* EFFECT_MAGIC_COAT*/
+	.int BattleScript_EffectRecycle                /* EFFECT_RECYCLE*/
+	.int BattleScript_EffectRevenge                /* EFFECT_REVENGE*/
+	.int BattleScript_EffectBrickBreak             /* EFFECT_BRICK_BREAK*/
+	.int BattleScript_EffectYawn                   /* EFFECT_YAWN*/
+	.int BattleScript_EffectKnockOff               /* EFFECT_KNOCK_OFF*/
+	.int BattleScript_EffectEndeavor               /* EFFECT_ENDEAVOR*/
+	.int BattleScript_EffectEruption               /* EFFECT_ERUPTION*/
+	.int BattleScript_EffectSkillSwap              /* EFFECT_SKILL_SWAP*/
+	.int BattleScript_EffectImprison               /* EFFECT_IMPRISON*/
+	.int BattleScript_EffectRefresh                /* EFFECT_REFRESH*/
+	.int BattleScript_EffectGrudge                 /* EFFECT_GRUDGE*/
+	.int BattleScript_EffectSnatch                 /* EFFECT_SNATCH*/
+	.int BattleScript_EffectLowKick                /* EFFECT_LOW_KICK*/
+	.int BattleScript_EffectSecretPower            /* EFFECT_SECRET_POWER*/
+	.int BattleScript_EffectDoubleEdge             /* EFFECT_DOUBLE_EDGE*/
+	.int BattleScript_EffectTeeterDance            /* EFFECT_TEETER_DANCE*/
+	.int BattleScript_EffectBurnHit                /* EFFECT_BLAZE_KICK*/
+	.int BattleScript_EffectMudSport               /* EFFECT_MUD_SPORT*/
+	.int BattleScript_EffectPoisonFang             /* EFFECT_POISON_FANG*/
+	.int BattleScript_EffectWeatherBall            /* EFFECT_WEATHER_BALL*/
+	.int BattleScript_EffectOverheat               /* EFFECT_OVERHEAT*/
+	.int BattleScript_EffectTickle                 /* EFFECT_TICKLE*/
+	.int BattleScript_EffectCosmicPower            /* EFFECT_COSMIC_POWER*/
+	.int BattleScript_EffectSkyUppercut            /* EFFECT_SKY_UPPERCUT*/
+	.int BattleScript_EffectBulkUp                 /* EFFECT_BULK_UP*/
+	.int BattleScript_EffectPoisonHit              /* EFFECT_POISON_TAIL*/
+	.int BattleScript_EffectWaterSport             /* EFFECT_WATER_SPORT*/
+	.int BattleScript_EffectCalmMind               /* EFFECT_CALM_MIND*/
+	.int BattleScript_EffectDragonDance            /* EFFECT_DRAGON_DANCE*/
+	.int BattleScript_EffectCamouflage             /* EFFECT_CAMOUFLAGE*/
 
-BattleScript_EffectSpeedUp::
-BattleScript_EffectSpecialDefenseUp::
-BattleScript_EffectAccuracyUp::
-BattleScript_EffectAlwaysHit::
-BattleScript_EffectSpecialAttackDown::
-BattleScript_EffectSpecialDefenseDown::
-BattleScript_EffectHighCritical::
-BattleScript_EffectAccuracyUp2::
-BattleScript_EffectEvasionUp2::
-BattleScript_EffectSpecialAttackDown2::
-BattleScript_EffectAccuracyDown2::
-BattleScript_EffectEvasionDown2::
-BattleScript_EffectEvasionDownHit::
-BattleScript_EffectVitalThrow::
-BattleScript_EffectUnused60::
-BattleScript_EffectFalseSwipe::
-BattleScript_EffectQuickAttack::
-BattleScript_EffectUnused6e::
-BattleScript_EffectPursuit::
-BattleScript_EffectUnused83::
-BattleScript_EffectUnused8d::
-BattleScript_EffectUnusedA3::
 BattleScript_EffectHit::
 	jumpifnotmove MOVE_SURF, BattleScript_HitFromAtkCanceler
 	jumpifnostatus3 BS_TARGET, STATUS3_UNDERWATER, BattleScript_HitFromAtkCanceler
@@ -338,7 +316,6 @@ BattleScript_CantMakeAsleep::
 	goto BattleScript_MoveEnd
 
 BattleScript_EffectPoisonHit::
-BattleScript_EffectPoisonTail::
 	setmoveeffect MOVE_EFFECT_POISON
 	goto BattleScript_EffectHit
 
@@ -382,7 +359,6 @@ BattleScript_AbsorbTryFainting::
 	goto BattleScript_MoveEnd
 
 BattleScript_EffectBurnHit::
-BattleScript_EffectBlazeKick::
 	setmoveeffect MOVE_EFFECT_BURN
 	goto BattleScript_EffectHit
 
@@ -1120,7 +1096,7 @@ BattleScript_SubstituteAnim::
 	healthbarupdate BS_ATTACKER
 	datahpupdate BS_ATTACKER
 BattleScript_SubstituteString::
-	printfromtable gSubsituteUsedStringIds
+	printfromtable gSubstituteUsedStringIds
 	waitmessage B_WAIT_TIME_LONG
 	goto BattleScript_MoveEnd
 BattleScript_AlreadyHasSubstitute::
@@ -2238,7 +2214,7 @@ BattleScript_EffectMemento::
 	playstatchangeanimation BS_TARGET, BIT_ATK, STAT_CHANGE_NEGATIVE | STAT_CHANGE_BY_TWO
 	setstatchanger STAT_ATK, 2, TRUE
 	statbuffchange STAT_BUFF_ALLOW_PTR, BattleScript_EffectMementoTrySpAtk
-	@ Greater than STAT_FELL is checking if the stat cannot decrease
+	/* Greater than STAT_FELL is checking if the stat cannot decrease*/
 	jumpifbyte CMP_GREATER_THAN, cMULTISTRING_CHOOSER, B_MSG_DEFENDER_STAT_FELL, BattleScript_EffectMementoTrySpAtk
 	printfromtable gStatDownStringIds
 	waitmessage B_WAIT_TIME_LONG
@@ -2246,7 +2222,7 @@ BattleScript_EffectMementoTrySpAtk:
 	playstatchangeanimation BS_TARGET, BIT_SPATK, STAT_CHANGE_NEGATIVE | STAT_CHANGE_BY_TWO
 	setstatchanger STAT_SPATK, 2, TRUE
 	statbuffchange STAT_BUFF_ALLOW_PTR, BattleScript_EffectMementoTryFaint
-	@ Greater than STAT_FELL is checking if the stat cannot decrease
+	/* Greater than STAT_FELL is checking if the stat cannot decrease*/
 	jumpifbyte CMP_GREATER_THAN, cMULTISTRING_CHOOSER, B_MSG_DEFENDER_STAT_FELL, BattleScript_EffectMementoTryFaint
 	printfromtable gStatDownStringIds
 	waitmessage B_WAIT_TIME_LONG

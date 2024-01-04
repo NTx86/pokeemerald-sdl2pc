@@ -88,6 +88,7 @@ static bool8 sLocked;
 static int WriteCommand(u8 value);
 static int WriteData(u8 value);
 static u8 ReadData();
+
 static void EnableGpioPortRead();
 static void DisableGpioPortRead();
 
@@ -119,8 +120,12 @@ u8 SiiRtcProbe(void)
 
     errorCode = 0;
 
+#ifdef BUGFIX
+    if (!(rtc.status & SIIRTCINFO_24HOUR) || (rtc.status & SIIRTCINFO_POWER))
+#else
     if ((rtc.status & (SIIRTCINFO_POWER | SIIRTCINFO_24HOUR)) == SIIRTCINFO_POWER
      || (rtc.status & (SIIRTCINFO_POWER | SIIRTCINFO_24HOUR)) == 0)
+#endif
     {
         // The RTC is in 12-hour mode. Reset it and switch to 24-hour mode.
 
@@ -152,7 +157,7 @@ u8 SiiRtcProbe(void)
 
 bool8 SiiRtcReset(void)
 {
-    u8 result;
+    bool8 result;
     struct SiiRtcInfo rtc;
 
     if (sLocked == TRUE)
@@ -434,7 +439,11 @@ static int WriteCommand(u8 value)
         GPIO_PORT_DATA = (temp << 1) | SCK_HI | CS_HI;
     }
 
-    // control reaches end of non-void function
+    // Nothing uses the returned value from this function,
+    // so the undefined behavior is harmless in the vanilla game.
+#ifdef UBFIX
+    return 0;
+#endif
 }
 
 static int WriteData(u8 value)
@@ -451,7 +460,11 @@ static int WriteData(u8 value)
         GPIO_PORT_DATA = (temp << 1) | SCK_HI | CS_HI;
     }
 
-    // control reaches end of non-void function
+    // Nothing uses the returned value from this function,
+    // so the undefined behavior is harmless in the vanilla game.
+#ifdef UBFIX
+    return 0;
+#endif
 }
 
 static u8 ReadData()
@@ -459,6 +472,10 @@ static u8 ReadData()
     u8 i;
     u8 temp;
     u8 value;
+
+#ifdef UBFIX
+    value = 0;
+#endif
 
     for (i = 0; i < 8; i++)
     {
@@ -470,7 +487,7 @@ static u8 ReadData()
         GPIO_PORT_DATA = SCK_HI | CS_HI;
 
         temp = ((GPIO_PORT_DATA & SIO_HI) >> 1);
-        value = (value >> 1) | (temp << 7); // UB: accessing uninitialized var
+        value = (value >> 1) | (temp << 7);
     }
 
     return value;
@@ -478,11 +495,11 @@ static u8 ReadData()
 
 static void EnableGpioPortRead()
 {
-    GPIO_PORT_READ_ENABLE = 1;
+    GPIO_PORT_READ_ENABLE = TRUE;
 }
 
 static void DisableGpioPortRead()
 {
-    GPIO_PORT_READ_ENABLE = 0;
+    GPIO_PORT_READ_ENABLE = FALSE;
 }
 #endif

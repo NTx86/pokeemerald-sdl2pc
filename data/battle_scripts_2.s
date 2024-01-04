@@ -12,7 +12,7 @@
 	.section script_data, "aw"
 
 	.align 2
-gBattlescriptsForBallThrow:: /* 82DBD08*/
+gBattlescriptsForBallThrow::
 	.int BattleScript_BallThrow        /* ITEM_NONE*/
 	.int BattleScript_BallThrow        /* ITEM_MASTER_BALL*/
 	.int BattleScript_BallThrow        /* ITEM_ULTRA_BALL*/
@@ -28,7 +28,7 @@ gBattlescriptsForBallThrow:: /* 82DBD08*/
 	.int BattleScript_BallThrow        /* ITEM_PREMIER_BALL*/
 
 	.align 2
-gBattlescriptsForUsingItem:: /* 82DBD3C*/
+gBattlescriptsForUsingItem::
 	.int BattleScript_PlayerUsesItem
 	.int BattleScript_OpponentUsesHealItem        /* AI_ITEM_FULL_RESTORE*/
 	.int BattleScript_OpponentUsesHealItem        /* AI_ITEM_HEAL_HP*/
@@ -37,11 +37,11 @@ gBattlescriptsForUsingItem:: /* 82DBD3C*/
 	.int BattleScript_OpponentUsesGuardSpec       /* AI_ITEM_GUARD_SPEC*/
 
 	.align 2
-gBattlescriptsForRunningByItem:: /* 82DBD54*/
+gBattlescriptsForRunningByItem::
 	.int BattleScript_RunByUsingItem
 
 	.align 2
-gBattlescriptsForSafariActions:: /* 82DBD58*/
+gBattlescriptsForSafariActions::
 	.int BattleScript_ActionWatchesCarefully
 	.int BattleScript_ActionGetNear
 	.int BattleScript_ActionThrowPokeblock

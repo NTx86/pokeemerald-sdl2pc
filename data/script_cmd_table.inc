@@ -1,5 +1,5 @@
 	.align 2
-gScriptCmdTable:: /* 81DB67C*/
+gScriptCmdTable::
 	.int ScrCmd_nop      	                /* 0x00*/
 	.int ScrCmd_nop1                      /* 0x01*/
 	.int ScrCmd_end      	                /* 0x02*/
@@ -119,7 +119,7 @@ gScriptCmdTable:: /* 81DB67C*/
 	.int ScrCmd_drawboxtext               /* 0x74*/
 	.int ScrCmd_showmonpic                /* 0x75*/
 	.int ScrCmd_hidemonpic                /* 0x76*/
-	.int ScrCmd_showcontestwinner         /* 0x77*/
+	.int ScrCmd_showcontestpainting       /* 0x77*/
 	.int ScrCmd_braillemessage            /* 0x78*/
 	.int ScrCmd_givemon                   /* 0x79*/
 	.int ScrCmd_giveegg                   /* 0x7a*/
@@ -228,5 +228,5 @@ gScriptCmdTable:: /* 81DB67C*/
 	.int ScrCmd_buffercontesttype         /* 0xe1*/
 	.int ScrCmd_bufferitemnameplural      /* 0xe2*/
 
-gScriptCmdTableEnd:: /* 81DBA08*/
+gScriptCmdTableEnd::
 	.int ScrCmd_nop

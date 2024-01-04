@@ -275,7 +275,7 @@ struct RouletteTable
     struct Taillow taillow;
     u16 ballSpeed;
     u16 baseTravelDist;
-    float var1C;
+    f32 var1C;
 };
 
 struct GridSelection
@@ -340,13 +340,13 @@ static EWRAM_DATA struct Roulette
     s16 ballTravelDistFast;
     u16 ballTravelDistMed;
     u16 ballTravelDistSlow;
-    float ballAngle;
-    float ballAngleSpeed;
-    float ballAngleAccel;
-    float ballDistToCenter;
-    float ballFallSpeed;
-    float ballFallAccel;
-    float varA0;
+    f32 ballAngle;
+    f32 ballAngleSpeed;
+    f32 ballAngleAccel;
+    f32 ballDistToCenter;
+    f32 ballFallSpeed;
+    f32 ballFallAccel;
+    f32 varA0;
     u8 playTaskId;
     u8 spinTaskId;
     u8 filler_1[2];
@@ -1975,7 +1975,7 @@ static void ExitRoulette(u8 taskId)
         gSpecialVar_0x8004 = TRUE;
     else
         gSpecialVar_0x8004 = FALSE;
-    AlertTVOfNewCoinTotal(GetCoins());
+    TryPutFindThatGamerOnAir(GetCoins());
     BeginHardwarePaletteFade(0xFF, 0, 0, 16, 0);
     gTasks[taskId].func = Task_ExitRoulette;
 }
@@ -2903,7 +2903,9 @@ static const union AnimCmd sAnim_CreditDigit[] =
     ANIMCMD_FRAME(18, 0), // 9
     // BUG: Animation not terminated properly
     // Doesn't matter in practice, the frames are set directly and not looped
-    //ANIMCMD_END
+#ifdef BUGFIX
+    ANIMCMD_END
+#endif
 };
 
 static const union AnimCmd *const sAnims_CreditDigit[] =
@@ -3637,8 +3639,8 @@ static void ShowHideGridBalls(bool8 hideAll, u8 hideBallId)
             else
             {
                 gSprites[sRoulette->spriteIds[i + SPR_GRID_BALLS]].invisible = FALSE;
-                gSprites[sRoulette->spriteIds[i + SPR_GRID_BALLS]].pos1.x = (sGridSelections[sRoulette->hitSquares[i]].x + 1) * 8 + 4;
-                gSprites[sRoulette->spriteIds[i + SPR_GRID_BALLS]].pos1.y = (sGridSelections[sRoulette->hitSquares[i]].y + 1) * 8 + 3;
+                gSprites[sRoulette->spriteIds[i + SPR_GRID_BALLS]].x = (sGridSelections[sRoulette->hitSquares[i]].x + 1) * 8 + 4;
+                gSprites[sRoulette->spriteIds[i + SPR_GRID_BALLS]].y = (sGridSelections[sRoulette->hitSquares[i]].y + 1) * 8 + 3;
             }
         }
     }
@@ -3653,8 +3655,8 @@ static void ShowHideWinSlotCursor(u8 selectionId)
     else
     {
         gSprites[sRoulette->spriteIds[SPR_WIN_SLOT_CURSOR]].invisible = FALSE;
-        gSprites[sRoulette->spriteIds[SPR_WIN_SLOT_CURSOR]].pos1.x = (sGridSelections[selectionId].x + 2) * 8;
-        gSprites[sRoulette->spriteIds[SPR_WIN_SLOT_CURSOR]].pos1.y = (sGridSelections[selectionId].y + 2) * 8;
+        gSprites[sRoulette->spriteIds[SPR_WIN_SLOT_CURSOR]].x = (sGridSelections[selectionId].x + 2) * 8;
+        gSprites[sRoulette->spriteIds[SPR_WIN_SLOT_CURSOR]].y = (sGridSelections[selectionId].y + 2) * 8;
     }
 }
 
@@ -3693,8 +3695,8 @@ static void SpriteCB_WheelIcon(struct Sprite *sprite)
         angle -= 360;
     sin = Sin2(angle);
     cos = Cos2(angle);
-    sprite->pos2.x =  sin * sprite->data[1] >> 12;
-    sprite->pos2.y = -cos * sprite->data[1] >> 12;
+    sprite->x2 =  sin * sprite->data[1] >> 12;
+    sprite->y2 = -cos * sprite->data[1] >> 12;
     matrixNum = sprite->oam.matrixNum;
     sin /= 16;
     gOamMatrices[matrixNum].d = cos /= 16;
@@ -3850,7 +3852,7 @@ static void SetBallCounterNumLeft(u8 numBalls)
 
 static void SpriteCB_GridSquare(struct Sprite *sprite)
 {
-    sprite->pos2.x = sRoulette->gridX;
+    sprite->x2 = sRoulette->gridX;
 }
 
 static void CreateWheelCenterSprite(void)
@@ -3955,7 +3957,7 @@ static s16 UpdateBallRelativeWheelAngle(struct Sprite *sprite)
 
 static u8 UpdateSlotBelowBall(struct Sprite *sprite)
 {
-    sRoulette->hitSlot = UpdateBallRelativeWheelAngle(sprite) / (float) DEGREES_PER_SLOT;
+    sRoulette->hitSlot = UpdateBallRelativeWheelAngle(sprite) / (f32)DEGREES_PER_SLOT;
     return sRoulette->hitSlot;
 }
 
@@ -4000,12 +4002,12 @@ static void UpdateBallPos(struct Sprite *sprite)
     sprite->sBallDistToCenter = sRoulette->ballDistToCenter;
     sin = Sin2(sprite->sBallAngle);
     cos = Cos2(sprite->sBallAngle);
-    sprite->pos2.x =  sin * sprite->sBallDistToCenter >> 12;
-    sprite->pos2.y = -cos * sprite->sBallDistToCenter >> 12;
+    sprite->x2 =  sin * sprite->sBallDistToCenter >> 12;
+    sprite->y2 = -cos * sprite->sBallDistToCenter >> 12;
     if (IsSEPlaying())
     {
-        m4aMPlayPanpotControl(&gMPlayInfo_SE1, 0xFFFF, sprite->pos2.x);
-        m4aMPlayPanpotControl(&gMPlayInfo_SE2, 0xFFFF, sprite->pos2.x);
+        m4aMPlayPanpotControl(&gMPlayInfo_SE1, 0xFFFF, sprite->x2);
+        m4aMPlayPanpotControl(&gMPlayInfo_SE2, 0xFFFF, sprite->x2);
     }
 }
 
@@ -4018,9 +4020,9 @@ static void SpriteCB_BallLandInSlot(struct Sprite *sprite)
         sprite->sBallAngle -= 360;
     sin = Sin2(sprite->sBallAngle);
     cos = Cos2(sprite->sBallAngle);
-    sprite->pos2.x =  sin * sprite->sBallDistToCenter >> 12;
-    sprite->pos2.y = -cos * sprite->sBallDistToCenter >> 12;
-    sprite->pos2.y += gSpriteCoordOffsetY;
+    sprite->x2 =  sin * sprite->sBallDistToCenter >> 12;
+    sprite->y2 = -cos * sprite->sBallDistToCenter >> 12;
+    sprite->y2 += gSpriteCoordOffsetY;
 }
 
 static void SpriteCB_UnstickBall_ShroomishBallFall(struct Sprite *sprite)
@@ -4057,7 +4059,7 @@ static void SpriteCB_UnstickBall_ShroomishBallFall(struct Sprite *sprite)
 
 static void SpriteCB_UnstickBall_Shroomish(struct Sprite *sprite)
 {
-    float slotOffset, ballFallDist, ballFallSpeed;
+    f32 slotOffset, ballFallDist, ballFallSpeed;
     UpdateBallPos(sprite);
 
     switch (sprite->sBallAngle)
@@ -4103,9 +4105,9 @@ static void SpriteCB_UnstickBall_Shroomish(struct Sprite *sprite)
 
 static void SpriteCB_UnstickBall_TaillowDrop(struct Sprite *sprite)
 {
-    sprite->pos2.y = (s16)(sprite->data[2] * 0.05f * sprite->data[2]) - 45;
+    sprite->y2 = (s16)(sprite->data[2] * 0.05f * sprite->data[2]) - 45;
     sprite->data[2]++;
-    if (sprite->data[2] >= DEGREES_PER_SLOT && sprite->pos2.y >= 0)
+    if (sprite->data[2] >= DEGREES_PER_SLOT && sprite->y2 >= 0)
     {
         LandBall()
         sRoulette->ballUnstuck = TRUE;
@@ -4116,11 +4118,11 @@ static void SpriteCB_UnstickBall_TaillowPickUp(struct Sprite *sprite)
 {
     if (sprite->data[2]++ < 45)
     {
-        sprite->pos2.y--;
+        sprite->y2--;
         if (sprite->data[2] == 45)
         {
             if (gSprites[sRoulette->spriteIds[SPR_CLEAR_MON]].animCmdIndex == 1)
-                sprite->pos2.y++;
+                sprite->y2++;
         }
     }
     else
@@ -4130,9 +4132,9 @@ static void SpriteCB_UnstickBall_TaillowPickUp(struct Sprite *sprite)
             if (gSprites[sRoulette->spriteIds[SPR_CLEAR_MON]].animDelayCounter == 0)
             {
                 if (gSprites[sRoulette->spriteIds[SPR_CLEAR_MON]].animCmdIndex == 1)
-                    sprite->pos2.y++;
+                    sprite->y2++;
                 else
-                    sprite->pos2.y--;
+                    sprite->y2--;
             }
         }
         else
@@ -4240,7 +4242,7 @@ static void SpriteCB_RollBall_TryLand(struct Sprite *sprite)
         }
         else // fall left
         {
-            float temp;
+            f32 temp;
             sRoulette->ballAngleSpeed = (temp = sRouletteTables[sRoulette->tableId].var1C) * 2.0f;
             slotId = (sRoulette->hitSlot + NUM_ROULETTE_SLOTS - 1) % NUM_ROULETTE_SLOTS;
             sRoulette->stuckHitSlot = sRoulette->hitSlot;
@@ -4286,7 +4288,7 @@ static void SpriteCB_RollBall_Slow(struct Sprite *sprite)
     {
         // Reached slot to land in
         sRoulette->ballAngleAccel = 0.0f;
-        sRoulette->ballAngleSpeed -= (float)(sRouletteTables[sRoulette->tableId].wheelSpeed)
+        sRoulette->ballAngleSpeed -= (f32)(sRouletteTables[sRoulette->tableId].wheelSpeed)
             / (sRouletteTables[sRoulette->tableId].wheelDelay + 1);
         sprite->sState = 4;
         sprite->callback = SpriteCB_RollBall_TryLand;
@@ -4311,8 +4313,8 @@ static void SpriteCB_RollBall_Medium(struct Sprite *sprite)
     if (sRoulette->ballDistToCenter > 40.0f)
         return;
 
-    sRoulette->ballFallSpeed = -(4.0f / (float)(sRoulette->ballTravelDistSlow));
-    sRoulette->ballAngleAccel = -(sRoulette->ballAngleSpeed / (float)(sRoulette->ballTravelDistSlow));
+    sRoulette->ballFallSpeed = -(4.0f / (f32)(sRoulette->ballTravelDistSlow));
+    sRoulette->ballAngleAccel = -(sRoulette->ballAngleSpeed / (f32)(sRoulette->ballTravelDistSlow));
     sprite->animNum = 2;
     sprite->animBeginning = TRUE;
     sprite->animEnded = FALSE;
@@ -4327,8 +4329,8 @@ static void SpriteCB_RollBall_Fast(struct Sprite *sprite)
         return;
 
     m4aSongNumStartOrChange(SE_ROULETTE_BALL2);
-    sRoulette->ballFallSpeed = -(20.0f / (float)(sRoulette->ballTravelDistMed));
-    sRoulette->ballAngleAccel = ((1.0f - sRoulette->ballAngleSpeed) / (float)(sRoulette->ballTravelDistMed));
+    sRoulette->ballFallSpeed = -(20.0f / (f32)(sRoulette->ballTravelDistMed));
+    sRoulette->ballAngleAccel = ((1.0f - sRoulette->ballAngleSpeed) / (f32)(sRoulette->ballTravelDistMed));
     sprite->animNum = 1;
     sprite->animBeginning = TRUE;
     sprite->animEnded = FALSE;
@@ -4521,8 +4523,8 @@ static void SpriteCB_ShroomishExit(struct Sprite *sprite)
     // Delay for screen shaking, then exit left
     if (sprite->data[1]++ >= sprite->data[3])
     {
-	    sprite->pos1.x -= 2;
-        if (sprite->pos1.x < -16)
+	    sprite->x -= 2;
+        if (sprite->x < -16)
         {
             if (!sRoulette->ballUnstuck)
                 sRoulette->ballUnstuck = TRUE;
@@ -4565,10 +4567,10 @@ static void SpriteCB_ShroomishShakeScreen(struct Sprite *sprite)
 
 static void SpriteCB_ShroomishFall(struct Sprite *sprite)
 {
-    float timer;
+    f32 timer;
     sprite->data[1]++;
     timer = sprite->data[1];
-    sprite->pos2.y = timer * 0.039f * timer;
+    sprite->y2 = timer * 0.039f * timer;
     sRoulette->shroomishShadowAlpha = sShroomishShadowAlphas[(sRoulette->shroomishShadowTimer - 1) / 2];
     if (sRoulette->shroomishShadowTimer < ARRAY_COUNT(sShroomishShadowAlphas) * 2 - 1)
         sRoulette->shroomishShadowTimer++;
@@ -4641,9 +4643,9 @@ static void SpriteCB_TaillowShadow_Flash(struct Sprite *sprite)
 
 static void SpriteCB_Taillow_FlyAway(struct Sprite *sprite)
 {
-    if (sprite->pos1.y > -16)
+    if (sprite->y > -16)
     {
-        sprite->pos1.y--;
+        sprite->y--;
     }
     else
     {
@@ -4662,9 +4664,9 @@ static void SpriteCB_Taillow_PickUpBall(struct Sprite *sprite)
     if (sprite->data[1] >= 0)
     {
         sprite->data[1]--;
-        sprite->pos1.y--;
+        sprite->y--;
         if (sprite->data[1] == 0 && sprite->animCmdIndex == 1)
-            sprite->pos2.y++;
+            sprite->y2++;
     }
     else
     {
@@ -4674,9 +4676,9 @@ static void SpriteCB_Taillow_PickUpBall(struct Sprite *sprite)
             if (sprite->animDelayCounter == 0)
             {
                 if (sprite->animCmdIndex == 1)
-                    sprite->pos2.y++;
+                    sprite->y2++;
                 else
-                    sprite->pos2.y--;
+                    sprite->y2--;
             }
         }
         else
@@ -4705,10 +4707,10 @@ static void SpriteCB_Taillow_FlyIn(struct Sprite *sprite)
 
     if (sprite->data[1]-- > 7)
     {
-        sprite->pos1.x += xMoveOffsets[sRoulette->ball->sStuckOnWheelLeft] * 2;
+        sprite->x += xMoveOffsets[sRoulette->ball->sStuckOnWheelLeft] * 2;
         if (IsSEPlaying())
         {
-            s8 pan = -((116 - sprite->pos1.x) / 2);
+            s8 pan = -((116 - sprite->x) / 2);
             m4aMPlayPanpotControl(&gMPlayInfo_SE1, 0xFFFF, pan);
             m4aMPlayPanpotControl(&gMPlayInfo_SE2, 0xFFFF, pan);
         }
@@ -4717,8 +4719,8 @@ static void SpriteCB_Taillow_FlyIn(struct Sprite *sprite)
     {
         if (sprite->data[1] >= 0)
         {
-            sprite->pos1.x += xMoveOffsets[sRoulette->ball->sStuckOnWheelLeft] * yMoveOffsets[7 - sprite->data[1]][0];
-            sprite->pos1.y += yMoveOffsets[7 - sprite->data[1]][1];
+            sprite->x += xMoveOffsets[sRoulette->ball->sStuckOnWheelLeft] * yMoveOffsets[7 - sprite->data[1]][0];
+            sprite->y += yMoveOffsets[7 - sprite->data[1]][1];
         }
         else
         {
@@ -4740,7 +4742,7 @@ static void SpriteCB_TaillowShadow_FlyIn(struct Sprite *sprite)
 
     if (sprite->data[1]-- >= 0)
     {
-        sprite->pos1.x += moveDir[sRoulette->ball->sStuckOnWheelLeft] * 2;
+        sprite->x += moveDir[sRoulette->ball->sStuckOnWheelLeft] * 2;
         gSprites[sprite->sMonShadowSpriteId].invisible ^= 1;
     }
     else

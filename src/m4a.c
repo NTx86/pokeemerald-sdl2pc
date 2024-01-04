@@ -919,18 +919,13 @@ void CgbModVol(struct CgbChannel *chan)
     if ((soundInfo->mode & 1) || !CgbPan(chan))
     {
         chan->pan = 0xFF;
-        chan->envelopeGoal = (u32)(chan->rightVolume + chan->leftVolume) >> 4;
+        chan->envelopeGoal = (u32)(chan->leftVolume + chan->rightVolume);
+        chan->envelopeGoal /= 16;
     }
     else
     {
-        // Force chan->rightVolume and chan->leftVolume to be read from memory again,
-        // even though there is no reason to do so.
-        // The command line option "-fno-gcse" achieves the same result as this.
-        #ifndef NONMATCHING
-            asm("" : : : "memory");
-        #endif
-
-        chan->envelopeGoal = (u32)(chan->rightVolume + chan->leftVolume) >> 4;
+        chan->envelopeGoal = (u32)(chan->leftVolume + chan->rightVolume);
+        chan->envelopeGoal /= 16;
         if (chan->envelopeGoal > 15)
             chan->envelopeGoal = 15;
     }
@@ -943,7 +938,6 @@ void CgbSound(void)
 {
     s32 ch;
     struct CgbChannel *channels;
-    s32 envelopeStepTimeAndDir;
     s32 prevC15;
     struct SoundInfo *soundInfo = SOUND_INFO_PTR;
     vu8 *nrx0ptr;
@@ -951,6 +945,7 @@ void CgbSound(void)
     vu8 *nrx2ptr;
     vu8 *nrx3ptr;
     vu8 *nrx4ptr;
+    s32 envelopeStepTimeAndDir;
 
     // Most comparision operations that cast to s8 perform 'and' by 0xFF.
     int mask = 0xff;
@@ -1244,8 +1239,8 @@ void CgbSound(void)
             }
             else
             {
-                envelopeStepTimeAndDir &= 0xf;
-                *nrx2ptr = (channels->envelopeVolume << 4) + envelopeStepTimeAndDir;
+                u32 envMask = 0xF;
+                *nrx2ptr = (envelopeStepTimeAndDir & envMask) + (channels->envelopeVolume << 4);
                 *nrx4ptr = channels->n4 | 0x80;
                 if (ch == 1 && !(*nrx0ptr & 0x08))
                     *nrx4ptr = channels->n4 | 0x80;
@@ -1576,6 +1571,10 @@ void ply_xwave(struct MusicPlayerInfo *mplayInfo, struct MusicPlayerTrack *track
 {
     u32 wav;
 
+#ifdef UBFIX
+    wav = 0;
+#endif
+
     READ_XCMD_BYTE(wav, 0) // UB: uninitialized variable
     READ_XCMD_BYTE(wav, 1)
     READ_XCMD_BYTE(wav, 2)
@@ -1643,6 +1642,10 @@ void ply_xcmd_0C(struct MusicPlayerInfo *mplayInfo, struct MusicPlayerTrack *tra
 {
     u32 unk;
 
+#ifdef UBFIX
+    unk = 0;
+#endif
+
     READ_XCMD_BYTE(unk, 0) // UB: uninitialized variable
     READ_XCMD_BYTE(unk, 1)
 
@@ -1662,6 +1665,7 @@ void ply_xcmd_0C(struct MusicPlayerInfo *mplayInfo, struct MusicPlayerTrack *tra
 void ply_xcmd_0D(struct MusicPlayerInfo *mplayInfo, struct MusicPlayerTrack *track)
 {
     u32 unk;
+
 #ifdef UBFIX
     unk = 0;
 #endif
@@ -1754,14 +1758,14 @@ void SetPokemonCryProgress(u32 val)
     gPokemonCrySong.unkCmd0DParam = val;
 }
 
-int IsPokemonCryPlaying(struct MusicPlayerInfo *mplayInfo)
+bool32 IsPokemonCryPlaying(struct MusicPlayerInfo *mplayInfo)
 {
     struct MusicPlayerTrack *track = mplayInfo->tracks;
 
     if (track->chan && track->chan->track == track)
-        return 1;
+        return TRUE;
     else
-        return 0;
+        return FALSE;
 }
 
 void SetPokemonCryChorus(s8 val)

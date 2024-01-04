@@ -1,7 +1,7 @@
 	.section script_data, "aw"
 
 	.align 2
-gMysteryEventScriptCmdTable:: /* 82DED2C*/
+gMysteryEventScriptCmdTable::
 	.int MEScrCmd_nop                 /* 0x00*/
 	.int MEScrCmd_checkcompat         /* 0x01*/
 	.int MEScrCmd_end                 /* 0x02*/
