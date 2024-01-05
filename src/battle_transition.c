@@ -827,7 +827,7 @@ static const struct OamData sOam_UnusedBrendanLass =
     .y = 0,
     .affineMode = ST_OAM_AFFINE_OFF,
     .objMode = ST_OAM_OBJ_NORMAL,
-    .mosaic = 0,
+    .mosaic = FALSE,
     .bpp = ST_OAM_4BPP,
     .shape = SPRITE_SHAPE(64x64),
     .x = 0,
@@ -2194,7 +2194,7 @@ static bool8 Wave_Init(struct Task *task)
 static bool8 Wave_Main(struct Task *task)
 {
     u8 i, sinIndex;
-    u16* toStore;
+    u16 *toStore;
     bool8 finished;
 
     sTransitionData->VBlank_DMA = FALSE;
@@ -2355,7 +2355,7 @@ static bool8 Mugshot_SetGfx(struct Task *task)
 static bool8 Mugshot_ShowBanner(struct Task *task)
 {
     u8 i, sinIndex;
-    u16* toStore;
+    u16 *toStore;
     s16 x;
     s32 mergedValue;
 
@@ -2396,7 +2396,7 @@ static bool8 Mugshot_ShowBanner(struct Task *task)
     if (task->tBottomBannerX < 0)
         task->tBottomBannerX = 0;
 
-    mergedValue = *(s32*)(&task->tTopBannerX);
+    mergedValue = *(s32 *)(&task->tTopBannerX);
     if (mergedValue == DISPLAY_WIDTH)
         task->tState++;
 
@@ -2409,7 +2409,7 @@ static bool8 Mugshot_ShowBanner(struct Task *task)
 static bool8 Mugshot_StartOpponentSlide(struct Task *task)
 {
     u8 i;
-    u16* toStore;
+    u16 *toStore;
 
     sTransitionData->VBlank_DMA = FALSE;
 
@@ -2442,7 +2442,7 @@ static bool8 Mugshot_WaitStartPlayerSlide(struct Task *task)
 {
     sTransitionData->BG0HOFS_Lower -= 8;
     sTransitionData->BG0HOFS_Upper += 8;
-    
+
     // Start player's slide in once the opponent is finished
     if (IsTrainerPicSlideDone(task->tOpponentSpriteId))
     {
@@ -2778,7 +2778,7 @@ static bool8 Slice_Main(struct Task *task)
     {
         u16 *storeLoc1 = &gScanlineEffectRegBuffers[0][i];
         u16 *storeLoc2 = &gScanlineEffectRegBuffers[0][i + DISPLAY_HEIGHT];
-        
+
         // Alternate rows
         if (i % 2)
         {
@@ -3259,7 +3259,7 @@ static bool8 RectangularSpiral_Main(struct Task *task)
                 // The line moved to a new position, draw the tile.
                 done = FALSE;
                 position = sRectangularSpiralLines[j].position;
-                
+
                 // Invert position for the two lines that start at the bottom.
                 if ((j % 2) == 1)
                     position = 637 - position;
@@ -3289,7 +3289,7 @@ static bool8 RectangularSpiral_End(struct Task *task)
 static bool16 UpdateRectangularSpiralLine(const s16 * const *moveDataTable, struct RectangularSpiralLine *line)
 {
     const s16 *moveData = moveDataTable[line->state];
-    
+
     // Has spiral finished?
     // Note that most move data arrays endsin SPIRAL_END but it is
     // only ever reached on the final array of spiraling outward.
@@ -3302,9 +3302,9 @@ static bool16 UpdateRectangularSpiralLine(const s16 * const *moveDataTable, stru
     sDebug_RectangularSpiralData = moveData[2];
     sDebug_RectangularSpiralData = moveData[3];
 
-    // Note that for the two lines originating at the bottom the 
+    // Note that for the two lines originating at the bottom the
     // position is inverted, so the directions are flipped.
-    // i.e. position += 1 is right for the top lines and left 
+    // i.e. position += 1 is right for the top lines and left
     // for their inverted partners on the bottom.
     switch (moveData[0])
     {
@@ -3724,8 +3724,8 @@ static void SpriteCB_WhiteBarFade(struct Sprite *sprite)
     else
     {
         u16 i;
-        u16* ptr1 = &gScanlineEffectRegBuffers[0][sprite->y];
-        u16* ptr2 = &gScanlineEffectRegBuffers[0][sprite->y + DISPLAY_HEIGHT];
+        u16 *ptr1 = &gScanlineEffectRegBuffers[0][sprite->y];
+        u16 *ptr2 = &gScanlineEffectRegBuffers[0][sprite->y + DISPLAY_HEIGHT];
         for (i = 0; i < DISPLAY_HEIGHT / NUM_WHITE_BARS; i++)
         {
             ptr1[i] = sprite->sFade >> 8;
@@ -3791,7 +3791,7 @@ static bool8 GridSquares_Init(struct Task *task)
 
 static bool8 GridSquares_Main(struct Task *task)
 {
-    u16* tileset;
+    u16 *tileset;
 
     if (task->tDelay == 0)
     {
@@ -4069,7 +4069,7 @@ static void GetBg0TilemapDst(u16 **tileset)
 {
     u16 charBase = REG_BG0CNT >> 2;
     charBase <<= 14;
-    *tileset = (u16*)(BG_VRAM + charBase);
+    *tileset = (u16 *)(BG_VRAM + charBase);
 }
 
 void GetBg0TilesDst(u16 **tilemap, u16 **tileset)
@@ -4080,8 +4080,8 @@ void GetBg0TilesDst(u16 **tilemap, u16 **tileset)
     screenBase <<= 11;
     charBase <<= 14;
 
-    *tilemap = (u16*)(BG_VRAM + screenBase);
-    *tileset = (u16*)(BG_VRAM + charBase);
+    *tilemap = (u16 *)(BG_VRAM + screenBase);
+    *tileset = (u16 *)(BG_VRAM + charBase);
 }
 
 static void FadeScreenBlack(void)
@@ -4178,13 +4178,13 @@ static void InitBlackWipe(s16 *data, s16 startX, s16 startY, s16 endX, s16 endY,
 static bool8 UpdateBlackWipe(s16 *data, bool8 xExact, bool8 yExact)
 {
     u8 numFinished;
-    
+
     if (tWipeXDist > tWipeYDist)
     {
         // X has further to move, move it first
         tWipeCurrX += tWipeXMove;
 
-        // If it has been far enough since Y's 
+        // If it has been far enough since Y's
         // last move then move it too
         tWipeTemp += tWipeYDist;
         if (tWipeTemp > tWipeXDist)
@@ -4198,7 +4198,7 @@ static bool8 UpdateBlackWipe(s16 *data, bool8 xExact, bool8 yExact)
         // Y has further to move, move it first
         tWipeCurrY += tWipeYMove;
 
-        // If it has been far enough since X's 
+        // If it has been far enough since X's
         // last move then move it too
         tWipeTemp += tWipeXDist;
         if (tWipeTemp > tWipeYDist)
@@ -4209,9 +4209,9 @@ static bool8 UpdateBlackWipe(s16 *data, bool8 xExact, bool8 yExact)
     }
 
     numFinished = 0;
-    
+
     // Has X coord reached end?
-    if ((tWipeXMove > 0 && tWipeCurrX >= tWipeEndX) 
+    if ((tWipeXMove > 0 && tWipeCurrX >= tWipeEndX)
      || (tWipeXMove < 0 && tWipeCurrX <= tWipeEndX))
     {
         numFinished++;
@@ -4220,7 +4220,7 @@ static bool8 UpdateBlackWipe(s16 *data, bool8 xExact, bool8 yExact)
     }
 
     // Has Y coord reached end?
-    if ((tWipeYMove > 0 && tWipeCurrY >= tWipeEndY) 
+    if ((tWipeYMove > 0 && tWipeCurrY >= tWipeEndY)
      || (tWipeYMove < 0 && tWipeCurrY <= tWipeEndY))
     {
         numFinished++;
@@ -4770,10 +4770,8 @@ static bool8 FrontierSquaresScroll_End(struct Task *task)
     BlendPalettes(PALETTES_ALL, 16, RGB_BLACK);
 
     DestroyTask(FindTaskIdByFunc(task->func));
+    task->tState++; // Changing value of a destroyed task
 
-#ifndef UBFIX
-    task->tState++; // UB: changing value of a destroyed task
-#endif
     return FALSE;
 }
 
