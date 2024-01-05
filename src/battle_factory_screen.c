@@ -2521,7 +2521,7 @@ static void Swap_Task_HandleYesNo(u8 taskId)
     }
 }
 
-static void Swap_HandleQuitSwappingResposne(u8 taskId)
+static void Swap_HandleQuitSwappingResponse(u8 taskId)
 {
     if (gTasks[taskId].tSaidYes == TRUE)
     {
@@ -2545,8 +2545,8 @@ static void Swap_AskQuitSwapping(u8 taskId)
         Swap_PrintOnInfoWindow(gText_QuitSwapping);
         sFactorySwapScreen->monSwapped = FALSE;
         gTasks[taskId].tState = STATE_YESNO_SHOW;
-        gTasks[taskId].tFollowUpTaskPtrHi = (u32)(Swap_HandleQuitSwappingResposne) >> 16;
-        gTasks[taskId].tFollowUpTaskPtrLo = (u32)(Swap_HandleQuitSwappingResposne);
+        gTasks[taskId].tFollowUpTaskPtrHi = (u32)(Swap_HandleQuitSwappingResponse) >> 16;
+        gTasks[taskId].tFollowUpTaskPtrLo = (u32)(Swap_HandleQuitSwappingResponse);
         gTasks[taskId].func = Swap_Task_HandleYesNo;
     }
 }
