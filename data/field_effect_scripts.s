@@ -50,7 +50,7 @@ gFieldEffectScriptPointers::
 	.int gFieldEffectScript_HotSpringsWater           /* FLDEFF_HOT_SPRINGS_WATER*/
 	.int gFieldEffectScript_UseWaterfall              /* FLDEFF_USE_WATERFALL*/
 	.int gFieldEffectScript_UseDive                   /* FLDEFF_USE_DIVE*/
-	.int gFieldEffectScript_Pokeball                  /* FLDEFF_POKEBALL*/
+	.int gFieldEffectScript_PokeballTrail             /* FLDEFF_POKEBALL_TRAIL*/
 	.int gFieldEffectScript_HeartIcon                 /* FLDEFF_HEART_ICON*/
 	.int gFieldEffectScript_Nop47                     /* FLDEFF_NOP_47*/
 	.int gFieldEffectScript_Nop48                     /* FLDEFF_NOP_48*/
@@ -254,9 +254,9 @@ gFieldEffectScript_UseDive::
 	field_eff_callnative FldEff_UseDive
 	field_eff_end
 
-gFieldEffectScript_Pokeball::
+gFieldEffectScript_PokeballTrail::
 	field_eff_loadpal gSpritePalette_Pokeball
-	field_eff_callnative FldEff_Pokeball
+	field_eff_callnative FldEff_PokeballTrail
 	field_eff_end
 
 gFieldEffectScript_HeartIcon::

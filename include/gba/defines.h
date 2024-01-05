@@ -6,7 +6,6 @@
 #define TRUE  1
 #define FALSE 0
 
-#define BSS_DATA   __attribute__((section(".bss")))
 #ifdef PORTABLE
 #define IWRAM_DATA
 #define EWRAM_DATA

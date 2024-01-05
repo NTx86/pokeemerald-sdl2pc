@@ -92,7 +92,7 @@ output_burst:
         k = 0x0e;
         for (i = MULTIBOOT_NCHILD; i != 0; i--)
         {
-            if (*(vu16 *)(REG_ADDR_SIOMULTI0 + i * 2) != 0xffff)
+            if (REG_SIOMULTI(i) != 0xffff)
             {
                 break;
             }
@@ -104,7 +104,7 @@ output_burst:
 
         for (i = MULTIBOOT_NCHILD; i != 0; i--)
         {
-            j = *(vu16 *)(REG_ADDR_SIOMULTI0 + i * 2);
+            j = REG_SIOMULTI(i);
             if (mp->client_bit & (1 << i))
             {
                 if (j != ((MULTIBOOT_CLIENT_INFO << 8) | (1 << i)))
@@ -143,7 +143,7 @@ output_burst:
         mp->probe_target_bit = 0;
         for (i = MULTIBOOT_NCHILD; i != 0; i--)
         {
-            j = *(vu16 *)(REG_ADDR_SIOMULTI0 + i * 2);
+            j = REG_SIOMULTI(i);
             if ((j >> 8) == MULTIBOOT_CLIENT_INFO)
             {
                 MultiBoot_required_data[i - 1] = j;
@@ -168,7 +168,7 @@ output_burst:
         {
             if (mp->probe_target_bit & (1 << i))
             {
-                j = *(vu16 *)(REG_ADDR_SIOMULTI0 + i * 2);
+                j = REG_SIOMULTI(i);
                 if (j != MultiBoot_required_data[i - 1])
                 {
                     mp->probe_target_bit ^= 1 << i;
@@ -181,7 +181,7 @@ output_burst:
         k = 1;
         for (i = MULTIBOOT_NCHILD; i != 0; i--)
         {
-            j = *(vu16 *)(REG_ADDR_SIOMULTI0 + i * 2);
+            j = REG_SIOMULTI(i);
             mp->client_data[i - 1] = j;
             if (mp->probe_target_bit & (1 << i))
             {
@@ -216,7 +216,7 @@ output_burst:
     case 0xd1:
         for (i = MULTIBOOT_NCHILD; i != 0; i--)
         {
-            j = *(vu16 *)(REG_ADDR_SIOMULTI0 + i * 2);
+            j = REG_SIOMULTI(i);
             if (mp->probe_target_bit & (1 << i))
             {
                 if ((j >> 8) != MULTIBOOT_CLIENT_DLREADY)
@@ -244,7 +244,7 @@ output_burst:
         {
             if (mp->probe_target_bit & (1 << i))
             {
-                j = *(vu16 *)(REG_ADDR_SIOMULTI0 + i * 2);
+                j = REG_SIOMULTI(i);
                 if ((j >> 8) != (MULTIBOOT_MASTER_START_PROBE + 1 - (mp->probe_count >> 1))
                  || ((j & 0xff) != (1 << i)))
                 {
@@ -393,7 +393,7 @@ static int MultiBootHandShake(struct MultiBootParam *mp)
     default:
         for (i = MULTIBOOT_NCHILD; i != 0; i--)
         {
-            j = *(vu16 *)(REG_ADDR_SIOMULTI0 + i * 2);
+            j = REG_SIOMULTI(i);
             if ((mp->client_bit & (1 << i))
                 && j != must_data)
             {
@@ -415,7 +415,7 @@ static int MultiBootHandShake(struct MultiBootParam *mp)
     case 0xe8:
         for (i = MULTIBOOT_NCHILD; i != 0; i--)
         {
-            j = *(vu16 *)(REG_ADDR_SIOMULTI0 + i * 2);
+            j = REG_SIOMULTI(i);
             if ((mp->client_bit & (1 << i)) && j != must_data)
             {
                 MultiBootInit(mp);

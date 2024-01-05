@@ -13,12 +13,12 @@ gScriptCmdTable::
 	.int ScrCmd_gotostd_if                /* 0x0a*/
 	.int ScrCmd_callstd_if                /* 0x0b*/
 	.int ScrCmd_returnram                 /* 0x0c*/
-	.int ScrCmd_killscript                /* 0x0d*/
+	.int ScrCmd_endram                    /* 0x0d*/
 	.int ScrCmd_setmysteryeventstatus     /* 0x0e*/
 	.int ScrCmd_loadword                  /* 0x0f*/
 	.int ScrCmd_loadbyte                  /* 0x10*/
-	.int ScrCmd_writebytetoaddr           /* 0x11*/
-	.int ScrCmd_loadbytefromaddr          /* 0x12*/
+	.int ScrCmd_setptr                    /* 0x11*/
+	.int ScrCmd_loadbytefromptr           /* 0x12*/
 	.int ScrCmd_setptrbyte                /* 0x13*/
 	.int ScrCmd_copylocal                 /* 0x14*/
 	.int ScrCmd_copybyte                  /* 0x15*/
@@ -29,10 +29,10 @@ gScriptCmdTable::
 	.int ScrCmd_setorcopyvar              /* 0x1a*/
 	.int ScrCmd_compare_local_to_local    /* 0x1b*/
 	.int ScrCmd_compare_local_to_value    /* 0x1c*/
-	.int ScrCmd_compare_local_to_addr     /* 0x1d*/
-	.int ScrCmd_compare_addr_to_local     /* 0x1e*/
-	.int ScrCmd_compare_addr_to_value     /* 0x1f*/
-	.int ScrCmd_compare_addr_to_addr      /* 0x20*/
+	.int ScrCmd_compare_local_to_ptr      /* 0x1d*/
+	.int ScrCmd_compare_ptr_to_local      /* 0x1e*/
+	.int ScrCmd_compare_ptr_to_value      /* 0x1f*/
+	.int ScrCmd_compare_ptr_to_ptr        /* 0x20*/
 	.int ScrCmd_compare_var_to_value      /* 0x21*/
 	.int ScrCmd_compare_var_to_var        /* 0x22*/
 	.int ScrCmd_callnative                /* 0x23*/
@@ -150,14 +150,14 @@ gScriptCmdTable::
 	.int ScrCmd_showmoneybox              /* 0x93*/
 	.int ScrCmd_hidemoneybox              /* 0x94*/
 	.int ScrCmd_updatemoneybox            /* 0x95*/
-	.int ScrCmd_getpricereduction         /* 0x96*/
+	.int ScrCmd_getpokenewsactive         /* 0x96*/
 	.int ScrCmd_fadescreen                /* 0x97*/
 	.int ScrCmd_fadescreenspeed           /* 0x98*/
-	.int ScrCmd_setflashradius            /* 0x99*/
+	.int ScrCmd_setflashlevel             /* 0x99*/
 	.int ScrCmd_animateflash              /* 0x9a*/
 	.int ScrCmd_messageautoscroll         /* 0x9b*/
 	.int ScrCmd_dofieldeffect             /* 0x9c*/
-	.int ScrCmd_setfieldeffectarg         /* 0x9d*/
+	.int ScrCmd_setfieldeffectargument    /* 0x9d*/
 	.int ScrCmd_waitfieldeffect           /* 0x9e*/
 	.int ScrCmd_setrespawn                /* 0x9f*/
 	.int ScrCmd_checkplayergender         /* 0xa0*/
@@ -168,8 +168,8 @@ gScriptCmdTable::
 	.int ScrCmd_doweather                 /* 0xa5*/
 	.int ScrCmd_setstepcallback           /* 0xa6*/
 	.int ScrCmd_setmaplayoutindex         /* 0xa7*/
-	.int ScrCmd_setobjectpriority         /* 0xa8*/
-	.int ScrCmd_resetobjectpriority       /* 0xa9*/
+	.int ScrCmd_setobjectsubpriority      /* 0xa8*/
+	.int ScrCmd_resetobjectsubpriority    /* 0xa9*/
 	.int ScrCmd_createvobject             /* 0xaa*/
 	.int ScrCmd_turnvobject               /* 0xab*/
 	.int ScrCmd_opendoor                  /* 0xac*/
@@ -190,7 +190,7 @@ gScriptCmdTable::
 	.int ScrCmd_vgoto_if                  /* 0xbb*/
 	.int ScrCmd_vcall_if                  /* 0xbc*/
 	.int ScrCmd_vmessage                  /* 0xbd*/
-	.int ScrCmd_vloadword                 /* 0xbe*/
+	.int ScrCmd_vbuffermessage            /* 0xbe*/
 	.int ScrCmd_vbufferstring             /* 0xbf*/
 	.int ScrCmd_showcoinsbox              /* 0xc0*/
 	.int ScrCmd_hidecoinsbox              /* 0xc1*/
@@ -207,7 +207,7 @@ gScriptCmdTable::
 	.int ScrCmd_nop1                      /* 0xcc*/
 	.int ScrCmd_setmoneventlegal          /* 0xcd*/
 	.int ScrCmd_checkmoneventlegal        /* 0xce*/
-	.int ScrCmd_gotoram                   /* 0xcf*/
+	.int ScrCmd_trywondercardscript       /* 0xcf*/
 	.int ScrCmd_nop1                      /* 0xd0*/
 	.int ScrCmd_warpspinenter             /* 0xd1*/
 	.int ScrCmd_setmonmetlocation         /* 0xd2*/
@@ -224,8 +224,8 @@ gScriptCmdTable::
 	.int ScrCmd_buffertrainerclassname    /* 0xdd*/
 	.int ScrCmd_buffertrainername         /* 0xde*/
 	.int ScrCmd_pokenavcall               /* 0xdf*/
-	.int ScrCmd_warpsootopolislegend      /* 0xe0*/
-	.int ScrCmd_buffercontesttype         /* 0xe1*/
+	.int ScrCmd_warpwhitefade             /* 0xe0*/
+	.int ScrCmd_buffercontestname         /* 0xe1*/
 	.int ScrCmd_bufferitemnameplural      /* 0xe2*/
 
 gScriptCmdTableEnd::
