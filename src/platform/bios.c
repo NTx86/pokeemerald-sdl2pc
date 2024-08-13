@@ -5,6 +5,8 @@
 #define exit _exit
 #endif
 
+#define NO_BSS __attribute__((section (".data")))
+
 //memory defines here because there's no better spot for them
 u16 INTR_CHECK;
 void *INTR_VECTOR;

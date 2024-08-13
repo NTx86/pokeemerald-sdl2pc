@@ -1227,7 +1227,7 @@ static void Task_PrintTestData(u8 taskId)
     char testTitle[32];
     int i;
 
-    strcpy(testTitle, sASCIITestPrint);
+    //strcpy(testTitle, sASCIITestPrint);
     LinkTest_PrintString(testTitle, 5, 2);
     LinkTest_PrintHex(gShouldAdvanceLinkState, 2, 1, 2);
     LinkTest_PrintHex(gLinkStatus, 15, 1, 8);

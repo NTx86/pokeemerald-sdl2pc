@@ -26,6 +26,7 @@ tools/agbcc
 *.sa*
 Thumbs.db
 build/
+a/
 .DS_Store
 *.ddump
 .idea/

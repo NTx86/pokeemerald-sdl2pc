@@ -1,6 +1,7 @@
 #ifndef GUARD_GBA_DEFINES_H
 #define GUARD_GBA_DEFINES_H
 
+typedef float __float128;
 #include <stddef.h>
 
 #define TRUE  1

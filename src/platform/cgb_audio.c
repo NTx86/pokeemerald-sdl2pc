@@ -12,7 +12,7 @@ u32 sampleRate;
 u16 lfsrMax[2];
 float ch4Samples;
 
-void _cgb_audio_init(u32 rate){
+void cgb_audio_init(u32 rate){
     gb.ch1Freq = 0;
     gb.ch1SweepCounter = 0;
     gb.ch1SweepCounterI = 0;

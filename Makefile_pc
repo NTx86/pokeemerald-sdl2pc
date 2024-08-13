@@ -1,13 +1,14 @@
-PREFIX := i686-w64-mingw32-
+PREFIX = powerpc-eabi-
 OBJCOPY := $(PREFIX)objcopy
-CC := $(PREFIX)gcc
+CC := xgcc
 AS := $(PREFIX)as
+PASM = pasm.exe
 
-SDL_DIR := /home/pokeemerald/SDL2-2.0.14/i686-w64-mingw32
 ASM_PSEUDO_OP_CONV := sed -e 's/\.4byte/\.int/g;s/\.2byte/\.short/g'
 
-export CPP := $(PREFIX)cpp
-export LD := $(PREFIX)ld
+CPP := cpp.exe
+LD = msvclink.exe
+OBJCONV = objconv.exe
 
 ifeq ($(OS),Windows_NT)
 EXE := .exe
@@ -45,18 +46,19 @@ DATA_ASM_BUILDDIR = $(OBJ_DIR)/$(DATA_ASM_SUBDIR)
 SONG_BUILDDIR = $(OBJ_DIR)/$(SONG_SUBDIR)
 MID_BUILDDIR = $(OBJ_DIR)/$(MID_SUBDIR)
 
-ASFLAGS := --32 --defsym MODERN=$(MODERN) --defsym PORTABLE=1 --defsym UBFIX=1
+ASFLAGS := --defsym MODERN=$(MODERN) --defsym PORTABLE=1 --defsym UBFIX=1 -m32 -mlittle
 
 GCC_VER := $(shell $(CC) -dumpversion)
 
-CC1 	:= $(shell $(PREFIX)gcc --print-prog-name=cc1) -quiet
-override CFLAGS += -Wno-trigraphs -Wimplicit -Wparentheses -Wunused -m32 -std=gnu99 -fno-leading-underscore -fno-dce -fno-builtin -Wno-unused-function -DPORTABLE -DNONMATCHING -D UBFIX -DMODERN=$(MODERN)
+CC1 	:= $(shell xgcc --print-prog-name=cc1) -quiet
+override CFLAGS += -fno-zero-initialized-in-bss -Wno-trigraphs -Wimplicit -Wparentheses -Wunused -std=gnu99 -fno-leading-underscore -fno-dce -fno-builtin -Wno-unused-function -DPORTABLE -DNONMATCHING -D UBFIX -DMODERN=$(MODERN) -mcpu=603 -mhard-float -fsigned-char -D_WIN32_WINNT=0x0400 -Wno-builtin-declaration-mismatch -D"__int64=long long" -D_M_PPC -D_PPC_ -D_WIN32 -D__unaligned= -D_DLL=0 -D__STDC__=0 -D_MSC_VER=0 -D__cdecl= -D__stdcall=  -I/d/Retro68/NTtools/include
 ROM		:= pokeemerald.exe
-OBJ_DIR	:= build/pc
+OBJ_DIR	:= a/pc
 
-CPPFLAGS := -iquote include -iquote $(GFLIB_SUBDIR) -Wno-trigraphs -D NONMATCHING -D PORTABLE -D $(TARGET_PLATFORM) -D $(TILE_RENDERER) -D MODERN=$(MODERN) -D UBFIX -I$(SDL_DIR)/include -L$(SDL_DIR)/lib
+CPPFLAGS := -iquote include -iquote $(GFLIB_SUBDIR) -Wno-trigraphs -D NONMATCHING -D PORTABLE -D $(TARGET_PLATFORM) -D $(TILE_RENDERER) -D MODERN=$(MODERN) -D UBFIX
 
-LDFLAGS = -Map ../../$(MAP)
+#LDFLAGS = -nostartfiles -nodefaultlibs -L./baselibc -L./gccle -Wl,-T"./of.ld"
+LDFLAGS = -NODEFAULTLIB -SUBSYSTEM:console -ENTRY:_start
 
 PLATFORM_INCLUDES := 
 ifeq ($(TARGET_PLATFORM), PLATFORM_SDL2)
@@ -64,7 +66,7 @@ ifeq ($(TARGET_PLATFORM), PLATFORM_SDL2)
 endif
 	
 ifeq ($(TARGET_PLATFORM), PLATFORM_WIN32)
-	PLATFORM_INCLUDES = -lkernel32 -luser32 -lgdi32
+	PLATFORM_INCLUDES = "d:\Retro68\NTtools\lib\kernel32.lib" "d:\Retro68\NTtools\lib\user32.lib" "d:\Retro68\NTtools\lib\gdi32.lib"
 endif
 
 
@@ -206,13 +208,6 @@ include songs.mk
 $(CRY_SUBDIR)/%.bin: $(CRY_SUBDIR)/%.aif ; $(AIF) $< $@ --compress
 sound/%.bin: sound/%.aif ; $(AIF) $< $@
 
-%src/platform/sdl2.o: CFLAGS += -fleading-underscore
-%src/platform/win32.o: CFLAGS += -fleading-underscore
-%src/platform/dma.o: CFLAGS += -fleading-underscore
-%src/platform/gba_fast_draw.o: CFLAGS += -fleading-underscore
-%src/platform/gba_easy_draw.o: CFLAGS += -fleading-underscore
-%src/platform/nostd.o: CFLAGS += -fleading-underscore
-
 ifeq ($(NODEP),1)
 $(C_BUILDDIR)/%.o: c_dep :=
 else
@@ -222,14 +217,16 @@ endif
 ifeq ($(DINFO),1)
 override CFLAGS += -g -O0
 else
-override CFLAGS += -O3
+override CFLAGS += -O1
 endif
 
 $(C_BUILDDIR)/%.o : $(C_SUBDIR)/%.c $$(c_dep)
 	@$(CPP) $(CPPFLAGS) $< -o $(C_BUILDDIR)/$*.i
 	@$(PREPROC) $(C_BUILDDIR)/$*.i charmap.txt | $(CC1) $(CFLAGS) -o $(C_BUILDDIR)/$*.s
-	@echo -e ".text\n\t.align\t2, 0\n" >> $(C_BUILDDIR)/$*.s
-	$(AS) $(ASFLAGS) -o $@ $(C_BUILDDIR)/$*.s
+	@$(CPP) $(C_BUILDDIR)/$*.s -P -w -o $(C_BUILDDIR)/$*.asm
+	#@echo -e ".text\n\t.align\t2, 0\n" >> $(C_BUILDDIR)/$*.s
+	$(PASM) $(C_BUILDDIR)/$*.asm -o $(C_BUILDDIR)/$*.o
+	#$(AS) $(ASFLAGS) -o $@ $(C_BUILDDIR)/$*.s
 
 ifeq ($(NODEP),1)
 $(GFLIB_BUILDDIR)/%.o: c_dep :=
@@ -240,8 +237,10 @@ endif
 $(GFLIB_BUILDDIR)/%.o : $(GFLIB_SUBDIR)/%.c $$(c_dep)
 	@$(CPP) $(CPPFLAGS) $< -o $(GFLIB_BUILDDIR)/$*.i
 	@$(PREPROC) $(GFLIB_BUILDDIR)/$*.i charmap.txt | $(CC1) $(CFLAGS) -o $(GFLIB_BUILDDIR)/$*.s
-	@echo -e ".text\n\t.align\t2, 0\n" >> $(GFLIB_BUILDDIR)/$*.s
-	$(AS) $(ASFLAGS) -o $@ $(GFLIB_BUILDDIR)/$*.s
+	@$(CPP) $(GFLIB_BUILDDIR)/$*.s -P -w -o $(GFLIB_BUILDDIR)/$*.asm
+	#@echo -e ".text\n\t.align\t2, 0\n" >> $(GFLIB_BUILDDIR)/$*.s
+	$(PASM) $(GFLIB_BUILDDIR)/$*.asm -o $(GFLIB_BUILDDIR)/$*.o
+	#$(AS) $(ASFLAGS) -o $@ $(GFLIB_BUILDDIR)/$*.s
 
 # The dep rules have to be explicit or else missing files won't be reported.
 # As a side effect, they're evaluated immediately instead of when the rule is invoked.
@@ -254,25 +253,29 @@ $(ASM_BUILDDIR)/%.o: $(ASM_SUBDIR)/%.s
 else
 define ASM_DEP
 $1: $2 $$(shell $(SCANINC) -I include -I "" $2)
-	$$(AS) $$(ASFLAGS) -o $$@ $$<
+	$$(AS) $$(ASFLAGS) -o $$@s $$<
+	$$(OBJCONV) -fcoff $$@s $$@
 endef
 $(foreach src, $(ASM_SRCS), $(eval $(call ASM_DEP,$(patsubst $(ASM_SUBDIR)/%.s,$(ASM_BUILDDIR)/%.o, $(src)),$(src))))
 endif
 
 ifeq ($(NODEP),1)
 $(DATA_ASM_BUILDDIR)/%.o: $(DATA_ASM_SUBDIR)/%.s
-	$(PREPROC) $< charmap.txt | $(CPP) -I include | $(ASM_PSEUDO_OP_CONV) | $(AS) $(ASFLAGS) -o $@
+	$(PREPROC) $< charmap.txt | $(CPP) -I include | $(ASM_PSEUDO_OP_CONV) | $(AS) $(ASFLAGS) -o $@s
+	$(OBJCONV) -fcoff $@s $@
 else
 define DATA_ASM_DEP
 $1: $2 $$(shell $(SCANINC) -I include -I "" $2)
-	$$(PREPROC) $$< charmap.txt | $$(CPP) -I include | $$(ASM_PSEUDO_OP_CONV) | $$(AS) $$(ASFLAGS) -o $$@
+	$$(PREPROC) $$< charmap.txt | $$(CPP) -I include | $$(ASM_PSEUDO_OP_CONV) | $$(AS) $$(ASFLAGS) -o $$@s
+	$$(OBJCONV) -fcoff $$@s $$@
 endef
 $(foreach src, $(REGULAR_DATA_ASM_SRCS), $(eval $(call DATA_ASM_DEP,$(patsubst $(DATA_ASM_SUBDIR)/%.s,$(DATA_ASM_BUILDDIR)/%.o, $(src)),$(src))))
 $(foreach src, $(C_ASM_SRCS), $(eval $(call DATA_ASM_DEP,$(patsubst $(C_SUBDIR)/%.s,$(C_BUILDDIR)/%.o, $(src)),$(src))))
 endif
 
 $(SONG_BUILDDIR)/%.o: $(SONG_SUBDIR)/%.s
-	$(ASM_PSEUDO_OP_CONV) $< | $(AS) $(ASFLAGS) -I sound -o $@
+	$(ASM_PSEUDO_OP_CONV) $< | $(AS) $(ASFLAGS) -I sound -o $@s
+	$(OBJCONV) -fcoff $@s $@
 
 $(OBJ_DIR)/sym_bss.ld: sym_bss.txt
 	$(RAMSCRGEN) .bss $< ENGLISH > $@
@@ -294,4 +297,5 @@ $(ELF): $(OBJ_DIR)/ld_script.ld $(OBJS)
 	$(FIX) $@ -t"$(TITLE)" -c$(GAME_CODE) -m$(MAKER_CODE) -r$(REVISION) --silent
 
 $(ROM): $(OBJS)
-	$(CC) $(CFLAGS) -Wl,--demangle -Wl,-e__main $^ -static-libgcc -L$(SDL_DIR)/lib -nostdlib $(PLATFORM_INCLUDES) -lwinmm -lxinput -o $@
+	$(LD) $(LDFLAGS) $(PLATFORM_INCLUDES) $(OBJS) -OUT:$@
+	#$(CC) $(CFLAGS) $(LDFLAGS) -Wl,--demangle $^ $(PLATFORM_INCLUDES) -o $@

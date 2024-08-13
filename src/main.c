@@ -182,13 +182,15 @@ static void UpdateLinkAndCallCallbacks(void)
         CallCallbacks();
 }
 
+void (*CB2_InitCopyrightScreenAfterBootupPtr)(void) = CB2_InitCopyrightScreenAfterBootup;
+
 static void InitMainCallbacks(void)
 {
     gMain.vblankCounter1 = 0;
     gTrainerHillVBlankCounter = NULL;
     gMain.vblankCounter2 = 0;
     gMain.callback1 = NULL;
-    SetMainCallback2(CB2_InitCopyrightScreenAfterBootup);
+    SetMainCallback2(CB2_InitCopyrightScreenAfterBootupPtr);
     gSaveBlock2Ptr = &gSaveblock2.block;
     gPokemonStoragePtr = &gPokemonStorage.block;
 }
@@ -371,7 +373,7 @@ static void VBlankIntr(void)
 
     gPcmDmaCounter = gSoundInfo.pcmDmaCounter;
 
-    m4aSoundMain();
+    //m4aSoundMain();
     TryReceiveLinkBattleData();
 
     if (!gMain.inBattle || !(gBattleTypeFlags & (BATTLE_TYPE_LINK | BATTLE_TYPE_FRONTIER | BATTLE_TYPE_RECORDED)))

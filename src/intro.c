@@ -1063,6 +1063,8 @@ static void SerialCB_CopyrightScreen(void)
     GameCubeMultiBoot_HandleSerialInterrupt(&gMultibootProgramStruct);
 }
 
+void (*VBlankCB_IntroPtr)(void) = VBlankCB_Intro;
+
 static u8 SetUpCopyrightScreen(void)
 {
     switch (gMain.state)
@@ -1092,9 +1094,9 @@ static u8 SetUpCopyrightScreen(void)
                                    | BGCNT_16COLOR
                                    | BGCNT_TXT256x256);
         EnableInterrupts(INTR_FLAG_VBLANK);
-        SetVBlankCallback(VBlankCB_Intro);
+        SetVBlankCallback(VBlankCB_IntroPtr);
         REG_DISPCNT = DISPCNT_MODE_0 | DISPCNT_OBJ_1D_MAP | DISPCNT_BG0_ON;
-        SetSerialCallback(SerialCB_CopyrightScreen);
+        SetSerialCallback(NULL);
         GameCubeMultiBoot_Init(&gMultibootProgramStruct);
     default:
         UpdatePaletteFade();

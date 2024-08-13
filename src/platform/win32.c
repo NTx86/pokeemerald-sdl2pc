@@ -2,7 +2,7 @@
 #include <assert.h>
 #include <stdbool.h>
 #include <stdio.h>
-#include <time.h>
+//#include <time.h>
 #include <windows.h>
 
 #ifdef xinputkeys
@@ -77,6 +77,20 @@ void acrt_iob_func()
 }
 
 void (*_imp____acrt_iob_func)(void) = &acrt_iob_func;
+
+double __floatdidf(long long a)
+{
+	static const double twop52 = 0x1.0p52;
+	static const double twop32 = 0x1.0p32;
+	
+	union { int64_t x; double d; } low = { .d = twop52 };
+	
+	const double high = (int32_t)(a >> 32) * twop32;
+	low.x |= a & (long long)(0x00000000ffffffff);
+	
+	const double result = (high - twop52) + low.d;
+	return result;
+}
 
 
 void AddMenus(HWND hwnd) {
@@ -188,7 +202,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         break;
         case WM_COMMAND:
         
-        switch(LOWORD(wParam)) 
+        switch(wParam & 0xffff) 
         {
         case IDM_SPEEDUPTOGGLE:
             if (!speedUp)
@@ -224,6 +238,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
     return 0;
 }
 
+WNDPROC WndProcPtr = WndProc;
+
 ATOM MyRegisterClass(HINSTANCE hInstance)
 {
     WNDCLASS wcex;
@@ -231,7 +247,7 @@ ATOM MyRegisterClass(HINSTANCE hInstance)
     memset(&wcex, 0, sizeof(WNDCLASS));
 
     wcex.style          = CS_HREDRAW | CS_VREDRAW;
-    wcex.lpfnWndProc    = WndProc;
+    wcex.lpfnWndProc    = WndProcPtr;
     wcex.cbClsExtra     = 0;
     wcex.cbWndExtra     = 0;
     wcex.hInstance      = hInstance;
@@ -268,6 +284,8 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 uint16_t* lpBitmapBits;
 HDC window_hdc;
 HDC hdc_bmp;
+
+LPTHREAD_START_ROUTINE DoMainPtr = DoMain;
 
 void win32CreateBitmap()
 {
@@ -322,42 +340,42 @@ int _main(int argc, char **argv)
     HACCEL hAccelTable;
     HINSTANCE hInstance = GetModuleHandle(NULL);
     int nCmdShow = 1;
-    fprintf_placeholder(stderr, "Game launch main()\n");
+    //fprintf_placeholder(stderr, "Game launch main()\n");
     ReadSaveFile(savePath);
     MyRegisterClass(hInstance);
 
     // Perform application initialization:
     if (!InitInstance (hInstance, nCmdShow))
     {
-        fprintf_placeholder(stderr, "Creating win32 window failed!\n");
+        //fprintf_placeholder(stderr, "Creating win32 window failed!\n");
         return FALSE;
     }
-    fprintf_placeholder(stderr, "Window Init done!\n");
+    //fprintf_placeholder(stderr, "Window Init done!\n");
     window_hdc = GetDC(ghwnd);
     win32CreateBitmap();
-    fprintf_placeholder(stderr, "Bitmap Init done!\n");
+    //fprintf_placeholder(stderr, "Bitmap Init done!\n");
     
     //todo: convert these to int64
     QueryPerformanceCounter(&largeint);
     simTime = curGameTime = lastGameTime = largeint.QuadPart;
 
     isFrameAvailable = 0;
-    vBlankSemaphore = CreateEvent(NULL, TRUE, FALSE, TEXT("vBlankEvent")); 
+    vBlankSemaphore = CreateEvent(NULL, TRUE, FALSE, "vBlankEvent"); 
     if (vBlankSemaphore == NULL) 
     {
-        fprintf_placeholder(stderr, "Could not create a event!\n");
+        //fprintf_placeholder(stderr, "Could not create a event!\n");
         return 1;
     }
     
-    fprintf_placeholder(stderr, "Event Init done!\n");
+    //fprintf_placeholder(stderr, "Event Init done!\n");
 
     cgb_audio_init(42048);
-    fprintf_placeholder(stderr, "cgb_audio_init Init done!\n");
+    //fprintf_placeholder(stderr, "cgb_audio_init Init done!\n");
     
     VDraw();
     int ThreadID;
-    CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)DoMain, (LPVOID)&nCmdShow, 0, &ThreadID);
-    fprintf_placeholder(stderr, "Thread Init done!\n");
+    CreateThread(NULL, 0, DoMainPtr, (LPVOID)&nCmdShow, 0, &ThreadID);
+    //fprintf_placeholder(stderr, "Thread Init done!\n");
 
     double accumulator = 0.0;
 
@@ -365,7 +383,7 @@ int _main(int argc, char **argv)
     internalClock.status = SIIRTCINFO_24HOUR;
     UpdateInternalClock();
     
-    fprintf_placeholder(stderr, "Clock init done!\n");
+    //fprintf_placeholder(stderr, "Clock init done!\n");
     
     unsigned int fpsseconds = GetTickCount()+1000;
     while (isRunning)
@@ -407,7 +425,7 @@ int _main(int argc, char **argv)
 
                     if(!SetEvent(vBlankSemaphore))
                     {
-                        fprintf_placeholder(stderr, "Could not set vBlankSemaphore!");
+                        //fprintf_placeholder(stderr, "Could not set vBlankSemaphore!");
                         return 1;
                     }
                     accumulator -= dt;

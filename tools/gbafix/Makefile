@@ -13,7 +13,7 @@ all: gbafix$(EXE)
 	@:
 
 gbafix$(EXE): $(SRCS)
-	$(CC) $(SRCS) -o $@ $(LDFLAGS)
+	$(CC) $(SRCS) -static -o $@ $(LDFLAGS)
 
 clean:
 	$(RM) gbafix gbafix.exe
