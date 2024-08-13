@@ -37,6 +37,9 @@ double fixedTimestep = 1.0 / 60.0; // 16.666667ms
 double timeScale = 1.0;
 struct SiiRtcInfo internalClock;
 char const* savePath = "pokeemerald.sav";
+int frameSkipSet = 1;
+int frameskipCounter = 0;
+bool bitBltEnabled = true;
 
 static HANDLE sSaveFile = NULL;
 
@@ -64,6 +67,24 @@ static u16 keys;
 #define IDM_RESETGAMETEXT "&Reset game"
 #define IDM_PAUSEGAME 3
 #define IDM_PAUSEGAMETEXT "&Pause game"
+
+#define IDM_60FPS 4
+#define IDM_30FPS 5
+#define IDM_20FPS 6
+#define IDM_10FPS 7
+#define IDM_5FPS 8
+#define IDM_3FPS 9
+#define IDM_1FPS 10
+#define IDM_60FPSTEXT "60 FPS"
+#define IDM_30FPSTEXT "30 FPS"
+#define IDM_20FPSTEXT "20 FPS"
+#define IDM_10FPSTEXT "10 FPS"
+#define IDM_5FPSTEXT "5 FPS"
+#define IDM_3FPSTEXT "3 FPS"
+#define IDM_1FPSTEXT "1 FPS"
+
+#define IDM_TOGGLEBITBLT 11
+#define IDM_TOGGLEBITBLTTEXT "&Toggle bitblt"
 
 //no standard library workarounds, these have to be defined
 void __chkstk_ms()
@@ -97,16 +118,28 @@ void AddMenus(HWND hwnd) {
 
     HMENU hMenubar;
     HMENU hMenu;
+	HMENU hMenuFps;
 
     hMenubar = CreateMenu();
     hMenu = CreateMenu();
+	hMenuFps = CreateMenu();
 
     AppendMenuA(hMenu, MF_STRING, IDM_SPEEDUPTOGGLE, IDM_SPEEDUPTOGGLETEXT);
     AppendMenuA(hMenu, MF_STRING, IDM_RESETGAME, IDM_RESETGAMETEXT);
     AppendMenuA(hMenu, MF_STRING, IDM_PAUSEGAME, IDM_PAUSEGAMETEXT);
+	AppendMenuA(hMenu, MF_STRING, IDM_TOGGLEBITBLT, IDM_TOGGLEBITBLTTEXT);
+	
+	AppendMenuA(hMenuFps, MF_STRING, IDM_60FPS, IDM_60FPSTEXT);
+	AppendMenuA(hMenuFps, MF_STRING, IDM_30FPS, IDM_30FPSTEXT);
+	AppendMenuA(hMenuFps, MF_STRING, IDM_20FPS, IDM_20FPSTEXT);
+	AppendMenuA(hMenuFps, MF_STRING, IDM_10FPS, IDM_10FPSTEXT);
+	AppendMenuA(hMenuFps, MF_STRING, IDM_5FPS, IDM_5FPSTEXT);
+	AppendMenuA(hMenuFps, MF_STRING, IDM_3FPS, IDM_3FPSTEXT);
+	AppendMenuA(hMenuFps, MF_STRING, IDM_1FPS, IDM_1FPSTEXT);
 
 
     AppendMenuA(hMenubar, MF_POPUP, (UINT_PTR) hMenu, "&Debug");
+	AppendMenuA(hMenubar, MF_POPUP, (UINT_PTR) hMenuFps, "&FPS");
     SetMenu(hwnd, hMenubar);
 }
 
@@ -229,6 +262,37 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
                 ModifyMenuA(GetMenu(hWnd), IDM_PAUSEGAME, MF_BYCOMMAND | MF_UNCHECKED, IDM_PAUSEGAME, IDM_PAUSEGAMETEXT);
             }
             break;
+		case IDM_TOGGLEBITBLT:
+			bitBltEnabled = !bitBltEnabled;
+			break;
+		case IDM_60FPS:
+			frameSkipSet = 1;
+			frameskipCounter = 0;
+			break;
+		case IDM_30FPS:
+			frameSkipSet = 2;
+			frameskipCounter = 0;
+			break;
+		case IDM_20FPS:
+			frameSkipSet = 3;
+			frameskipCounter = 0;
+			break;
+		case IDM_10FPS:
+			frameSkipSet = 6;
+			frameskipCounter = 0;
+			break;
+		case IDM_5FPS:
+			frameSkipSet = 12;
+			frameskipCounter = 0;
+			break;
+		case IDM_3FPS:
+			frameSkipSet = 20;
+			frameskipCounter = 0;
+			break;
+		case IDM_1FPS:
+			frameSkipSet = 60;
+			frameskipCounter = 0;
+			break;
         }
         break;
         
@@ -610,17 +674,27 @@ u16 Platform_GetKeyInput(void)
 void VDraw()
 {
     DrawFrame(lpBitmapBits);
-    
-    //convert pixels to to the correct format
-    for (int x = 0; x < DISPLAY_HEIGHT * DISPLAY_WIDTH ; x++)
-    {
-        uint16_t color = lpBitmapBits[x];
-        lpBitmapBits[x] = ((color & 0x001F) << 10) | (color & 0x03E0) | ((color & 0x7C00) >> 10);
-    }
-
-    BitBlt(window_hdc, 0, 0, DISPLAY_WIDTH, DISPLAY_HEIGHT, hdc_bmp, 0, 0, SRCCOPY);
-    InvalidateRect(ghwnd, NULL, FALSE);
-    framesDrawn++;
+	
+	
+    if (frameskipCounter == 0)
+	{
+		//convert pixels to to the correct format
+		for (int x = 0; x < DISPLAY_HEIGHT * DISPLAY_WIDTH ; x++)
+		{
+			uint16_t color = lpBitmapBits[x];
+			lpBitmapBits[x] = ((color & 0x001F) << 10) | (color & 0x03E0) | ((color & 0x7C00) >> 10);
+		}
+		
+		if (bitBltEnabled)
+		{
+			BitBlt(window_hdc, 0, 0, DISPLAY_WIDTH, DISPLAY_HEIGHT, hdc_bmp, 0, 0, SRCCOPY);
+			InvalidateRect(ghwnd, NULL, FALSE);
+		}
+		framesDrawn++;
+	}
+	frameskipCounter++;
+	if (frameskipCounter == frameSkipSet)
+		frameskipCounter = 0;
     
     REG_VCOUNT = 161; // prep for being in VBlank period
 }
