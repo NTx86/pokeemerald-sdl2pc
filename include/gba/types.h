@@ -1,5 +1,6 @@
 #ifndef GUARD_GBA_TYPES_H
 #define GUARD_GBA_TYPES_H
+typedef float __float128;
 
 #include <stdint.h>
 
