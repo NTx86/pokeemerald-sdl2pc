@@ -13,22 +13,24 @@ extern const u8 gCgb3Vol[];
 BSS_CODE ALIGNED(4) char SoundMainRAM_Buffer[0x800] = {0};
 #endif
 
-struct SoundInfo gSoundInfo;
-struct PokemonCrySong gPokemonCrySongs[MAX_POKEMON_CRIES];
-struct MusicPlayerInfo gPokemonCryMusicPlayers[MAX_POKEMON_CRIES];
-MPlayFunc gMPlayJumpTable[36];
+#define NO_BSS __attribute__((section(".data")))
+
+struct SoundInfo gSoundInfo NO_BSS;
+struct PokemonCrySong gPokemonCrySongs[MAX_POKEMON_CRIES] NO_BSS;
+struct MusicPlayerInfo gPokemonCryMusicPlayers[MAX_POKEMON_CRIES] NO_BSS;
+MPlayFunc gMPlayJumpTable[36] NO_BSS;
 struct CgbChannel gCgbChans[4];
-struct MusicPlayerTrack gPokemonCryTracks[MAX_POKEMON_CRIES * 2];
-struct PokemonCrySong gPokemonCrySong;
-struct MusicPlayerInfo gMPlayInfo_BGM;
-struct MusicPlayerInfo gMPlayInfo_SE1;
-struct MusicPlayerInfo gMPlayInfo_SE2;
-struct MusicPlayerInfo gMPlayInfo_SE3;
-struct MusicPlayerTrack gMPlayTrack_BGM[10];
-struct MusicPlayerTrack gMPlayTrack_SE1[3];
-struct MusicPlayerTrack gMPlayTrack_SE2[9];
-struct MusicPlayerTrack gMPlayTrack_SE3[1];
-u8 gMPlayMemAccArea[0x10];
+struct MusicPlayerTrack gPokemonCryTracks[MAX_POKEMON_CRIES * 2] NO_BSS;
+struct PokemonCrySong gPokemonCrySong NO_BSS;
+struct MusicPlayerInfo gMPlayInfo_BGM NO_BSS;
+struct MusicPlayerInfo gMPlayInfo_SE1 NO_BSS;
+struct MusicPlayerInfo gMPlayInfo_SE2 NO_BSS;
+struct MusicPlayerInfo gMPlayInfo_SE3 NO_BSS;
+struct MusicPlayerTrack gMPlayTrack_BGM[10] NO_BSS;
+struct MusicPlayerTrack gMPlayTrack_SE1[3] NO_BSS;
+struct MusicPlayerTrack gMPlayTrack_SE2[9] NO_BSS;
+struct MusicPlayerTrack gMPlayTrack_SE3[1] NO_BSS;
+u8 gMPlayMemAccArea[0x10] NO_BSS;
 
 void MP2K_event_nxx();
 void MP2KPlayerMain();

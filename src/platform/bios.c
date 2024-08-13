@@ -8,14 +8,14 @@
 #define NO_BSS __attribute__((section (".data")))
 
 //memory defines here because there's no better spot for them
-u16 INTR_CHECK;
-void *INTR_VECTOR;
-unsigned char REG_BASE[0x400] __attribute__ ((aligned (4)));
-unsigned char PLTT[PLTT_SIZE] __attribute__ ((aligned (4)));
-unsigned char VRAM_[VRAM_SIZE] __attribute__ ((aligned (4)));
-unsigned char OAM[OAM_SIZE] __attribute__ ((aligned (4)));
-unsigned char FLASH_BASE[131072] __attribute__ ((aligned (4)));
-struct SoundInfo *SOUND_INFO_PTR;
+u16 INTR_CHECK __attribute__((section (".nobss")));
+void *INTR_VECTOR __attribute__((section (".nobss")));
+unsigned char REG_BASE[0x400] __attribute__ ((aligned (4))) NO_BSS;
+unsigned char PLTT[PLTT_SIZE] __attribute__ ((aligned (4))) NO_BSS;
+unsigned char VRAM_[VRAM_SIZE] __attribute__ ((aligned (4))) NO_BSS;
+unsigned char OAM[OAM_SIZE] __attribute__ ((aligned (4))) NO_BSS;
+unsigned char FLASH_BASE[131072] __attribute__ ((aligned (4))) NO_BSS;
+struct SoundInfo *SOUND_INFO_PTR __attribute__((section (".nobss")));
 
 static uint32_t CPUReadMemory(const void *src)
 {
