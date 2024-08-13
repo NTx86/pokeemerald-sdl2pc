@@ -333,7 +333,7 @@ void intToStr(char* string, int num, int max)
 
 unsigned int framesDrawn = 0;
 
-int _main(int argc, char **argv)
+int _start(int argc, char **argv)
 {
     LARGE_INTEGER largeint;
     MSG msg;
