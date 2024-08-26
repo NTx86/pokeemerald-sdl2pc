@@ -181,9 +181,9 @@ static bool8 sReceivingFromLink;
 static u8 sRfuKeepAliveTimer;
 
 u16 gOverworldTilemapWidth;
-u16 *gOverworldTilemapBuffer_Bg2;
-u16 *gOverworldTilemapBuffer_Bg1;
-u16 *gOverworldTilemapBuffer_Bg3;
+u32 *gOverworldTilemapBuffer_Bg2;
+u32 *gOverworldTilemapBuffer_Bg1;
+u32 *gOverworldTilemapBuffer_Bg3;
 u16 gHeldKeyCodeToSend;
 void (*gFieldCallback)(void);
 bool8 (*gFieldCallback2)(void);
@@ -1534,7 +1534,7 @@ static void InitOverworldBgs(void)
     // tilemapHeight /= 8;
 
     // screenSize = tilemapWidth * tilemapHeight * 2;
-    screenSize = BG_SCREEN_SIZE;
+    screenSize = BG_SCREEN_SIZE*2;
 
     gOverworldTilemapWidth = tilemapWidth / 8;
 
@@ -1577,7 +1577,7 @@ void ReInitOverworldBgs(void)
         overworldBgTemplates[i].screenHeight = tilemapHeight;
     }
 
-    screenSize = BG_SCREEN_SIZE;
+    screenSize = BG_SCREEN_SIZE*2;
     gOverworldTilemapWidth = tilemapWidth / 8;
     InitBgsFromTemplates(0, overworldBgTemplates, ARRAY_COUNT(overworldBgTemplates));
     SetBgAttribute(1, BG_ATTR_MOSAIC, 1);

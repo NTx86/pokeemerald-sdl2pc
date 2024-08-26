@@ -141,6 +141,8 @@ static void DrawMetatileAt(const struct MapLayout *mapLayout, int x, int y)
     DrawMetatile(MapGridGetMetatileLayerTypeAt(x, y), metatiles + metatileId * NUM_TILES_PER_METATILE, (size_t)x, (size_t)y);
 }
 
+#define Convert16TileTo32Tile(tile) ( (tile & 0x3FF) | ((tile << 6) & 0x30000) | ((tile << 6) & 0x3C0000 ) )
+
 static void DrawMetatile(s32 metatileLayerType, const u16 *tiles, size_t x, size_t y)
 {
     size_t a, b, c, d;
@@ -158,9 +160,9 @@ static void DrawMetatile(s32 metatileLayerType, const u16 *tiles, size_t x, size
     {
     case METATILE_LAYER_TYPE_SPLIT:
         // Draw metatile's bottom layer to the bottom background layer.
-        gOverworldTilemapBuffer_Bg3[a] = tiles[0];
-        gOverworldTilemapBuffer_Bg3[b] = tiles[1];
-        gOverworldTilemapBuffer_Bg3[c] = tiles[2];
+        gOverworldTilemapBuffer_Bg3[a] = Convert16TileTo32Tile(tiles[0]);
+        gOverworldTilemapBuffer_Bg3[b] = Convert16TileTo32Tile(tiles[1]);
+        gOverworldTilemapBuffer_Bg3[c] = Convert16TileTo32Tile(tiles[2]);
         gOverworldTilemapBuffer_Bg3[d] = tiles[3];
 
         // Draw transparent tiles to the middle background layer.
@@ -170,23 +172,23 @@ static void DrawMetatile(s32 metatileLayerType, const u16 *tiles, size_t x, size
         gOverworldTilemapBuffer_Bg2[d] = 0;
 
         // Draw metatile's top layer to the top background layer.
-        gOverworldTilemapBuffer_Bg1[a] = tiles[4];
-        gOverworldTilemapBuffer_Bg1[b] = tiles[5];
-        gOverworldTilemapBuffer_Bg1[c] = tiles[6];
-        gOverworldTilemapBuffer_Bg1[d] = tiles[7];
+        gOverworldTilemapBuffer_Bg1[a] = Convert16TileTo32Tile(tiles[4]);
+        gOverworldTilemapBuffer_Bg1[b] = Convert16TileTo32Tile(tiles[5]);
+        gOverworldTilemapBuffer_Bg1[c] = Convert16TileTo32Tile(tiles[6]);
+        gOverworldTilemapBuffer_Bg1[d] = Convert16TileTo32Tile(tiles[7]);
         break;
     case METATILE_LAYER_TYPE_COVERED:
         // Draw metatile's bottom layer to the bottom background layer.
-        gOverworldTilemapBuffer_Bg3[a] = tiles[0];
-        gOverworldTilemapBuffer_Bg3[b] = tiles[1];
-        gOverworldTilemapBuffer_Bg3[c] = tiles[2];
-        gOverworldTilemapBuffer_Bg3[d] = tiles[3];
+        gOverworldTilemapBuffer_Bg3[a] = Convert16TileTo32Tile(tiles[0]);
+        gOverworldTilemapBuffer_Bg3[b] = Convert16TileTo32Tile(tiles[1]);
+        gOverworldTilemapBuffer_Bg3[c] = Convert16TileTo32Tile(tiles[2]);
+        gOverworldTilemapBuffer_Bg3[d] = Convert16TileTo32Tile(tiles[3]);
 
         // Draw metatile's top layer to the middle background layer.
-        gOverworldTilemapBuffer_Bg2[a] = tiles[4];
-        gOverworldTilemapBuffer_Bg2[b] = tiles[5];
-        gOverworldTilemapBuffer_Bg2[c] = tiles[6];
-        gOverworldTilemapBuffer_Bg2[d] = tiles[7];
+        gOverworldTilemapBuffer_Bg2[a] = Convert16TileTo32Tile(tiles[4]);
+        gOverworldTilemapBuffer_Bg2[b] = Convert16TileTo32Tile(tiles[5]);
+        gOverworldTilemapBuffer_Bg2[c] = Convert16TileTo32Tile(tiles[6]);
+        gOverworldTilemapBuffer_Bg2[d] = Convert16TileTo32Tile(tiles[7]);
 
         // Draw transparent tiles to the top background layer.
         gOverworldTilemapBuffer_Bg1[a] = 0;
@@ -202,16 +204,16 @@ static void DrawMetatile(s32 metatileLayerType, const u16 *tiles, size_t x, size
         gOverworldTilemapBuffer_Bg3[d] = 0x3014;
 
         // Draw metatile's bottom layer to the middle background layer.
-        gOverworldTilemapBuffer_Bg2[a] = tiles[0];
-        gOverworldTilemapBuffer_Bg2[b] = tiles[1];
-        gOverworldTilemapBuffer_Bg2[c] = tiles[2];
-        gOverworldTilemapBuffer_Bg2[d] = tiles[3];
+        gOverworldTilemapBuffer_Bg2[a] = Convert16TileTo32Tile(tiles[0]);
+        gOverworldTilemapBuffer_Bg2[b] = Convert16TileTo32Tile(tiles[1]);
+        gOverworldTilemapBuffer_Bg2[c] = Convert16TileTo32Tile(tiles[2]);
+        gOverworldTilemapBuffer_Bg2[d] = Convert16TileTo32Tile(tiles[3]);
 
         // Draw metatile's top layer to the top background layer, which covers object event sprites.
-        gOverworldTilemapBuffer_Bg1[a] = tiles[4];
-        gOverworldTilemapBuffer_Bg1[b] = tiles[5];
-        gOverworldTilemapBuffer_Bg1[c] = tiles[6];
-        gOverworldTilemapBuffer_Bg1[d] = tiles[7];
+        gOverworldTilemapBuffer_Bg1[a] = Convert16TileTo32Tile(tiles[4]);
+        gOverworldTilemapBuffer_Bg1[b] = Convert16TileTo32Tile(tiles[5]);
+        gOverworldTilemapBuffer_Bg1[c] = Convert16TileTo32Tile(tiles[6]);
+        gOverworldTilemapBuffer_Bg1[d] = Convert16TileTo32Tile(tiles[7]);
         break;
     }
     ScheduleBgCopyTilemapToVram(1);

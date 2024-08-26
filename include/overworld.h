@@ -46,9 +46,9 @@ extern struct LinkPlayerObjectEvent gLinkPlayerObjectEvents[4];
 extern struct WarpData gScriptLocation;
 
 extern u16 gOverworldTilemapWidth;
-extern u16 *gOverworldTilemapBuffer_Bg2;
-extern u16 *gOverworldTilemapBuffer_Bg1;
-extern u16 *gOverworldTilemapBuffer_Bg3;
+extern u32 *gOverworldTilemapBuffer_Bg2;
+extern u32 *gOverworldTilemapBuffer_Bg1;
+extern u32 *gOverworldTilemapBuffer_Bg3;
 extern u16 gHeldKeyCodeToSend;
 extern void (*gFieldCallback)(void);
 extern bool8 (*gFieldCallback2)(void);
