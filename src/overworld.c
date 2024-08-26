@@ -1534,7 +1534,7 @@ static void InitOverworldBgs(void)
     // tilemapHeight /= 8;
 
     // screenSize = tilemapWidth * tilemapHeight * 2;
-    screenSize = BG_SCREEN_SIZE*2;
+    screenSize = BG_SCREEN_SIZE;
 
     gOverworldTilemapWidth = tilemapWidth / 8;
 
@@ -1577,7 +1577,7 @@ void ReInitOverworldBgs(void)
         overworldBgTemplates[i].screenHeight = tilemapHeight;
     }
 
-    screenSize = BG_SCREEN_SIZE*2;
+    screenSize = BG_SCREEN_SIZE;
     gOverworldTilemapWidth = tilemapWidth / 8;
     InitBgsFromTemplates(0, overworldBgTemplates, ARRAY_COUNT(overworldBgTemplates));
     SetBgAttribute(1, BG_ATTR_MOSAIC, 1);
