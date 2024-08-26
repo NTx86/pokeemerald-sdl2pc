@@ -60,7 +60,7 @@ struct BackupMapLayout
 {
     s32 width;
     s32 height;
-    u16 *map;
+    u32 *map;
 };
 
 struct ObjectEventTemplate

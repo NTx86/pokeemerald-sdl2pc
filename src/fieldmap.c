@@ -25,7 +25,7 @@ struct ConnectionFlags
     u8 east:1;
 };
 
-EWRAM_DATA static u16 ALIGNED(4) sBackupMapData[MAX_MAP_DATA_SIZE] = {0};
+EWRAM_DATA static u32 ALIGNED(4) sBackupMapData[MAX_MAP_DATA_SIZE] = {0};
 EWRAM_DATA struct MapHeader gMapHeader = {0};
 EWRAM_DATA struct Camera gCamera = {0};
 EWRAM_DATA static struct ConnectionFlags sMapConnectionFlags = {0};
@@ -37,10 +37,10 @@ static const struct ConnectionFlags sDummyConnectionFlags = {0};
 
 static void InitMapLayoutData(struct MapHeader *mapHeader);
 static void InitBackupMapLayoutData(const u16 *map, u16 width, u16 height);
-static void FillSouthConnection(struct MapHeader const *mapHeader, struct MapHeader const *connectedMapHeader, s32 offset);
-static void FillNorthConnection(struct MapHeader const *mapHeader, struct MapHeader const *connectedMapHeader, s32 offset);
-static void FillWestConnection(struct MapHeader const *mapHeader, struct MapHeader const *connectedMapHeader, s32 offset);
-static void FillEastConnection(struct MapHeader const *mapHeader, struct MapHeader const *connectedMapHeader, s32 offset);
+static void FillSouthConnection(struct MapHeader const *mapHeader, struct MapHeader const *connectedMapHeader, s32 offset, u32 connId);
+static void FillNorthConnection(struct MapHeader const *mapHeader, struct MapHeader const *connectedMapHeader, s32 offset, u32 connId);
+static void FillWestConnection(struct MapHeader const *mapHeader, struct MapHeader const *connectedMapHeader, s32 offset, u32 connId);
+static void FillEastConnection(struct MapHeader const *mapHeader, struct MapHeader const *connectedMapHeader, s32 offset, u32 connId);
 static void InitBackupMapLayoutConnections(struct MapHeader *mapHeader);
 static void LoadSavedMapView(void);
 static bool8 SkipCopyingMetatileFromSavedMap(u16 *mapBlock, u16 mapWidth, u8 yMode);
@@ -124,15 +124,17 @@ static void InitMapLayoutData(struct MapHeader *mapHeader)
 
 static void InitBackupMapLayoutData(const u16 *map, u16 width, u16 height)
 {
-    u16 *dest;
-    int y;
+    u32 *dest, *destStart;
+    int x, y;
     dest = gBackupMapLayout.map;
     dest += gBackupMapLayout.width * 7 + MAP_OFFSET;
     for (y = 0; y < height; y++)
     {
-        CpuCopy16(map, dest, width * 2);
-        dest += width + MAP_OFFSET_W;
-        map += width;
+        for (destStart = dest; dest != &destStart[width]; dest++, map++)
+        {
+            *dest = *map;
+        }
+        dest += MAP_OFFSET_W;
     }
 }
 
@@ -154,19 +156,19 @@ static void InitBackupMapLayoutConnections(struct MapHeader *mapHeader)
             switch (connection->direction)
             {
             case CONNECTION_SOUTH:
-                FillSouthConnection(mapHeader, cMap, offset);
+                FillSouthConnection(mapHeader, cMap, offset, i+1);
                 sMapConnectionFlags.south = TRUE;
                 break;
             case CONNECTION_NORTH:
-                FillNorthConnection(mapHeader, cMap, offset);
+                FillNorthConnection(mapHeader, cMap, offset, i+1);
                 sMapConnectionFlags.north = TRUE;
                 break;
             case CONNECTION_WEST:
-                FillWestConnection(mapHeader, cMap, offset);
+                FillWestConnection(mapHeader, cMap, offset, i+1);
                 sMapConnectionFlags.west = TRUE;
                 break;
             case CONNECTION_EAST:
-                FillEastConnection(mapHeader, cMap, offset);
+                FillEastConnection(mapHeader, cMap, offset, i+1);
                 sMapConnectionFlags.east = TRUE;
                 break;
             }
@@ -174,11 +176,11 @@ static void InitBackupMapLayoutConnections(struct MapHeader *mapHeader)
     }
 }
 
-static void FillConnection(int x, int y, struct MapHeader const *connectedMapHeader, int x2, int y2, int width, int height)
+static void FillConnection(int x, int y, struct MapHeader const *connectedMapHeader, int x2, int y2, int width, int height, u32 connId)
 {
     int i;
-    const u16 *src;
-    u16 *dest;
+    const u16 *src, *savedSrc;
+    u32 *dest, *destStart;
     int mapWidth;
 
     mapWidth = connectedMapHeader->mapLayout->width;
@@ -187,13 +189,18 @@ static void FillConnection(int x, int y, struct MapHeader const *connectedMapHea
 
     for (i = 0; i < height; i++)
     {
-        CpuCopy16(src, dest, width * 2);
-        dest += gBackupMapLayout.width;
-        src += mapWidth;
+        savedSrc = src;
+        for (destStart = dest; dest != &destStart[width]; dest++)
+        {
+            *dest = *src | ((connId & 0xFF) << 16);
+            src++;
+        }
+        dest = destStart + gBackupMapLayout.width;
+        src = savedSrc + mapWidth;
     }
 }
 
-static void FillSouthConnection(struct MapHeader const *mapHeader, struct MapHeader const *connectedMapHeader, s32 offset)
+static void FillSouthConnection(struct MapHeader const *mapHeader, struct MapHeader const *connectedMapHeader, s32 offset, u32 connId)
 {
     int x, y;
     int x2;
@@ -228,11 +235,11 @@ static void FillSouthConnection(struct MapHeader const *mapHeader, struct MapHea
             x, y,
             connectedMapHeader,
             x2, /*y2*/ 0,
-            width, /*height*/ MAP_OFFSET_Y);
+            width, /*height*/ MAP_OFFSET_Y, connId);
     }
 }
 
-static void FillNorthConnection(struct MapHeader const *mapHeader, struct MapHeader const *connectedMapHeader, s32 offset)
+static void FillNorthConnection(struct MapHeader const *mapHeader, struct MapHeader const *connectedMapHeader, s32 offset, u32 connId)
 {
     int x;
     int x2, y2;
@@ -268,12 +275,12 @@ static void FillNorthConnection(struct MapHeader const *mapHeader, struct MapHea
             x, /*y*/ 0,
             connectedMapHeader,
             x2, y2,
-            width, /*height*/ MAP_OFFSET_Y);
+            width, /*height*/ MAP_OFFSET_Y, connId);
 
     }
 }
 
-static void FillWestConnection(struct MapHeader const *mapHeader, struct MapHeader const *connectedMapHeader, s32 offset)
+static void FillWestConnection(struct MapHeader const *mapHeader, struct MapHeader const *connectedMapHeader, s32 offset, u32 connId)
 {
     int y;
     int x2, y2;
@@ -307,11 +314,11 @@ static void FillWestConnection(struct MapHeader const *mapHeader, struct MapHead
             /*x*/ 0, y,
             connectedMapHeader,
             x2, y2,
-            /*width*/ MAP_OFFSET, height);
+            /*width*/ MAP_OFFSET, height, connId);
     }
 }
 
-static void FillEastConnection(struct MapHeader const *mapHeader, struct MapHeader const *connectedMapHeader, s32 offset)
+static void FillEastConnection(struct MapHeader const *mapHeader, struct MapHeader const *connectedMapHeader, s32 offset, u32 connId)
 {
     int x, y;
     int y2;
@@ -344,7 +351,7 @@ static void FillEastConnection(struct MapHeader const *mapHeader, struct MapHead
             x, y,
             connectedMapHeader,
             /*x2*/ 0, y2,
-            /*width*/ MAP_OFFSET + 1, height);
+            /*width*/ MAP_OFFSET + 1, height, connId);
     }
 }
 
@@ -376,6 +383,16 @@ u32 MapGridGetMetatileIdAt(int x, int y)
         return GetBorderBlockAt(x, y) & MAPGRID_METATILE_ID_MASK;
 
     return block & MAPGRID_METATILE_ID_MASK;
+}
+
+u8 MapGridGetConnectionId(int x, int y)
+{
+    u32 block = GetMapGridBlockAt(x, y);
+    
+    if (block == MAPGRID_UNDEFINED)
+        return 0;
+    
+    return block >> 16;
 }
 
 u32 MapGridGetMetatileBehaviorAt(int x, int y)
