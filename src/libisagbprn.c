@@ -215,18 +215,18 @@ void NoCashGBAAssert(const char *pFile, s32 nLine, const char *pExpression, bool
 
 bool32 MgbaOpen(void)
 {
-    *REG_DEBUG_ENABLE = 0xC0DE;
-    return *REG_DEBUG_ENABLE == 0x1DEA;
+    //*REG_DEBUG_ENABLE = 0xC0DE;
+    //return *REG_DEBUG_ENABLE == 0x1DEA;
 }
 
 void MgbaClose(void)
 {
-    *REG_DEBUG_ENABLE = 0;
+    // *REG_DEBUG_ENABLE = 0;
 }
 
 void MgbaPrintf(s32 level, const char* ptr, ...)
 {
-    va_list args;
+    /*va_list args;
 
     level &= 0x7;
     va_start(args, ptr);
@@ -238,7 +238,7 @@ void MgbaPrintf(s32 level, const char* ptr, ...)
     #error "unspecified pretty printing handler."
     #endif
     va_end(args);
-    *REG_DEBUG_FLAGS = level | 0x100;
+    *REG_DEBUG_FLAGS = level | 0x100; */
 }
 
 void MgbaAssert(const char *pFile, s32 nLine, const char *pExpression, bool32 nStopProgram)
