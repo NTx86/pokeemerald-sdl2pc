@@ -49,6 +49,7 @@ static bool8 IsPosInIncomingConnectingMap(u8 direction, int x, int y, const stru
 static bool8 IsCoordInIncomingConnectingMap(int coord, int srcMax, int destMax, int offset);
 static void CopyTilesetToVramUsingHeap(struct Tileset const *tileset, u16 numTiles, u32 offset);
 static void CopyTilesetToVram(struct Tileset const *tileset, u16 numTiles, u32 offset);
+static void LoadTilesetPalette(struct Tileset const *tileset, u16 destOffset, u16 size);
 
 #define GetBorderBlockAt(x, y)({                                                                   \
     u16 block;                                                                                     \
@@ -192,24 +193,45 @@ static void LoadConnectionSecondaryTilesets(struct MapHeader *mapHeader)
         {
             struct MapHeader const *cMap = GetMapHeaderFromConnection(connection);
             u32 offset = connection->offset;
-            switch (connection->direction)
+            
+            if  ( (cMap->mapLayout) &&
+                connection->direction == CONNECTION_SOUTH ||
+                connection->direction == CONNECTION_NORTH ||
+                connection->direction == CONNECTION_WEST ||
+                connection->direction == CONNECTION_EAST
+                )
             {
-            case CONNECTION_SOUTH:
-                if (cMap->mapLayout)
-                    CopyTilesetToVramUsingHeap(cMap->mapLayout->secondaryTileset, NUM_TILES_TOTAL - NUM_TILES_IN_PRIMARY, NUM_TILES_TOTAL + (i*NUM_TILES_IN_PRIMARY));
-                break;
-            case CONNECTION_NORTH:
-                if (cMap->mapLayout)
-                    CopyTilesetToVramUsingHeap(cMap->mapLayout->secondaryTileset, NUM_TILES_TOTAL - NUM_TILES_IN_PRIMARY, NUM_TILES_TOTAL + (i*NUM_TILES_IN_PRIMARY));
-                break;
-            case CONNECTION_WEST:
-                if (cMap->mapLayout)
-                    CopyTilesetToVramUsingHeap(cMap->mapLayout->secondaryTileset, NUM_TILES_TOTAL - NUM_TILES_IN_PRIMARY, NUM_TILES_TOTAL + (i*NUM_TILES_IN_PRIMARY));
-                break;
-            case CONNECTION_EAST:
-                if (cMap->mapLayout)
-                    CopyTilesetToVramUsingHeap(cMap->mapLayout->secondaryTileset, NUM_TILES_TOTAL - NUM_TILES_IN_PRIMARY, NUM_TILES_TOTAL + (i*NUM_TILES_IN_PRIMARY));
-                break;
+                CopyTilesetToVramUsingHeap(cMap->mapLayout->secondaryTileset, NUM_TILES_TOTAL - NUM_TILES_IN_PRIMARY, NUM_TILES_TOTAL + (i*NUM_TILES_IN_PRIMARY));
+            }
+        }
+    }
+}
+
+static void LoadConnectionSecondaryTilesetsPalettes(struct MapHeader *mapHeader)
+{
+    int count;
+    const struct MapConnection *connection;
+    int i;
+
+    if (mapHeader->connections)
+    {
+        count = mapHeader->connections->count;
+        connection = mapHeader->connections->connections;
+        for (i = 0; i < count; i++, connection++)
+        {
+            struct MapHeader const *cMap = GetMapHeaderFromConnection(connection);
+            u32 offset = connection->offset;
+            
+            if  ( (cMap->mapLayout) &&
+                connection->direction == CONNECTION_SOUTH ||
+                connection->direction == CONNECTION_NORTH ||
+                connection->direction == CONNECTION_WEST ||
+                connection->direction == CONNECTION_EAST
+                )
+            {
+                //i+2 so the first connection palette would load after the main map palette
+                //offset by two palettes because palettes after 13 are used for stuff other than overworld
+                LoadTilesetPalette(cMap->mapLayout->secondaryTileset, BG_PLTT_ID(2)+(BG_PLTT_ID(NUM_PALS_IN_SECONDARY)*(i+2)), NUM_PALS_IN_SECONDARY * PLTT_SIZE_4BPP);
             }
         }
     }
@@ -984,6 +1006,7 @@ static void LoadPrimaryTilesetPalette(struct MapLayout const *mapLayout)
 void LoadSecondaryTilesetPalette(struct MapLayout const *mapLayout)
 {
     LoadTilesetPalette(mapLayout->secondaryTileset, BG_PLTT_ID(NUM_PALS_IN_PRIMARY), (NUM_PALS_TOTAL - NUM_PALS_IN_PRIMARY) * PLTT_SIZE_4BPP);
+    LoadConnectionSecondaryTilesetsPalettes(&gMapHeader);
 }
 
 void CopyMapTilesetsToVram(struct MapLayout const *mapLayout)
