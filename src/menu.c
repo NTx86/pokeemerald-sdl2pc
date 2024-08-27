@@ -1781,7 +1781,7 @@ bool8 FreeTempTileDataBuffersIfPossible(void)
     }
 }
 
-void *DecompressAndCopyTileDataToVram(u8 bgId, const void *src, u32 size, u16 offset, u8 mode)
+void *DecompressAndCopyTileDataToVram(u8 bgId, const void *src, u32 size, u32 offset, u8 mode)
 {
     u32 sizeOut;
     if (sTempTileDataBufferIdx < ARRAY_COUNT(sTempTileDataBuffer))
@@ -1803,7 +1803,7 @@ void *DecompressAndCopyTileDataToVram(u8 bgId, const void *src, u32 size, u16 of
     return NULL;
 }
 
-void DecompressAndLoadBgGfxUsingHeap(u8 bgId, const void *src, u32 size, u16 offset, u8 mode)
+void DecompressAndLoadBgGfxUsingHeap(u8 bgId, const void *src, u32 size, u32 offset, u8 mode)
 {
     u32 sizeOut;
     void *ptr = malloc_and_decompress(src, &sizeOut);
@@ -1845,7 +1845,7 @@ void *malloc_and_decompress(const void *src, u32 *size)
     return ptr;
 }
 
-u16 copy_decompressed_tile_data_to_vram(u8 bgId, const void *src, u16 size, u16 offset, u8 mode)
+u16 copy_decompressed_tile_data_to_vram(u8 bgId, const void *src, u16 size, u32 offset, u8 mode)
 {
     switch (mode)
     {

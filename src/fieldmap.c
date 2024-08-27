@@ -47,6 +47,8 @@ static bool8 SkipCopyingMetatileFromSavedMap(u16 *mapBlock, u16 mapWidth, u8 yMo
 static const struct MapConnection *GetIncomingConnection(u8 direction, int x, int y);
 static bool8 IsPosInIncomingConnectingMap(u8 direction, int x, int y, const struct MapConnection *connection);
 static bool8 IsCoordInIncomingConnectingMap(int coord, int srcMax, int destMax, int offset);
+static void CopyTilesetToVramUsingHeap(struct Tileset const *tileset, u16 numTiles, u32 offset);
+static void CopyTilesetToVram(struct Tileset const *tileset, u16 numTiles, u32 offset);
 
 #define GetBorderBlockAt(x, y)({                                                                   \
     u16 block;                                                                                     \
@@ -170,6 +172,43 @@ static void InitBackupMapLayoutConnections(struct MapHeader *mapHeader)
             case CONNECTION_EAST:
                 FillEastConnection(mapHeader, cMap, offset, i+1);
                 sMapConnectionFlags.east = TRUE;
+                break;
+            }
+        }
+    }
+}
+
+static void LoadConnectionSecondaryTilesets(struct MapHeader *mapHeader)
+{
+    int count;
+    const struct MapConnection *connection;
+    int i;
+
+    if (mapHeader->connections)
+    {
+        count = mapHeader->connections->count;
+        connection = mapHeader->connections->connections;
+        for (i = 0; i < count; i++, connection++)
+        {
+            struct MapHeader const *cMap = GetMapHeaderFromConnection(connection);
+            u32 offset = connection->offset;
+            switch (connection->direction)
+            {
+            case CONNECTION_SOUTH:
+                if (cMap->mapLayout)
+                    CopyTilesetToVramUsingHeap(cMap->mapLayout->secondaryTileset, NUM_TILES_TOTAL - NUM_TILES_IN_PRIMARY, NUM_TILES_TOTAL + (i*NUM_TILES_IN_PRIMARY));
+                break;
+            case CONNECTION_NORTH:
+                if (cMap->mapLayout)
+                    CopyTilesetToVramUsingHeap(cMap->mapLayout->secondaryTileset, NUM_TILES_TOTAL - NUM_TILES_IN_PRIMARY, NUM_TILES_TOTAL + (i*NUM_TILES_IN_PRIMARY));
+                break;
+            case CONNECTION_WEST:
+                if (cMap->mapLayout)
+                    CopyTilesetToVramUsingHeap(cMap->mapLayout->secondaryTileset, NUM_TILES_TOTAL - NUM_TILES_IN_PRIMARY, NUM_TILES_TOTAL + (i*NUM_TILES_IN_PRIMARY));
+                break;
+            case CONNECTION_EAST:
+                if (cMap->mapLayout)
+                    CopyTilesetToVramUsingHeap(cMap->mapLayout->secondaryTileset, NUM_TILES_TOTAL - NUM_TILES_IN_PRIMARY, NUM_TILES_TOTAL + (i*NUM_TILES_IN_PRIMARY));
                 break;
             }
         }
@@ -862,7 +901,7 @@ static bool8 SkipCopyingMetatileFromSavedMap(u16 *mapBlock, u16 mapWidth, u8 yMo
     return FALSE;
 }
 
-static void CopyTilesetToVram(struct Tileset const *tileset, u16 numTiles, u16 offset)
+static void CopyTilesetToVram(struct Tileset const *tileset, u16 numTiles, u32 offset)
 {
     if (tileset)
     {
@@ -873,7 +912,7 @@ static void CopyTilesetToVram(struct Tileset const *tileset, u16 numTiles, u16 o
     }
 }
 
-static void CopyTilesetToVramUsingHeap(struct Tileset const *tileset, u16 numTiles, u16 offset)
+static void CopyTilesetToVramUsingHeap(struct Tileset const *tileset, u16 numTiles, u32 offset)
 {
     if (tileset)
     {
@@ -928,11 +967,13 @@ void CopyPrimaryTilesetToVram(struct MapLayout const *mapLayout)
 void CopySecondaryTilesetToVram(struct MapLayout const *mapLayout)
 {
     CopyTilesetToVram(mapLayout->secondaryTileset, NUM_TILES_TOTAL - NUM_TILES_IN_PRIMARY, NUM_TILES_IN_PRIMARY);
+    LoadConnectionSecondaryTilesets(&gMapHeader);
 }
 
 void CopySecondaryTilesetToVramUsingHeap(struct MapLayout const *mapLayout)
 {
     CopyTilesetToVramUsingHeap(mapLayout->secondaryTileset, NUM_TILES_TOTAL - NUM_TILES_IN_PRIMARY, NUM_TILES_IN_PRIMARY);
+    LoadConnectionSecondaryTilesets(&gMapHeader);
 }
 
 static void LoadPrimaryTilesetPalette(struct MapLayout const *mapLayout)
@@ -951,6 +992,7 @@ void CopyMapTilesetsToVram(struct MapLayout const *mapLayout)
     {
         CopyTilesetToVramUsingHeap(mapLayout->primaryTileset, NUM_TILES_IN_PRIMARY, 0);
         CopyTilesetToVramUsingHeap(mapLayout->secondaryTileset, NUM_TILES_TOTAL - NUM_TILES_IN_PRIMARY, NUM_TILES_IN_PRIMARY);
+        LoadConnectionSecondaryTilesets(&gMapHeader);
     }
 }
 

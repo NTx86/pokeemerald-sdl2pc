@@ -1294,9 +1294,9 @@ static void RenderBGScanline(int bgNum, uint16_t hoffs, uint16_t voffs, int line
             }
         else
         {
-            uint32_t *bgmap32 = (uint16_t *)BG_SCREEN_ADDR(bg->screenBaseBlock);
+            uint32_t *bgmap32 = (uint32_t *)BG_SCREEN_ADDR(bg->screenBaseBlock);
             uint32_t entry = bgmap32[(mapY * mapWidth) + mapX];
-            tileNum = entry & 0xFFFF;
+            tileNum = (entry & 0xFFFF);
             paletteNum = (entry >> 18) & 0x3FFF;
             
             // Flip if necessary
@@ -1306,9 +1306,9 @@ static void RenderBGScanline(int bgNum, uint16_t hoffs, uint16_t voffs, int line
                 tileY = 7 - tileY;
         }
 
-        uint16_t tileLoc = tileNum * (bitsPerPixel * 8);
-        uint16_t tileLocY = tileY * bitsPerPixel;
-        uint16_t tileLocX = tileX;
+        uint32_t tileLoc = tileNum * (bitsPerPixel * 8);
+        uint32_t tileLocY = tileY * bitsPerPixel;
+        uint32_t tileLocX = tileX;
         if (bitsPerPixel == 4)
             tileLocX /= 2;
 
