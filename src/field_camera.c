@@ -147,7 +147,7 @@ static void DrawMetatileAt(const struct MapLayout *mapLayout, int x, int y)
             struct MapHeader const *cMap = GetMapHeaderFromConnection(connection);
             
             metatiles = cMap->mapLayout->secondaryTileset->metatiles;
-            tileSetOffset = NUM_METATILES_TOTAL + NUM_METATILES_TOTAL * (connId-1);
+            tileSetOffset = NUM_TILES_IN_PRIMARY * connId;
         }
         metatileId -= NUM_METATILES_IN_PRIMARY;
     }
@@ -155,7 +155,7 @@ static void DrawMetatileAt(const struct MapLayout *mapLayout, int x, int y)
     DrawMetatile(MapGridGetMetatileLayerTypeAt(x, y), metatiles + (metatileId * NUM_TILES_PER_METATILE), (size_t)x, (size_t)y, tileSetOffset);
 }
 
-#define Convert16TileTo32Tile(tile, offset) ( ((tile & 0x3FF) + offset) | ((tile << 6) & 0x30000) | ((tile << 6) & 0x3C0000 ) )
+#define Convert16TileTo32Tile(tile, offset) ( (((tile & 0x3FF) + ((tile & 0x3FF) >= 512 ? offset : 0)) & 0xFFFF ) | ((tile << 6) & 0x30000) | ((tile << 6) & 0x3C0000 ) )
 
 static void DrawMetatile(s32 metatileLayerType, const u16 *tiles, size_t x, size_t y, u32 tileSetOffset)
 {
@@ -177,7 +177,7 @@ static void DrawMetatile(s32 metatileLayerType, const u16 *tiles, size_t x, size
         gOverworldTilemapBuffer_Bg3[a] = Convert16TileTo32Tile(tiles[0], tileSetOffset);
         gOverworldTilemapBuffer_Bg3[b] = Convert16TileTo32Tile(tiles[1], tileSetOffset);
         gOverworldTilemapBuffer_Bg3[c] = Convert16TileTo32Tile(tiles[2], tileSetOffset);
-        gOverworldTilemapBuffer_Bg3[d] = tiles[3];
+        gOverworldTilemapBuffer_Bg3[d] = Convert16TileTo32Tile(tiles[3], tileSetOffset);
 
         // Draw transparent tiles to the middle background layer.
         gOverworldTilemapBuffer_Bg2[a] = 0;
