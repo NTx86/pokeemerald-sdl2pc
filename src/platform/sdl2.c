@@ -1296,8 +1296,8 @@ static void RenderBGScanline(int bgNum, uint16_t hoffs, uint16_t voffs, int line
         {
             uint32_t *bgmap32 = (uint32_t *)BG_SCREEN_ADDR(bg->screenBaseBlock);
             uint32_t entry = bgmap32[(mapY * mapWidth) + mapX];
-            tileNum = (entry & 0xFFFF);
-            paletteNum = (entry >> 18) & 0x3FFF;
+            tileNum = (entry & 0xFFFF) % (BG_CHAR_SIZE / (bitsPerPixel * 8));
+            paletteNum = ((entry >> 18) & 0x3FFF) % (BG_PLTT_SIZE / 16);
             
             // Flip if necessary
             if (entry & (1 << 16))

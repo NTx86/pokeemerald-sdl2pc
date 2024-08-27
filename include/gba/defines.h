@@ -23,7 +23,7 @@
 
 #define ALIGNED(n) __attribute__((aligned(n)))
 
-#define BG_PLTT_SIZE  0x200
+#define BG_PLTT_SIZE  (0x200*16)
 #define OBJ_PLTT      (PLTT + BG_PLTT_SIZE)
 #define OBJ_PLTT_SIZE 0x200
 #define PLTT_SIZE     (BG_PLTT_SIZE + OBJ_PLTT_SIZE)
