@@ -434,6 +434,7 @@ int main(int argc, char **argv)
 #endif
 
     double accumulator = 0.0;
+    double accumulator60 = 0.0;
 
     while (isRunning)
     {
@@ -462,9 +463,11 @@ int main(int argc, char **argv)
         {
             double dt = fixedTimestep;
             double deltaTime = (double)((curGameTime - lastGameTime) / (double)SDL_GetPerformanceFrequency());
+            double deltaTime60 = deltaTime;
             deltaTime *= timeScale;
 
             accumulator += deltaTime;
+            accumulator60 += deltaTime60;
 
             while (accumulator >= dt)
             {
@@ -485,15 +488,17 @@ int main(int argc, char **argv)
                 accumulator -= dt;
 #endif
             }
-        }
+            
+            while (accumulator60 >= dt)
+            {
+                // Draws each scanline
+                RenderFrame(sdlTexture);
 
-        // Draws each scanline
-        RenderFrame(sdlTexture);
+                AudioUpdate();
 
-        if (!paused)
-        {
-            // Calls m4aSoundMain() and m4aSoundVSync()
-            AudioUpdate();
+                accumulator60 -= dt;
+            }
+            
         }
 
         lastGameTime = curGameTime;
