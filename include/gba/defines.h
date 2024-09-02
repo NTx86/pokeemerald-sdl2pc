@@ -57,6 +57,9 @@ extern void * INTR_VECTOR;
 #define BG_CHAR_SIZE      (0x4000*16)
 #define BG_SCREEN_SIZE    (0x80000*2)
 
+#define BG_CHAR_4BPP_TILE_COUNT BG_CHAR_SIZE / 0x20 
+#define BG_CHAR_8BPP_TILE_COUNT BG_CHAR_SIZE / 0x40
+
 #define GBA_BG_CHAR_SIZE 0x4000 // Size of a character map on the GBA. Don't touch!
 #define GBA_BG_SCREEN_SIZE 0x800 // Size of a BG map on the GBA. Don't touch!
 
