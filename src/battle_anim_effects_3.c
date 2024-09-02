@@ -22,6 +22,7 @@
 #include "constants/rgb.h"
 #include "constants/songs.h"
 #include "constants/weather.h"
+#include "gpu_main.h"
 
 extern const struct SpriteTemplate gThoughtBubbleSpriteTemplate;
 

@@ -7,6 +7,7 @@
 #include "trig.h"
 #include "constants/rgb.h"
 #include "constants/songs.h"
+#include "gpu_main.h"
 
 static void AnimDefensiveWall(struct Sprite *);
 static void AnimDefensiveWall_Step1(struct Sprite *);

@@ -15,6 +15,7 @@
 #include "util.h"
 #include "constants/rgb.h"
 #include "constants/songs.h"
+#include "gpu_main.h"
 
 static void AnimCirclingFinger(struct Sprite *);
 static void AnimBouncingMusicNote(struct Sprite *);

@@ -12,6 +12,7 @@
 #include "util.h"
 #include "constants/battle.h"
 #include "constants/rgb.h"
+#include "gpu_main.h"
 
 static void AnimRainDrop(struct Sprite *);
 static void AnimRainDrop_Step(struct Sprite *);

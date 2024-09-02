@@ -13,6 +13,7 @@
 #include "menu.h"
 #include "m4a.h"
 #include "constants/rgb.h"
+#include "gpu_main.h"
 
 enum {
     WIN_TITLE,          // "Berry Program Update" header on the first screen

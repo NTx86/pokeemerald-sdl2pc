@@ -17,6 +17,7 @@
 #include "sprite.h"
 #include "task.h"
 #include "constants/battle_anim.h"
+#include "gpu_main.h"
 
 /*
     This file handles the commands for the macros defined in

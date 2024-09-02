@@ -12,6 +12,7 @@
 #include "strings.h"
 #include "text.h"
 #include "constants/songs.h"
+#include "gpu_main.h"
 
 #define CONDITION_MONS_LOADED 3
 

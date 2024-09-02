@@ -25,6 +25,7 @@
 #include "trainer_hill.h"
 #include "platform.h"
 #include "constants/rgb.h"
+#include "gpu_main.h"
 
 static void SerialIntr(void);
 

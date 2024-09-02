@@ -19,6 +19,7 @@
 #include "constants/songs.h"
 #include "constants/union_room.h"
 #include "constants/rgb.h"
+#include "gpu_main.h"
 
 enum {
     COLORMODE_NORMAL,

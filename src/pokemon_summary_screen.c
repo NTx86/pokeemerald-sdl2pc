@@ -46,6 +46,7 @@
 #include "constants/region_map_sections.h"
 #include "constants/rgb.h"
 #include "constants/songs.h"
+#include "gpu_main.h"
 
 enum {
     PSS_PAGE_INFO,

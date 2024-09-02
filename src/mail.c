@@ -20,6 +20,7 @@
 #include "easy_chat.h"
 #include "graphics.h"
 #include "constants/rgb.h"
+#include "gpu_main.h"
 
 // Bead and Dream mail feature an icon of the Pokémon holding it.
 enum {

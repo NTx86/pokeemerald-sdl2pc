@@ -33,6 +33,7 @@
 #include "constants/songs.h"
 #include "constants/rgb.h"
 #include "constants/items.h"
+#include "gpu_main.h"
 
 extern struct Evolution gEvolutionTable[][EVOS_PER_MON];
 

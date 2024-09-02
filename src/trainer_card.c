@@ -32,6 +32,7 @@
 #include "constants/rgb.h"
 #include "constants/trainers.h"
 #include "constants/union_room.h"
+#include "gpu_main.h"
 
 enum {
     WIN_MSG,

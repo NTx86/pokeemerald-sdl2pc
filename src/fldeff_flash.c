@@ -15,6 +15,7 @@
 #include "task.h"
 #include "constants/songs.h"
 #include "constants/map_types.h"
+#include "gpu_main.h"
 
 struct FlashStruct
 {

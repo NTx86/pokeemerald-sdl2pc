@@ -31,6 +31,7 @@
 #include "link_rfu.h"
 #include "wonder_news.h"
 #include "constants/cable_club.h"
+#include "gpu_main.h"
 
 enum {
     WIN_HEADER,

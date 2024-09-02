@@ -32,6 +32,7 @@
 #include "constants/mauville_old_man.h"
 #include "constants/songs.h"
 #include "constants/rgb.h"
+#include "gpu_main.h"
 
 static EWRAM_DATA struct EasyChatScreen *sEasyChatScreen = NULL;
 static EWRAM_DATA struct EasyChatScreenControl *sScreenControl = NULL;

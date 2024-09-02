@@ -12,6 +12,7 @@
 #include "trig.h"
 #include "constants/battle_anim.h"
 #include "constants/rgb.h"
+#include "gpu_main.h"
 
 struct HailStruct {
     s32 x:10;

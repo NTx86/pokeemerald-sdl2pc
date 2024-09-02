@@ -16,6 +16,7 @@
 #include "decompress.h"
 #include "constants/songs.h"
 #include "constants/items.h"
+#include "gpu_main.h"
 
 #define TAG_SWAP_LINE 109
 

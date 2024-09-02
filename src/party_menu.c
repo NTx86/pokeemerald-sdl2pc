@@ -72,6 +72,7 @@
 #include "constants/party_menu.h"
 #include "constants/rgb.h"
 #include "constants/songs.h"
+#include "gpu_main.h"
 
 enum {
     MENU_SUMMARY,

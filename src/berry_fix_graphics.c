@@ -1,5 +1,6 @@
 #include "global.h"
 #include "graphics.h"
+#include "gpu_main.h"
 
 // Duplicate of sBerryFixGraphics in berry_fix_program.c
 static const struct {

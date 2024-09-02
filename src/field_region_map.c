@@ -12,6 +12,7 @@
 #include "text_window.h"
 #include "window.h"
 #include "constants/rgb.h"
+#include "gpu_main.h"
 
 /*
  *  This is the type of map shown when interacting with the metatiles for

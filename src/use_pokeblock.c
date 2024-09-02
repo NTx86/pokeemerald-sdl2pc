@@ -24,6 +24,7 @@
 #include "graphics.h"
 #include "pokemon_summary_screen.h"
 #include "item_menu.h"
+#include "gpu_main.h"
 
 /*
     This file handles the screen where the player chooses

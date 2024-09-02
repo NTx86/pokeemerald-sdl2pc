@@ -12,6 +12,7 @@
 #include "gpu_regs.h"
 #include "menu.h"
 #include "dma3.h"
+#include "gpu_main.h"
 
 struct Pokenav_MainMenu
 {

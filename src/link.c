@@ -27,6 +27,7 @@
 #include "link_rfu.h"
 #include "constants/rgb.h"
 #include "constants/trade.h"
+#include "gpu_main.h"
 
 // Window IDs for the link error screens
 enum {
@@ -264,7 +265,7 @@ static void InitLinkTestBG(u8 paletteNum, u8 bgNum, u8 screenBaseBlock, u8 charB
         case 1:
             ClearGpuBackgroundState(1);
             SetGpuBackgroundPriority(1, 1);
-            SetGpuBackgroundCharBaseBlock(charBaseBlock);
+            SetGpuBackgroundCharBaseBlock(1, charBaseBlock);
             SetGpuBackgroundScreenBaseBlock(1, screenBaseBlock);
             break;
         case 2:

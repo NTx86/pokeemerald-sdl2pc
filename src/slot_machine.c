@@ -27,6 +27,7 @@
 #include "constants/rgb.h"
 #include "constants/slot_machine.h"
 #include "constants/songs.h"
+#include "gpu_main.h"
 
 #define SLOTMACHINE_GFX_TILES 233
 #define MAX_BET 3

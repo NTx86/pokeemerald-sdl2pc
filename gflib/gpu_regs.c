@@ -1,5 +1,6 @@
 #include "global.h"
 #include "gpu_regs.h"
+#include "gpu_main.h"
 
 static vbool8 sGpuRegBufferLocked;
 static vbool8 sShouldSyncRegIE;

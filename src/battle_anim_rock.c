@@ -8,6 +8,7 @@
 #include "trig.h"
 #include "constants/rgb.h"
 #include "constants/songs.h"
+#include "gpu_main.h"
 
 static void AnimFallingRock(struct Sprite *);
 static void AnimFallingRock_Step(struct Sprite *);

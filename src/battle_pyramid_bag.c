@@ -33,6 +33,7 @@
 #include "constants/items.h"
 #include "constants/rgb.h"
 #include "constants/songs.h"
+#include "gpu_main.h"
 
 #define TAG_SCROLL_ARROW  2910
 #define TAG_PYRAMID_BAG   4132

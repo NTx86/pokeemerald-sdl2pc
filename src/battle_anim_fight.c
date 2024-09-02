@@ -5,6 +5,7 @@
 #include "task.h"
 #include "trig.h"
 #include "constants/rgb.h"
+#include "gpu_main.h"
 
 static void AnimUnusedHumanoidFoot(struct Sprite *);
 static void AnimSlideHandOrFootToTarget(struct Sprite *);

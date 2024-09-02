@@ -23,6 +23,7 @@
 #include "constants/game_stat.h"
 #include "trainer_hill.h"
 #include "constants/rgb.h"
+#include "gpu_main.h"
 
 static void Task_CloseTrainerHillRecordsOnButton(u8 taskId);
 static void Task_BeginPaletteFade(u8 taskId);

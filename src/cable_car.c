@@ -22,6 +22,7 @@
 #include "constants/rgb.h"
 #include "constants/songs.h"
 #include "constants/weather.h"
+#include "gpu_main.h"
 
 #define GOING_DOWN gSpecialVar_0x8004
 

@@ -10,6 +10,7 @@
 #include "util.h"
 #include "constants/battle_anim.h"
 #include "constants/rgb.h"
+#include "gpu_main.h"
 
 extern const struct CompressedSpriteSheet gBattleAnimPicTable[];
 extern const struct CompressedSpritePalette gBattleAnimPaletteTable[];

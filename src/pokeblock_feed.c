@@ -25,6 +25,7 @@
 #include "trig.h"
 #include "util.h"
 #include "constants/rgb.h"
+#include "gpu_main.h"
 
 enum {
     ANIMDATA_ROT_IDX,

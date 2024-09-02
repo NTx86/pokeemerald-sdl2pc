@@ -3,6 +3,7 @@
 #include "gpu_regs.h"
 #include "trig.h"
 #include "constants/rgb.h"
+#include "gpu_main.h"
 
 static void AnimMegahornHorn(struct Sprite *);
 static void AnimLeechLifeNeedle(struct Sprite *);

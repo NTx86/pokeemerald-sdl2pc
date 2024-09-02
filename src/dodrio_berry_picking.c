@@ -24,6 +24,7 @@
 #include "window.h"
 #include "constants/items.h"
 #include "constants/songs.h"
+#include "gpu_main.h"
 
 // Note that in this file 'Dodrio Berry Picking' is often
 // shortened to DodrioGame or just Game for convenience

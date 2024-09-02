@@ -37,6 +37,7 @@
 #include "constants/items.h"
 #include "constants/rgb.h"
 #include "constants/songs.h"
+#include "gpu_main.h"
 
 #define MAX_TIME (10 * 60 * 60) // Timer can go up to 9:59:59
 

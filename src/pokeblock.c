@@ -32,6 +32,7 @@
 #include "constants/items.h"
 #include "constants/songs.h"
 #include "constants/rgb.h"
+#include "gpu_main.h"
 
 #define MAX_MENU_ITEMS 9
 #define MENU_MIDPOINT (MAX_MENU_ITEMS / 2)

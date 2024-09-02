@@ -17,6 +17,7 @@
 #include "text.h"
 #include "save.h"
 #include "mystery_gift_menu.h"
+#include "gpu_main.h"
 
 enum {
     RFUSTATE_INIT,

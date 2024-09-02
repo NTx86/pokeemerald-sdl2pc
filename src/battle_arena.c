@@ -27,6 +27,7 @@
 #include "constants/items.h"
 #include "constants/moves.h"
 #include "constants/rgb.h"
+#include "gpu_main.h"
 
 static void InitArenaChallenge(void);
 static void GetArenaData(void);

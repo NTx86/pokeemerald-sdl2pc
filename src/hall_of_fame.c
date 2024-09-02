@@ -34,6 +34,7 @@
 #include "data.h"
 #include "confetti_util.h"
 #include "constants/rgb.h"
+#include "gpu_main.h"
 
 #define HALL_OF_FAME_MAX_TEAMS 50
 #define TAG_CONFETTI 1001

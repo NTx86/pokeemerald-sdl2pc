@@ -20,6 +20,7 @@
 #include "window.h"
 #include "constants/rgb.h"
 #include "constants/songs.h"
+#include "gpu_main.h"
 
 static void CB2_WallClock(void);
 static void Task_SetClock_WaitFadeIn(u8 taskId);

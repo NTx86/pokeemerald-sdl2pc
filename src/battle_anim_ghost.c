@@ -9,6 +9,7 @@
 #include "sound.h"
 #include "trig.h"
 #include "util.h"
+#include "gpu_main.h"
 
 static void AnimConfuseRayBallBounce(struct Sprite *);
 static void AnimConfuseRayBallBounce_Step1(struct Sprite *);

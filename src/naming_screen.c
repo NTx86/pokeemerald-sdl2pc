@@ -29,6 +29,7 @@
 #include "main.h"
 #include "constants/event_objects.h"
 #include "constants/rgb.h"
+#include "gpu_main.h"
 
 enum {
     INPUT_NONE,

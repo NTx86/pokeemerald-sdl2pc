@@ -29,6 +29,7 @@
 #include "constants/rgb.h"
 #include "constants/region_map_sections.h"
 #include "constants/songs.h"
+#include "gpu_main.h"
 
 // gFrontierPassBg_Pal has 8*16 colors, but they attempt to load 13*16 colors.
 // As a result it goes out of bounds and interprets 160 bytes of whatever comes

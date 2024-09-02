@@ -45,6 +45,7 @@
 #include "constants/rgb.h"
 #include "constants/songs.h"
 #include "contest.h"
+#include "gpu_main.h"
 
 enum {
     SLIDING_TEXT_OFFSCREEN,

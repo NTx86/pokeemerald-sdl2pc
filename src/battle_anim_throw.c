@@ -21,6 +21,7 @@
 #include "constants/moves.h"
 #include "constants/songs.h"
 #include "constants/rgb.h"
+#include "gpu_main.h"
 
 // iwram
 u32 gMonShrinkDuration;

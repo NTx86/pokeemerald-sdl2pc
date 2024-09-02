@@ -22,6 +22,7 @@
 #include "pokedex.h"
 #include "event_data.h"
 #include "random.h"
+#include "gpu_main.h"
 
 #define COLOR_DARK_GREEN RGB(7, 11, 6)
 #define COLOR_LIGHT_GREEN RGB(13, 20, 12)

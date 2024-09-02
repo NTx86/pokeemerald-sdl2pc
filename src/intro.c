@@ -25,6 +25,7 @@
 #include "title_screen.h"
 #include "constants/rgb.h"
 #include "constants/battle_anim.h"
+#include "gpu_main.h"
 
 /*
     The intro is grouped into the following scenes

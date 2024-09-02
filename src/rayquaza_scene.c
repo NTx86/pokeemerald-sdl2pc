@@ -16,6 +16,7 @@
 #include "constants/songs.h"
 #include "constants/rgb.h"
 #include "random.h"
+#include "gpu_main.h"
 
 /*
     This file handles the cutscene showing Rayquaza arriving to settle the Groudon/Kyogre fight

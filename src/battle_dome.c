@@ -39,6 +39,7 @@
 #include "constants/songs.h"
 #include "constants/battle_frontier.h"
 #include "constants/rgb.h"
+#include "gpu_main.h"
 
 #define TAG_BUTTONS 0
 

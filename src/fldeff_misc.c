@@ -22,6 +22,7 @@
 #include "constants/metatile_behaviors.h"
 #include "constants/metatile_labels.h"
 #include "constants/songs.h"
+#include "gpu_main.h"
 
 
 EWRAM_DATA struct MapPosition gPlayerFacingPosition = {0};

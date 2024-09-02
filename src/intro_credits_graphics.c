@@ -7,6 +7,7 @@
 #include "main.h"
 #include "graphics.h"
 #include "constants/rgb.h"
+#include "gpu_main.h"
 
 /*
     The graphics here are used by both the second scene of the intro

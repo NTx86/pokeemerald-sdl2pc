@@ -24,6 +24,7 @@
 #include "constants/rgb.h"
 #include "constants/songs.h"
 #include "constants/trainers.h"
+#include "gpu_main.h"
 
 struct BattleBackground
 {

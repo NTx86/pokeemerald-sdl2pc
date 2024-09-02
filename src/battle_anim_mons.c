@@ -15,6 +15,7 @@
 #include "trig.h"
 #include "util.h"
 #include "constants/battle_anim.h"
+#include "gpu_main.h"
 
 #define IS_DOUBLE_BATTLE() ((gBattleTypeFlags & BATTLE_TYPE_DOUBLE))
 

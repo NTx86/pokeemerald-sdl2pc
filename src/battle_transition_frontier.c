@@ -9,6 +9,7 @@
 #include "bg.h"
 #include "gpu_regs.h"
 #include "constants/rgb.h"
+#include "gpu_main.h"
 
 /*
     There are 3 "categories" of Battle Frontier transition

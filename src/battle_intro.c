@@ -10,6 +10,7 @@
 #include "task.h"
 #include "trig.h"
 #include "constants/trainers.h"
+#include "gpu_main.h"
 
 static void BattleIntroSlide1(u8);
 static void BattleIntroSlide2(u8);

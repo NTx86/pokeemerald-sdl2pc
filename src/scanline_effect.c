@@ -4,6 +4,7 @@
 #include "task.h"
 #include "trig.h"
 #include "scanline_effect.h"
+#include "gpu_main.h"
 
 // EWRAM vars
 

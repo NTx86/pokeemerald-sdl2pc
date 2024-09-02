@@ -15,6 +15,7 @@
 #include "menu.h"
 #include "pokedex.h"
 #include "constants/rgb.h"
+#include "gpu_main.h"
 
 extern const u8 gText_DexNational[];
 extern const u8 gText_DexHoenn[];

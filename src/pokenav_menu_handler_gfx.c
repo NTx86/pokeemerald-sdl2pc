@@ -16,6 +16,7 @@
 #include "scanline_effect.h"
 #include "constants/songs.h"
 #include "constants/rgb.h"
+#include "gpu_main.h"
 
 #define GFXTAG_BLUE_LIGHT 1
 #define GFXTAG_OPTIONS    3
@@ -1315,7 +1316,7 @@ static void SetupPokenavMenuScanlineEffects(void)
     SetGpuState(GPU_STATE_BLDY, 0);
     SetGpuStateBits(GPU_STATE_DISPCNT, DISPCNT_WIN0_ON);
     SetGpuWindowIn(GetGpuWindowIn() | WININ_WIN0_ALL);
-    SetGpuWindowOut(SetGpuWindowOut() | WINOUT_WIN01_BG_ALL | WINOUT_WIN01_OBJ);
+    SetGpuWindowOut(GetGpuWindowOut() | WINOUT_WIN01_BG_ALL | WINOUT_WIN01_OBJ);
     SetGpuWindowY(0, DisplayHeight());
     ScanlineEffect_Stop();
     SetMenuOptionGlow();

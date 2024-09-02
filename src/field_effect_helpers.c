@@ -12,6 +12,7 @@
 #include "trig.h"
 #include "constants/field_effects.h"
 #include "constants/songs.h"
+#include "gpu_main.h"
 
 #define OBJ_EVENT_PAL_TAG_NONE 0x11FF // duplicate of define in event_object_movement.c
 

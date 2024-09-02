@@ -50,6 +50,7 @@
 #include "constants/rgb.h"
 #include "constants/songs.h"
 #include "constants/union_room.h"
+#include "gpu_main.h"
 
 // IDs for RunTradeMenuCallback
 enum {

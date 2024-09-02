@@ -15,6 +15,7 @@
 #include "window.h"
 #include "gba/m4a_internal.h"
 #include "constants/rgb.h"
+#include "gpu_main.h"
 
 #define tMenuSelection data[0]
 #define tTextSpeed data[1]

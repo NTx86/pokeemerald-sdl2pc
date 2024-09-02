@@ -16,6 +16,7 @@
 #include "constants/layouts.h"
 #include "constants/region_map_sections.h"
 #include "constants/weather.h"
+#include "gpu_main.h"
 
 // enums
 enum MapPopUp_Themes

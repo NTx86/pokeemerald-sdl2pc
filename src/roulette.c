@@ -31,6 +31,7 @@
 #include "constants/rgb.h"
 #include "constants/roulette.h"
 #include "constants/songs.h"
+#include "gpu_main.h"
 
 #define BALLS_PER_ROUND 6
 

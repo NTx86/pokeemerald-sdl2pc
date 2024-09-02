@@ -20,6 +20,7 @@
 #include "union_room_battle.h"
 #include "constants/rgb.h"
 #include "constants/trainers.h"
+#include "gpu_main.h"
 
 struct UnionRoomBattle
 {

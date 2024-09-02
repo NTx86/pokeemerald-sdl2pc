@@ -16,6 +16,7 @@
 #include "mystery_gift_view.h"
 #include "constants/rgb.h"
 #include "constants/mystery_gift.h"
+#include "gpu_main.h"
 
 struct WonderGraphics
 {

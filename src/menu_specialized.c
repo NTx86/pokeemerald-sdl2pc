@@ -25,6 +25,7 @@
 #include "window.h"
 #include "constants/songs.h"
 #include "gba/io_reg.h"
+#include "gpu_main.h"
 
 extern const struct CompressedSpriteSheet gMonFrontPicTable[];
 

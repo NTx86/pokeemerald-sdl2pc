@@ -20,6 +20,7 @@
 #include "text.h"
 #include "window.h"
 #include "constants/rgb.h"
+#include "gpu_main.h"
 
 u16 (*gContestMonPixels)[][32];
 struct ImageProcessingContext gImageProcessingContext;

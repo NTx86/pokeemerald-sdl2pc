@@ -11,6 +11,7 @@
 #include "text_window.h"
 #include "constants/songs.h"
 #include "constants/rgb.h"
+#include "gpu_main.h"
 
 extern const u8 gText_ClearAllSaveData[];
 extern const u8 gText_ClearingData[];

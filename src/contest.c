@@ -42,6 +42,7 @@
 #include "constants/moves.h"
 #include "constants/rgb.h"
 #include "constants/songs.h"
+#include "gpu_main.h"
 
 // This file's functions.
 static void LoadContestPalettes(void);

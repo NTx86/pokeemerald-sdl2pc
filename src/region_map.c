@@ -27,6 +27,7 @@
 #include "constants/map_types.h"
 #include "constants/rgb.h"
 #include "constants/weather.h"
+#include "gpu_main.h"
 
 /*
  *  This file handles region maps generally, and the map used when selecting a fly destination.

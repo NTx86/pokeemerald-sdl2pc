@@ -19,6 +19,7 @@
 #include "text_window.h"
 #include "decompress.h"
 #include "constants/rgb.h"
+#include "gpu_main.h"
 
 enum {
     WIN_MSG,

@@ -18,6 +18,7 @@
 #include "window.h"
 #include "gpu_regs.h"
 #include "constants/rgb.h"
+#include "gpu_main.h"
 
 #define PALTAG_ARROW 0x1000
 

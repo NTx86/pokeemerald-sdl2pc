@@ -8,6 +8,7 @@
 #include "trig.h"
 #include "util.h"
 #include "constants/rgb.h"
+#include "gpu_main.h"
 
 static void AnimUnusedBagSteal(struct Sprite *);
 static void AnimUnusedBagSteal_Step(struct Sprite *);

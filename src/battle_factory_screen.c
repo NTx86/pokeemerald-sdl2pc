@@ -31,6 +31,7 @@
 #include "constants/battle_tent.h"
 #include "constants/songs.h"
 #include "constants/rgb.h"
+#include "gpu_main.h"
 
 // Select_ refers to the first Pokémon selection screen where you choose your initial 3 rental Pokémon.
 // Swap_   refers to the subsequent selection screens where you can swap a Pokémon with one from the beaten trainer
