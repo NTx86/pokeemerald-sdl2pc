@@ -6004,7 +6004,7 @@ static void Cmd_drawlvlupbox(void)
         }
         break;
     case 9:
-        if (!SlideOutLevelUpBanner())
+        if (IsMonGettingExpSentOut() || !SlideOutLevelUpBanner())
         {
             ClearWindowTilemap(B_WIN_LEVEL_UP_BANNER);
             CopyWindowToVram(B_WIN_LEVEL_UP_BANNER, COPYWIN_MAP);
