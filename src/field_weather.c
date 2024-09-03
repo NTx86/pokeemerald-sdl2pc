@@ -664,7 +664,7 @@ static void ApplyFogBlend(u8 blendCoeff, u16 blendColor)
     gBlend = color.g;
     bBlend = color.b;
 
-    for (curPalIndex = 16; curPalIndex < 32; curPalIndex++)
+    for (curPalIndex = PLTT_NUM_OF_PALS_IN_BG; curPalIndex < PLTT_NUM_OF_PALS_IN_BG+16; curPalIndex++)
     {
         if (LightenSpritePaletteInFog(curPalIndex))
         {
