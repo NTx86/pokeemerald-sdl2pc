@@ -486,7 +486,7 @@ static void StatsChangeAnimation_Step2(u8 taskId)
     else
         AnimLoadCompressedBgTilemapHandleContest(&animBgData, gStatAnim_Decrease_Tilemap, FALSE);
 
-    AnimLoadCompressedBgGfx(animBgData.bgId, gStatAnim_Gfx, animBgData.tilesOffset);
+    AnimLoadCompressedBgGfx(animBgData.bgId, gStatAnim_Gfx, BG_CHAR_4BPP_TILE_COUNT);
     switch (sAnimStatsChangeData->aAnimStatId)
     {
     case STAT_ANIM_PAL_ATK:
