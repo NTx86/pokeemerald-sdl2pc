@@ -45,8 +45,8 @@ struct WeatherCallbacks
 static bool8 LightenSpritePaletteInFog(u8);
 static void BuildColorMaps(void);
 static void UpdateWeatherColorMap(void);
-static void ApplyColorMap(u8 startPalIndex, u8 numPalettes, s8 colorMapIndex);
-static void ApplyColorMapWithBlend(u8 startPalIndex, u8 numPalettes, s8 colorMapIndex, u8 blendCoeff, u16 blendColor);
+static void ApplyColorMap(u32 startPalIndex, u32 numPalettes, s8 colorMapIndex, u32 plttOffset);
+static void ApplyColorMapWithBlend(u32 startPalIndex, u32 numPalettes, s8 colorMapIndex, u32 plttOffset, u8 blendCoeff, u16 blendColor);
 static void ApplyDroughtColorMapWithBlend(s8 colorMapIndex, u8 blendCoeff, u16 blendColor);
 static void ApplyFogBlend(u8 blendCoeff, u16 blendColor);
 static bool8 FadeInScreen_RainShowShade(void);
@@ -364,7 +364,7 @@ static void UpdateWeatherColorMap(void)
                 else
                     gWeatherPtr->colorMapIndex--;
 
-                ApplyColorMap(0, 32, gWeatherPtr->colorMapIndex);
+                ApplyColorMap(0, 32, gWeatherPtr->colorMapIndex, 0);
             }
         }
     }
@@ -423,12 +423,14 @@ static bool8 FadeInScreen_RainShowShade(void)
 
     if (++gWeatherPtr->fadeScreenCounter >= 16)
     {
-        ApplyColorMap(0, 32, 3);
+        ApplyColorMap(0, 16, 3, 0);
+        ApplyColorMap(16, 16, 3, PLTT_NUM_OF_PALS_IN_BG);
         gWeatherPtr->fadeScreenCounter = 16;
         return FALSE;
     }
 
-    ApplyColorMapWithBlend(0, 32, 3, 16 - gWeatherPtr->fadeScreenCounter, gWeatherPtr->fadeDestColor);
+    ApplyColorMapWithBlend(0, 16, 3, 0, 16 - gWeatherPtr->fadeScreenCounter, gWeatherPtr->fadeDestColor);
+    ApplyColorMapWithBlend(16, 16, 3, PLTT_NUM_OF_PALS_IN_BG, 16 - gWeatherPtr->fadeScreenCounter, gWeatherPtr->fadeDestColor);
     return TRUE;
 }
 
@@ -439,7 +441,7 @@ static bool8 FadeInScreen_Drought(void)
 
     if (++gWeatherPtr->fadeScreenCounter >= 16)
     {
-        ApplyColorMap(0, 32, -6);
+        ApplyColorMap(0, 32, -6, 0);
         gWeatherPtr->fadeScreenCounter = 16;
         return FALSE;
     }
@@ -461,17 +463,17 @@ static bool8 FadeInScreen_FogHorizontal(void)
 static void DoNothing(void)
 { }
 
-static void ApplyColorMap(u8 startPalIndex, u8 numPalettes, s8 colorMapIndex)
+static void ApplyColorMap(u32 startPalIndex, u32 numPalettes, s8 colorMapIndex, u32 plttOffset)
 {
-    u16 curPalIndex;
-    u16 palOffset;
+    u32 curPalIndex;
+    u32 palOffset;
     u8 *colorMap;
     u16 i;
 
     if (colorMapIndex > 0)
     {
         colorMapIndex--;
-        palOffset = PLTT_ID(startPalIndex);
+        palOffset = PLTT_ID(plttOffset);
         numPalettes += startPalIndex;
         curPalIndex = startPalIndex;
 
@@ -542,7 +544,7 @@ static void ApplyColorMap(u8 startPalIndex, u8 numPalettes, s8 colorMapIndex)
     }
 }
 
-static void ApplyColorMapWithBlend(u8 startPalIndex, u8 numPalettes, s8 colorMapIndex, u8 blendCoeff, u16 blendColor)
+static void ApplyColorMapWithBlend(u32 startPalIndex, u32 numPalettes, s8 colorMapIndex, u32 plttOffset, u8 blendCoeff, u16 blendColor)
 {
     u16 palOffset;
     u16 curPalIndex;
@@ -552,7 +554,7 @@ static void ApplyColorMapWithBlend(u8 startPalIndex, u8 numPalettes, s8 colorMap
     u8 gBlend = color.g;
     u8 bBlend = color.b;
 
-    palOffset = PLTT_ID(startPalIndex);
+    palOffset = PLTT_ID(plttOffset);
     numPalettes += startPalIndex;
     colorMapIndex--;
     curPalIndex = startPalIndex;
@@ -684,7 +686,7 @@ static void ApplyFogBlend(u8 blendCoeff, u16 blendColor)
                 g += ((gBlend - g) * blendCoeff) >> 4;
                 b += ((bBlend - b) * blendCoeff) >> 4;
 
-                gPlttBufferFaded[palOffset] = RGB2(r, g, b);
+                //gPlttBufferFaded[palOffset] = RGB2(r, g, b);
                 palOffset++;
             }
         }
@@ -721,7 +723,7 @@ void ApplyWeatherColorMapIfIdle(s8 colorMapIndex)
 {
     if (gWeatherPtr->palProcessingState == WEATHER_PAL_STATE_IDLE)
     {
-        ApplyColorMap(0, 32, colorMapIndex);
+        ApplyColorMap(0, 32, colorMapIndex, 0);
         gWeatherPtr->colorMapIndex = colorMapIndex;
     }
 }
@@ -839,7 +841,7 @@ void UpdateSpritePaletteWithWeather(u8 spritePaletteIndex)
     default:
         if (gWeatherPtr->currWeather != WEATHER_FOG_HORIZONTAL)
         {
-            ApplyColorMap(paletteIndex, 1, gWeatherPtr->colorMapIndex);
+            ApplyColorMap(paletteIndex, 1, gWeatherPtr->colorMapIndex, 0);
         }
         else
         {
@@ -852,7 +854,7 @@ void UpdateSpritePaletteWithWeather(u8 spritePaletteIndex)
 
 void ApplyWeatherColorMapToPal(u8 paletteIndex)
 {
-    ApplyColorMap(paletteIndex, 1, gWeatherPtr->colorMapIndex);
+    ApplyColorMap(paletteIndex, 1, gWeatherPtr->colorMapIndex, 0);
 }
 
 static bool8 UNUSED IsFirstFrameOfWeatherFadeIn(void)
