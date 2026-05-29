@@ -66,6 +66,7 @@ SDL_Renderer *sdlRenderer;
 SDL_Texture *sdlTexture;
 bool speedUp = false;
 bool fullscreenEnabled = false;
+bool disableAutoScale = false;
 unsigned int videoScale = 1;
 bool videoScaleChanged = false;
 bool recenterWindow = false;
@@ -422,6 +423,20 @@ int main(int argc, char **argv)
             SDL_SetWindowFullscreen(sdlWindow, SDL_WINDOW_FULLSCREEN_DESKTOP);
             fullscreenEnabled = true;
         }
+
+        if (strcmp(argv[i], "--disableautoscale") == 0)
+        {
+            disableAutoScale = true;
+        }
+
+        //todo: make this not hardcoded
+        if (strcmp(argv[i], "--videoscale2x") == 0) videoScale = 2;
+        if (strcmp(argv[i], "--videoscale3x") == 0) videoScale = 3;
+        if (strcmp(argv[i], "--videoscale4x") == 0) videoScale = 4;
+        if (strcmp(argv[i], "--videoscale5x") == 0) videoScale = 5;
+        if (strcmp(argv[i], "--videoscale6x") == 0) videoScale = 6;
+        if (strcmp(argv[i], "--videoscale7x") == 0) videoScale = 7;
+        if (strcmp(argv[i], "--videoscale8x") == 0) videoScale = 8;
     }
 
     simTime = curGameTime = lastGameTime = SDL_GetPerformanceCounter();
@@ -612,7 +627,7 @@ static void CloseSaveFile()
 
 static void SetVideoScale(int scale)
 {
-    if (scale < 1 || scale > 4)
+    if (scale < 1 || scale > 8)
         return;
 
     videoScale = scale;
@@ -745,10 +760,10 @@ void ProcessEvents(void)
                     }
                 }
                 break;
-            case SDLK_KP_MINUS:
+            case SDLK_i:
                 SetVideoScale(videoScale - 1);
                 break;
-            case SDLK_KP_PLUS:
+            case SDLK_o:
                 SetVideoScale(videoScale + 1);
                 break;
             case SDLK_F12:
@@ -757,6 +772,9 @@ void ProcessEvents(void)
                 else
                     SDL_SetWindowFullscreen(sdlWindow, 0);
                 fullscreenEnabled = !fullscreenEnabled;
+                break;
+            case SDLK_u:
+                disableAutoScale = !disableAutoScale;
                 break;
             default: {
                 int key = event.key.keysym.sym;
@@ -799,7 +817,8 @@ void ProcessEvents(void)
                 scaleW = w / BASE_DISPLAY_WIDTH;
                 scaleH = h / BASE_DISPLAY_HEIGHT;
 
-                videoScale = scaleW < scaleH ? scaleW : scaleH;
+                if (!disableAutoScale)
+                    videoScale = scaleW < scaleH ? scaleW : scaleH;
 
                 w /= videoScale;
                 h /= videoScale;
