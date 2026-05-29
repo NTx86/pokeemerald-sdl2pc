@@ -65,6 +65,7 @@ SDL_Window *sdlWindow;
 SDL_Renderer *sdlRenderer;
 SDL_Texture *sdlTexture;
 bool speedUp = false;
+bool fullscreenEnabled = false;
 unsigned int videoScale = 1;
 bool videoScaleChanged = false;
 bool recenterWindow = false;
@@ -414,6 +415,15 @@ int main(int argc, char **argv)
         return 1;
     }
 
+    for (int i = 0; i < argc; i++)
+    {
+        if (strcmp(argv[i], "--fullscreen") == 0)
+        {
+            SDL_SetWindowFullscreen(sdlWindow, SDL_WINDOW_FULLSCREEN_DESKTOP);
+            fullscreenEnabled = true;
+        }
+    }
+
     simTime = curGameTime = lastGameTime = SDL_GetPerformanceCounter();
 
     InitAudio();
@@ -740,6 +750,13 @@ void ProcessEvents(void)
                 break;
             case SDLK_KP_PLUS:
                 SetVideoScale(videoScale + 1);
+                break;
+            case SDLK_F12:
+                if (!fullscreenEnabled)
+                    SDL_SetWindowFullscreen(sdlWindow, SDL_WINDOW_FULLSCREEN_DESKTOP);
+                else
+                    SDL_SetWindowFullscreen(sdlWindow, 0);
+                fullscreenEnabled = !fullscreenEnabled;
                 break;
             default: {
                 int key = event.key.keysym.sym;
