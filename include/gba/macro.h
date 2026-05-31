@@ -1,8 +1,9 @@
 #ifndef GUARD_GBA_MACRO_H
 #define GUARD_GBA_MACRO_H
+#include "platform/nostd.h"
 
-#define CpuFill16(value, dest, size) memset(dest, value, size)
-#define CpuFill32(value, dest, size) memset(dest, value, size)
+#define CpuFill16(value, dest, size) memset16(dest, value, size)
+#define CpuFill32(value, dest, size) memset32(dest, value, size)
 
 #define CpuCopy8(src, dest, size) memcpy(dest, src, size)
 #define CpuCopy16(src, dest, size) memcpy(dest, src, size)
