@@ -1982,6 +1982,7 @@ void CB2_ContinueSavedGame(void)
     }
     else
     {
+        gScriptLocation = gSaveBlock1Ptr->location;
         TryPutTodaysRivalTrainerOnAir();
         gFieldCallback = FieldCB_FadeTryShowMapPopup;
         SetMainCallback1(CB1_Overworld);
