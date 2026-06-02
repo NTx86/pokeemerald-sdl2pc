@@ -282,8 +282,6 @@ static u32 LoopedTask_OpenConditionGraphMenu(s32 state)
         UpdateConditionGraphMenuWindows(2, GetConditionGraphMenuCurrentLoadIndex(), TRUE);
         return LT_INC_AND_PAUSE;
     case 13:
-        if (UpdateConditionGraphMenuWindows(3, GetConditionGraphMenuCurrentLoadIndex(), TRUE) != TRUE)
-            return LT_PAUSE;
         PutWindowTilemap(menu->nameGenderWindowId);
         if (IsConditionMenuSearchMode() == TRUE)
         {
@@ -291,6 +289,7 @@ static u32 LoopedTask_OpenConditionGraphMenu(s32 state)
             PutWindowTilemap(menu->unusedWindowId1);
             PutWindowTilemap(menu->unusedWindowId2);
         }
+        UpdateConditionGraphMenuWindows(3, GetConditionGraphMenuCurrentLoadIndex(), TRUE);
         return LT_INC_AND_PAUSE;
     case 14:
         ShowBg(1);
