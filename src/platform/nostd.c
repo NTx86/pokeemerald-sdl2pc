@@ -1,4 +1,6 @@
 #include <stddef.h>
+#include <stdint.h>
+
 #ifdef NO_STD_LIB_ENABLED
 
 //memcpy and memset taken from libgcc
@@ -44,8 +46,8 @@ int strcmp (const char* str1, const char* str2)
 
 void* memset16(void *dest, int val, size_t len)
 {
-    unsigned short *ptr = dest;
-    int len16 = len / 2;
+    uint16_t *ptr = dest;
+    size_t len16 = len / 2;
 
     while (len16-- > 0)
         *ptr++ = val;
@@ -54,8 +56,8 @@ void* memset16(void *dest, int val, size_t len)
 
 void* memset32(void *dest, int val, size_t len)
 {
-    unsigned short *ptr = dest;
-    int len32 = len / 4;
+    uint32_t *ptr = dest;
+    size_t len32 = len / 4;
 
     while (len32-- > 0)
         *ptr++ = val;

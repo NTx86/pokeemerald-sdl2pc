@@ -1,5 +1,6 @@
 #include "global.h"
 #include "dma3.h"
+#include "platform/nostd.h"
 
 // #define DMA3_DEBUG
 
@@ -22,7 +23,10 @@ s16 RequestDma3Fill(s32 value, void *dest, size_t size, u8 mode)
 #endif
 
     // Just fill it. Who cares?
-    (void)mode;
-    memset(dest, value, size);
+    if(mode == 1)
+        memset32(dest, value, size);
+    else
+        memset16(dest, (u16)value, size);
+
     return 1;
 }

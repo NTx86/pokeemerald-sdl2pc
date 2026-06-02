@@ -1916,7 +1916,7 @@ void ResetBgPositions(void)
 void BgDmaFill(u32 bg, u8 value, int offset, int size)
 {
     int temp = (!GetBgAttribute(bg, BG_ATTR_PALETTEMODE)) ? 32 : 64;
-    uintptr_t addr = ((GetBgAttribute(bg, BG_ATTR_CHARBASEINDEX) * 0x4000) + (GetBgAttribute(bg, BG_ATTR_BASETILE) + offset) * temp);
+    uintptr_t addr = ((GetBgAttribute(bg, BG_ATTR_CHARBASEINDEX) * BG_CHAR_SIZE) + (GetBgAttribute(bg, BG_ATTR_BASETILE) + offset) * temp);
     RequestDma3Fill(value << 24 | value << 16 | value << 8 | value, gpu.gfxData + addr, size * temp, 1);
 }
 
