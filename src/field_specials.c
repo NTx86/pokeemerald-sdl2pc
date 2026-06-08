@@ -634,9 +634,9 @@ void MauvilleGymSetDefaultBarriers(void)
 {
     int x, y;
     // All switches/barriers are within these coord ranges
-    for (y = 5 + MAP_OFFSET; y < 17 + MAP_OFFSET_Y; y++)
+    for (y = 5 + MAP_OFFSET_Y; y < 17 + MAP_OFFSET_Y; y++)
     {
-        for (x = 0 + MAP_OFFSET; x < 9 + MAP_OFFSET_Y; x++)
+        for (x = 0 + MAP_OFFSET; x < 9 + MAP_OFFSET; x++)
         {
             switch (MapGridGetMetatileIdAt(x, y))
             {
