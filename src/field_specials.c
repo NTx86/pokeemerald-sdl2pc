@@ -733,9 +733,9 @@ void MauvilleGymDeactivatePuzzle(void)
         MapGridSetMetatileIdAt(switchCoords->x, switchCoords->y, METATILE_MauvilleGym_PressedSwitch);
         switchCoords++;
     }
-    for (y = 5 + MAP_OFFSET; y < 17 + MAP_OFFSET_Y; y++)
+    for (y = 5 + MAP_OFFSET_Y; y < 17 + MAP_OFFSET_Y; y++)
     {
-        for (x = 0 + MAP_OFFSET; x < 9 + MAP_OFFSET_Y; x++)
+        for (x = 0 + MAP_OFFSET; x < 9 + MAP_OFFSET; x++)
         {
             switch (MapGridGetMetatileIdAt(x, y))
             {
