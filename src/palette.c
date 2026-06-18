@@ -443,7 +443,7 @@ static u8 UpdateNormalPaletteFade(void)
         }
 
         //check if we are blending BGs and selected all of them
-        if (!gPaletteFade.objPaletteToggle && selectedPalettes & 0xFFFF)
+        if (!gPaletteFade.objPaletteToggle && (selectedPalettes & 0xFFFF) == 0xFFFF)
         {
             //extended palette workaround: since there aren't enough bits in selectedPalettes for extpals we just have to blend all of them if all 16 are selected
             BlendPalette(
