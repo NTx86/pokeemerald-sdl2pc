@@ -1183,15 +1183,15 @@ static void Task_Scene1_Load(u8 taskId)
 
     ClearGpuBackgroundState(3);
     SetGpuBackgroundPriority(3, 3);
-    SetGpuBackgroundScreenBaseBlock(0, 22);
+    SetGpuBackgroundScreenBaseBlock(3, 22);
     SetGpuBackgroundWidth(3, 256);
     SetGpuBackgroundHeight(3, 512);
 
     ClearGpuBackgroundState(2);
     SetGpuBackgroundPriority(2, 2);
     SetGpuBackgroundScreenBaseBlock(2, 20);
-    SetGpuBackgroundWidth(3, 256);
-    SetGpuBackgroundHeight(3, 512);
+    SetGpuBackgroundWidth(2, 256);
+    SetGpuBackgroundHeight(2, 512);
 
     ClearGpuBackgroundState(1);
     SetGpuBackgroundPriority(1, 1);
