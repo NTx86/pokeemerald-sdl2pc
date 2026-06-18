@@ -1863,7 +1863,7 @@ static void Task_Scene3_NarrowWindow(u8 taskId)
     if (gTasks[taskId].tWinPos != NARROW_HEIGHT)
     {
         gTasks[taskId].tWinPos += 4;
-        SetGpuWindowY(0, (gTasks[taskId].tWinPos * 256) - (gTasks[taskId].tWinPos - DisplayHeight()));
+        SetGpuWindowY(0, WIN_RANGE(gTasks[taskId].tWinPos, DisplayHeight() - gTasks[taskId].tWinPos));
     }
     else
     {
