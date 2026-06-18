@@ -1193,3 +1193,10 @@ bool32 IsTileMapOutsideWram(u8 bg)
 {
     return sGpuBgConfigs2[bg].tilemap == NULL;
 }
+
+//To fix up tilemaps that expect screenBase to be 0x800 bytes long, For 256x512 or 512x256 use count 2 for 512x512 use count 4
+void ConvertGBAScreenBasesToNewScreenBases(u8 screenBase, u8 count)
+{
+    for (int i = 1; i < count; i++)
+        memcpy((void *)BG_SCREEN_ADDR(screenBase+i), (void *)BG_SCREEN_ADDR(screenBase)+(GBA_BG_SCREEN_SIZE*i), GBA_BG_SCREEN_SIZE);
+}

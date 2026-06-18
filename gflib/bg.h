@@ -96,5 +96,6 @@ u32 GetTileMapIndexFromCoords(u8 bg, s32 x, s32 y, u32 screenWidth, u32 screenHe
 void CopyTileMapEntry(const u16 *src, u16 *dest, s32 palette1, s32 tileOffset, s32 palette2);
 bool32 IsInvalidBg32(u8 bg);
 bool32 IsTileMapOutsideWram(u8 bg);
+void ConvertGBAScreenBasesToNewScreenBases(u8 screenBase, u8 count);
 
 #endif // GUARD_BG_H

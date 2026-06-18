@@ -748,6 +748,7 @@ void LoadIntroPart2Graphics(u8 scenery)
     case 1:
         LZ77UnCompVram(sTrees_Gfx, (void *)(gpu.gfxData));
         LZ77UnCompVram(sTrees_Tilemap, (void *)(BG_SCREEN_ADDR(6)));
+        ConvertGBAScreenBasesToNewScreenBases(6, 2);
         LoadPalette(&sTrees_Pal, BG_PLTT_ID(0), sizeof(sTrees_Pal));
         LoadCompressedSpriteSheet(sSpriteSheet_TreesSmall);
         LoadPalette(&sTreesSmall_Pal, OBJ_PLTT_ID(0), sizeof(sTreesSmall_Pal));
