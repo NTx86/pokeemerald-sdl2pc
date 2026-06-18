@@ -26,7 +26,6 @@
 #include "constants/rgb.h"
 #include "constants/battle_anim.h"
 #include "gpu_main.h"
-#include "bg.h"
 
 /*
     The intro is grouped into the following scenes
@@ -1807,7 +1806,6 @@ static void Task_Scene3_LoadGroudon(u8 taskId)
         gReservedSpritePaletteCount = 8;
         LZDecompressVram(gIntroGroudon_Gfx, gpu.gfxData);
         LZDecompressVram(gIntroGroudon_Tilemap, (void *)(BG_SCREEN_ADDR(24)));
-        ConvertGBAScreenBasesToNewScreenBases(24, 4);
         LZDecompressVram(gIntroLegendBg_Gfx, (void *)(BG_CHAR_ADDR(1)));
         LZDecompressVram(gIntroGroudonBg_Tilemap, (void *)(BG_SCREEN_ADDR(28)));
         LoadCompressedSpriteSheetUsingHeap(&gBattleAnimPicTable[GET_TRUE_SPRITE_INDEX(ANIM_TAG_ROCKS)]);
@@ -2084,7 +2082,6 @@ static void Task_Scene3_LoadKyogre(u8 taskId)
     ResetSpriteData();
     LZDecompressVram(gIntroKyogre_Gfx, gpu.gfxData);
     LZDecompressVram(gIntroKyogre_Tilemap, (void *)(BG_SCREEN_ADDR(24)));
-    ConvertGBAScreenBasesToNewScreenBases(24, 4);
     LZDecompressVram(gIntroKyogreBg_Tilemap, (void *)(BG_SCREEN_ADDR(28)));
     LoadCompressedSpriteSheet(sSpriteSheet_Bubbles);
     LoadSpritePalette(sSpritePalette_Bubbles);
@@ -2419,8 +2416,6 @@ static void Task_Scene3_LoadClouds2(u8 taskId)
 {
     LZDecompressVram(gIntroCloudsLeft_Tilemap, (void *)(BG_SCREEN_ADDR(24)));
     LZDecompressVram(gIntroCloudsRight_Tilemap, (void *)(BG_SCREEN_ADDR(26)));
-    ConvertGBAScreenBasesToNewScreenBases(24, 2);
-    ConvertGBAScreenBasesToNewScreenBases(26, 2);
     gTasks[taskId].func = Task_Scene3_InitClouds;
 }
 
@@ -2480,7 +2475,6 @@ static void Task_Scene3_LoadLightning(u8 taskId)
 {
     LZDecompressVram(gIntroRayquaza_Tilemap, (void *)(BG_SCREEN_ADDR(28)));
     LZDecompressVram(gIntroRayquazaClouds_Tilemap, (void *)(BG_SCREEN_ADDR(24)));
-    ConvertGBAScreenBasesToNewScreenBases(24, 2);
     LZDecompressVram(gIntroRayquaza_Gfx, (void *)(BG_CHAR_ADDR(1)));
     LZDecompressVram(gIntroRayquazaClouds_Gfx, gpu.gfxData);
     SetGpuState(GPU_STATE_DISPCNT, DISPCNT_MODE_0
