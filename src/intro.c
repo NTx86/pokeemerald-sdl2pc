@@ -1745,7 +1745,7 @@ static void SpriteCB_Manectric(struct Sprite *sprite)
 static void Task_Scene3_Load(u8 taskId)
 {
     IntroResetGpuRegs();
-    SetGpuState(GPU_STATE_DISPCNT, DISPCNT_MODE_1 | DISPCNT_OBJ_1D_MAP | DISPCNT_BG2_ON | DISPCNT_OBJ_ON);
+    SetGpuState(GPU_STATE_DISPCNT, DISPCNT_MODE_1 | DISPCNT_OBJ_1D_MAP | DISPCNT_BG2_ON | DISPCNT_OBJ_ON | DISPCNT_GBA_MODE);
     LZ77UnCompVram(sIntroPokeball_Gfx, gpu.gfxData);
     LZ77UnCompVram(sIntroPokeball_Tilemap, (void *)(BG_SCREEN_ADDR(8)));
     LoadPalette(sIntroPokeball_Pal, BG_PLTT_ID(0), sizeof(sIntroPokeball_Pal));
@@ -1764,7 +1764,7 @@ static void Task_Scene3_Load(u8 taskId)
     gTasks[taskId].func = Task_Scene3_SpinPokeball;
     gIntroFrameCounter = 0;
     m4aSongNumStart(MUS_INTRO_BATTLE);
-    SetBorder(GAME_BORDER_INTRO_3);
+    SetBorder(GAME_BORDER_OVERLAY);
 }
 
 static void Task_Scene3_SpinPokeball(u8 taskId)
@@ -1852,6 +1852,7 @@ static void Task_Scene3_InitGroudonBg(u8 taskId)
     gTasks[taskId].tZoom = 0x100;
     PanFadeAndZoomScreen(gTasks[taskId].tScreenX, gTasks[taskId].tScreenY, gTasks[taskId].tZoom, 0);
     gTasks[taskId].func = Task_Scene3_NarrowWindow;
+    SetBorder(GAME_BORDER_INTRO_3);
 }
 
 // Before the Groudon scene starts, the black top/bottom edges of the screen
