@@ -132,7 +132,7 @@ static void InitBackupMapLayoutData(const u16 *map, u16 width, u16 height)
     u32 *dest, *destStart;
     s32 y;
     dest = gBackupMapLayout.map;
-    dest += gBackupMapLayout.width * MAP_OFFSET + MAP_OFFSET;
+    dest += gBackupMapLayout.width * MAP_OFFSET_Y + MAP_OFFSET;
     for (y = 0; y < height; y++)
     {
         for (destStart = dest; dest != &destStart[width]; dest++, map++)
