@@ -141,12 +141,12 @@ int main(int argc, char **argv)
 
         if (!paused)
         {
-            double dt = fixedTimestep / timeScale; // TODO: Fix speedup
+            double dt = fixedTimestep / timeScale;
 
             curGameTime = SDL_GetPerformanceCounter();
             double deltaTime = (double)((curGameTime - lastGameTime) / (double)SDL_GetPerformanceFrequency());
-            if (deltaTime > (dt * 5))
-                deltaTime = dt;
+            if (deltaTime > (fixedTimestep * 5))
+                deltaTime = fixedTimestep * 5;
             lastGameTime = curGameTime;
 
             accumulator += deltaTime;
@@ -259,6 +259,11 @@ void Platform_QueueAudio(float *audioBuffer, s32 samplesPerFrame)
     SDL_QueueAudio(1, audioBuffer, samplesPerFrame);
 }
 
+static void ResetAudioQueue(void)
+{
+    SDL_ClearQueuedAudio(1);
+}
+
 
 static void CloseSaveFile()
 {
@@ -317,8 +322,7 @@ void ProcessEvents(void)
                 {
                     speedUp = false;
                     timeScale = 1.0;
-                    SDL_ClearQueuedAudio(1);
-                    SDL_PauseAudio(0);
+                    ResetAudioQueue();
                 }
                 break;
             }
@@ -353,7 +357,7 @@ void ProcessEvents(void)
                 {
                     speedUp = true;
                     timeScale = 5.0;
-                    SDL_PauseAudio(1);
+                    ResetAudioQueue();
                 }
                 break;
             }
@@ -422,12 +426,11 @@ u16 GetXInputKeys()
         {
             if (timeScale > 1.0)
             {
-                SDL_PauseAudio(1);
+                ResetAudioQueue();
             }
             else
             {
-                SDL_ClearQueuedAudio(1);
-                SDL_PauseAudio(0);
+                ResetAudioQueue();
             }
         }
     }

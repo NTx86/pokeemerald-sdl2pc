@@ -8,6 +8,10 @@
 #define MIXER_LOCKED PLAYER_UNLOCKED+1
 
 struct MP2KPlayerState;
+struct MixerSource;
+
+bool32 IsBgmChannel(struct MixerSource *chan);
+bool32 ShouldAdvanceBgm(void);
 
 struct MixerSource {
     u8 status;
@@ -109,6 +113,7 @@ struct SoundMixerState {
     void *reserved5;
     struct MixerSource chans[MAX_SAMPLE_CHANNELS];
     __attribute__((aligned(4))) float outBuffer[MIXED_AUDIO_BUFFER_SIZE * 2];
+    __attribute__((aligned(4))) float sfxBuffer[MIXED_AUDIO_BUFFER_SIZE * 2];
     //s8 outBuffer[MIXED_AUDIO_BUFFER_SIZE * 2];
 };
 

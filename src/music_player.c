@@ -14,6 +14,23 @@ extern const u8 gScaleTable[];
 extern const u32 gFreqTable[];
 extern const u8 gClockTable[];
 float audioBuffer [MIXED_AUDIO_BUFFER_SIZE];
+static float fastMusicBuffer[MIXED_AUDIO_BUFFER_SIZE];
+static float fastSfxBuffer[MIXED_AUDIO_BUFFER_SIZE];
+static u16 fastAudioFrame;
+static u16 fastSfxOutputFrame;
+static u8 fastSfxPhase;
+static bool8 fastAudioActive;
+
+bool32 IsBgmChannel(struct MixerSource *chan)
+{
+    return chan->track >= (struct MP2KTrack *)gMPlayInfo_BGM.tracks
+        && chan->track < (struct MP2KTrack *)gMPlayInfo_BGM.tracks + gMPlayInfo_BGM.trackCount;
+}
+
+bool32 ShouldAdvanceBgm(void)
+{
+    return timeScale <= 1.0 || !fastAudioActive || fastAudioFrame == 0;
+}
 
 u32 umul3232H32(u32 a, u32 b) {
     u64 result = a;
@@ -354,12 +371,16 @@ void MP2KPlayerMain(void *voidPtrPlayer) {
     if (player->nextPlayerFunc != NULL) {
         player->nextPlayerFunc(player->nextPlayer);
     }
-    
+
     if (player->status & MUSICPLAYER_STATUS_PAUSE) {
         goto returnEarly;
     }
     FadeOutBody(voidPtrPlayer);
     if (player->status & MUSICPLAYER_STATUS_PAUSE) {
+        goto returnEarly;
+    }
+
+    if (player == (struct MP2KPlayerState *)&gMPlayInfo_BGM && !ShouldAdvanceBgm()) {
         goto returnEarly;
     }
     
@@ -752,15 +773,66 @@ void m4aSoundVSync(void)
     {
         s32 samplesPerFrame = mixer->samplesPerFrame * 2;
         float *m4aBuffer = mixer->outBuffer;
+        float *sfxBuffer = mixer->sfxBuffer;
         float *cgbBuffer = cgb_get_buffer();
         s32 dmaCounter = mixer->dmaCounter;
 
         if (dmaCounter > 1) {
             m4aBuffer += samplesPerFrame * (mixer->framesPerDmaCycle - (dmaCounter - 1));
+            sfxBuffer += samplesPerFrame * (mixer->framesPerDmaCycle - (dmaCounter - 1));
         }
 
-        for(u32 i = 0; i < samplesPerFrame; i++)
-            audioBuffer[i] = m4aBuffer[i] + cgbBuffer[i];
+        if (timeScale <= 1.0)
+        {
+            fastAudioActive = FALSE;
+            for(u32 i = 0; i < samplesPerFrame; i++)
+                audioBuffer[i] = m4aBuffer[i] + cgbBuffer[i] + sfxBuffer[i];
+        }
+        else
+        {
+            s32 inputFrames = samplesPerFrame / 2;
+
+            if (!fastAudioActive)
+            {
+                fastAudioActive = TRUE;
+                fastAudioFrame = 0;
+                fastSfxOutputFrame = 0;
+                fastSfxPhase = 0;
+            }
+            
+            if (ShouldAdvanceBgm())
+            {
+                for (u32 i = 0; i < samplesPerFrame; i++)
+                    fastMusicBuffer[i] = m4aBuffer[i] + cgbBuffer[i];
+            }
+
+            for (s32 inputFrame = 0; inputFrame < inputFrames; inputFrame++)
+            {
+                if (fastSfxPhase == 0)
+                {
+                    fastSfxBuffer[fastSfxOutputFrame * 2] = sfxBuffer[inputFrame * 2];
+                    fastSfxBuffer[fastSfxOutputFrame * 2 + 1] = sfxBuffer[inputFrame * 2 + 1];
+                    fastSfxOutputFrame++;
+                }
+                fastSfxPhase = (fastSfxPhase + 1) % 5;
+            }
+
+            if((s8)(--mixer->dmaCounter) <= 0)
+                mixer->dmaCounter = mixer->framesPerDmaCycle;
+
+            fastAudioFrame++;
+            if (fastAudioFrame == 5)
+            {
+                for (u32 i = 0; i < samplesPerFrame; i++)
+                    audioBuffer[i] = fastMusicBuffer[i] + fastSfxBuffer[i];
+                fastAudioFrame = 0;
+                fastSfxOutputFrame = 0;
+                fastSfxPhase = 0;
+                Platform_QueueAudio(audioBuffer, samplesPerFrame * 4);
+                return;
+            }
+            return;
+        }
 
         Platform_QueueAudio(audioBuffer, samplesPerFrame * 4);
         if((s8)(--mixer->dmaCounter) <= 0)

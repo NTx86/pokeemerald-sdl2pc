@@ -3,6 +3,9 @@
 
 #ifdef PORTABLE
     #include "cgb_audio.h"
+
+typedef char SoundMixerStateMustMatchSoundInfo[
+    sizeof(struct SoundMixerState) == sizeof(struct SoundInfo) ? 1 : -1];
 #endif
 
 extern const u8 gCgb3Vol[];

@@ -10,10 +10,9 @@
 #define VCOUNT_VBLANK 160
 #define TOTAL_SCANLINES 228
 
-
 static inline void GenerateAudio(struct SoundMixerState *mixer, struct MixerSource *chan, struct WaveData2 *wav, float *outBuffer, u16 samplesPerFrame, float sampleRateReciprocal);
-void SampleMixer(struct SoundMixerState *mixer, u32 scanlineLimit, u16 samplesPerFrame, float *outBuffer, u8 dmaCounter, u16 maxBufSize);
 static inline bool32 TickEnvelope(struct MixerSource *chan, struct WaveData2 *wav);
+void SampleMixer(struct SoundMixerState *mixer, u32 scanlineLimit, u16 samplesPerFrame, float *musicBuffer, float *sfxBuffer, u8 dmaCounter, u16 maxBufSize);
 void GeneratePokemonSampleAudio(struct SoundMixerState *mixer, struct MixerSource *chan, s8 *current, float *outBuffer, u16 samplesPerFrame, float sampleRateReciprocal, s32 samplesLeftInWav, signed envR, signed envL, s32 loopLen);
 static s8 sub_82DF758(struct MixerSource *chan, u32 current);
 
@@ -38,54 +37,64 @@ void RunMixerFrame(void) {
         mixer->firstPlayerFunc(mixer->firstPlayer);
     }
     
-    mixer->cgbMixerFunc();
+    if (ShouldAdvanceBgm()) {
+        mixer->cgbMixerFunc();
+    }
     
     s32 samplesPerFrame = mixer->samplesPerFrame;
-    float *outBuffer = mixer->outBuffer;
+    float *musicBuffer = mixer->outBuffer;
+    float *sfxBuffer = mixer->sfxBuffer;
     s32 dmaCounter = mixer->dmaCounter;
     
     if (dmaCounter > 1) {
-        outBuffer += samplesPerFrame * (mixer->framesPerDmaCycle - (dmaCounter - 1)) * 2;
+        musicBuffer += samplesPerFrame * (mixer->framesPerDmaCycle - (dmaCounter - 1)) * 2;
+        sfxBuffer += samplesPerFrame * (mixer->framesPerDmaCycle - (dmaCounter - 1)) * 2;
     }
     
     //MixerRamFunc mixerRamFunc = ((MixerRamFunc)MixerCodeBuffer);
-    SampleMixer(mixer, maxScanlines, samplesPerFrame, outBuffer, dmaCounter, MIXED_AUDIO_BUFFER_SIZE);
+    SampleMixer(mixer, maxScanlines, samplesPerFrame, musicBuffer, sfxBuffer, dmaCounter, MIXED_AUDIO_BUFFER_SIZE);
     #ifdef PORTABLE
-        cgb_audio_generate(samplesPerFrame);
+        if (ShouldAdvanceBgm()) {
+            cgb_audio_generate(samplesPerFrame);
+        }
     #endif
 }
 
 
 
 //__attribute__((target("thumb")))
-void SampleMixer(struct SoundMixerState *mixer, u32 scanlineLimit, u16 samplesPerFrame, float *outBuffer, u8 dmaCounter, u16 maxBufSize) {
+void SampleMixer(struct SoundMixerState *mixer, u32 scanlineLimit, u16 samplesPerFrame, float *musicBuffer, float *sfxBuffer, u8 dmaCounter, u16 maxBufSize) {
     u32 reverb = mixer->reverb;
-    if (reverb) {
-        // The vanilla reverb effect outputs a mono sound from four sources:
-        //  - L/R channels as they were mixer->framesPerDmaCycle frames ago
-        //  - L/R channels as they were (mixer->framesPerDmaCycle - 1) frames ago
-        float *tmp1 = outBuffer;
-        float *tmp2;
-        if (dmaCounter == 2) {
-            tmp2 = mixer->outBuffer;
-        } else {
-            tmp2 = outBuffer + samplesPerFrame * 2;
-        }
-        uf16 i = 0;
-        do {
-            float s = tmp1[0] + tmp1[1] + tmp2[0] + tmp2[1];
-            s *= ((float)reverb / 512.0f);
-            tmp1[0] = tmp1[1] = s;
-            tmp1+=2;
-            tmp2+=2;
-        }
-        while(++i < samplesPerFrame);
-    } else {
-        // memset(outBuffer, 0, samplesPerFrame);
-        // memset(outBuffer + maxBufSize, 0, samplesPerFrame);
-        for (int i = 0; i < samplesPerFrame; i++) {
-            float *dst = &outBuffer[i*2];
-            dst[1] = dst[0] = 0.0f;
+    float *buffers[] = { musicBuffer, sfxBuffer };
+    for (u8 bufferId = 0; bufferId < 2; bufferId++) {
+        float *outBuffer = buffers[bufferId];
+        if (reverb) {
+            // The vanilla reverb effect outputs a mono sound from four sources:
+            //  - L/R channels as they were mixer->framesPerDmaCycle frames ago
+            //  - L/R channels as they were (mixer->framesPerDmaCycle - 1) frames ago
+            float *tmp1 = outBuffer;
+            float *tmp2;
+            if (dmaCounter == 2) {
+                tmp2 = (bufferId == 0) ? mixer->outBuffer : mixer->sfxBuffer;
+            } else {
+                tmp2 = outBuffer + samplesPerFrame * 2;
+            }
+            uf16 i = 0;
+            do {
+                float s = tmp1[0] + tmp1[1] + tmp2[0] + tmp2[1];
+                s *= ((float)reverb / 512.0f);
+                tmp1[0] = tmp1[1] = s;
+                tmp1+=2;
+                tmp2+=2;
+            }
+            while(++i < samplesPerFrame);
+            } else {
+            // memset(outBuffer, 0, samplesPerFrame);
+            // memset(outBuffer + maxBufSize, 0, samplesPerFrame);
+            for (int i = 0; i < samplesPerFrame; i++) {
+                float *dst = &outBuffer[i*2];
+                dst[1] = dst[0] = 0.0f;
+            }
         }
     }
     
@@ -106,9 +115,14 @@ void SampleMixer(struct SoundMixerState *mixer, u32 scanlineLimit, u16 samplesPe
             }
         }
         
-        if (TickEnvelope(chan, wav)) 
-        {
+        bool32 isBgm = IsBgmChannel(chan);
+        if (isBgm && !ShouldAdvanceBgm()) {
+            continue;
+        }
 
+        if (TickEnvelope(chan, wav))
+        {
+            float *outBuffer = isBgm ? musicBuffer : sfxBuffer;
             GenerateAudio(mixer, chan, wav, outBuffer, samplesPerFrame, sampleRateReciprocal);
         }
     }

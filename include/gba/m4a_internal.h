@@ -218,6 +218,9 @@ struct SoundInfo
     u8 gap2[16];
     struct SoundChannel chans[MAX_DIRECTSOUND_CHANNELS];
     float pcmBuffer[PCM_DMA_BUF_SIZE * 2];
+#ifdef PORTABLE
+    float sfxBuffer[PCM_DMA_BUF_SIZE * 2];
+#endif
 };
 
 struct SongHeader
@@ -379,6 +382,7 @@ extern u8 gMPlayMemAccArea[];
 extern struct PokemonCrySong gPokemonCrySong;
 extern struct PokemonCrySong gPokemonCrySongs[];
 
+extern struct MusicPlayerInfo gMPlayInfo_BGM;
 extern struct MusicPlayerInfo gPokemonCryMusicPlayers[];
 extern struct MusicPlayerTrack gPokemonCryTracks[];
 
