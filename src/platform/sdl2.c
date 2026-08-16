@@ -485,28 +485,12 @@ int main(int argc, char **argv)
             accumulator += deltaTime;
             accumulator60 += deltaTime60;
 
-            isGameStepDrawn = false;
-
             while (accumulator >= fixedTimestep)
             {
-#ifdef USE_THREAD
-                if (SDL_AtomicGet(&isFrameAvailable))
-                {
-                    SDL_AtomicSet(&isFrameAvailable, 0);
-
-                    RunFrame();
-                    isGameStepDrawn = false;
-
-                    SDL_SemPost(vBlankSemaphore);
-
-                    accumulator -= dt;
-                }
-#else
                 RunFrame();
                 isGameStepDrawn = false;
 
                 accumulator -= dt;
-#endif
             }
 
             //samples per frame is 701, that gets multipled by two when being queued and then multipled by four because samples are float32 which are 4 bytes long hence the divide by 8
