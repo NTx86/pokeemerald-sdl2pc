@@ -104,7 +104,7 @@ ifeq ($(PORTABLE),1)
     FIX_UNDERSCORE := $(OBJCOPY)
     LEADING_UNDERSCORE_FLAG :=
   else
-    SDL_DIR := ./SDL2/x86_64-w64-mingw32/i686-w64-mingw32
+    SDL_DIR := ./SDL2/i686-w64-mingw32
     ASM_PSEUDO_OP_CONV := sed -e 's/\.4byte/\.int/g;s/\.2byte/\.short/g'
     #FIX_UNDERSCORE is required for 32 bit windows
     ifeq ($(TARGET_OS),WINDOWS)
