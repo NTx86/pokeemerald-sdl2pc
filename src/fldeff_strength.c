@@ -36,7 +36,7 @@ static void FieldCallback_Strength(void)
 bool8 FldEff_UseStrength(void)
 {
     u8 taskId = CreateFieldMoveTask();
-    gTasks[taskId].funcPtr = StartStrengthFieldEffect;
+    gTasks[taskId].ptr.funcPtr = StartStrengthFieldEffect;
     GetMonNickname(&gPlayerParty[gFieldEffectArguments[0]], gStringVar1);
     return FALSE;
 }

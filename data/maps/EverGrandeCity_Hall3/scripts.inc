@@ -7,6 +7,6 @@ EverGrandeCity_Hall3_OnWarp:
 	.short 0
 
 EverGrandeCity_Hall3_EventScript_TurnPlayerNorth::
-	turnobject OBJ_EVENT_ID_PLAYER, DIR_NORTH
+	turnobject LOCALID_PLAYER, DIR_NORTH
 	end
 

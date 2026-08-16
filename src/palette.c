@@ -105,9 +105,7 @@ void TransferPlttBuffer(void)
 {
     if (!gPaletteFade.bufferTransferDisabled)
     {
-        void *src = gPlttBufferFaded;
-        void *dest = (void *)PLTT;
-        DmaCopy16(3, src, dest, PLTT_SIZE);
+        DmaCopy16Defvars(3, gPlttBufferFaded, (void *)PLTT, PLTT_SIZE);
         sPlttBufferTransferPending = FALSE;
         if (gPaletteFade.mode == HARDWARE_FADE && gPaletteFade.active)
             UpdateBlendRegisters();
@@ -872,9 +870,7 @@ void BlendPalettes(u32 selectedPalettes, u8 coeff, u16 color)
 
 void BlendPalettesUnfaded(u32 selectedPalettes, u8 coeff, u16 color)
 {
-    void *src = gPlttBufferUnfaded;
-    void *dest = gPlttBufferFaded;
-    DmaCopy32(3, src, dest, PLTT_SIZE);
+    DmaCopy32Defvars(3, gPlttBufferUnfaded, gPlttBufferFaded, PLTT_SIZE);
     BlendPalettes(selectedPalettes, coeff, color);
 }
 
@@ -985,7 +981,7 @@ void BlendPalettesGradually(uintptr_t selectedPalettes, s8 delay, u8 coeff, u8 c
 {
     u8 taskId;
 
-    taskId = CreateTask((void *)Task_BlendPalettesGradually, priority);
+    taskId = CreateTask(Task_BlendPalettesGradually, priority);
     gTasks[taskId].tCoeff = coeff;
     gTasks[taskId].tCoeffTarget = coeffTarget;
 

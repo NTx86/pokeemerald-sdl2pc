@@ -15,6 +15,7 @@
 #include "constants/berry.h"
 #include "constants/cable_club.h"
 #include "constants/coins.h"
+#include "constants/comparison_operators.h"
 #include "constants/contest.h"
 #include "constants/daycare.h"
 #include "constants/decorations.h"
@@ -41,6 +42,7 @@
 #include "constants/moves.h"
 #include "constants/party_menu.h"
 #include "constants/pokemon.h"
+#include "constants/pokemon_size_record.h"
 #include "constants/roulette.h"
 #include "constants/script_menu.h"
 #include "constants/secret_bases.h"
@@ -60,46 +62,49 @@
 
 	.section script_data, "aw"
 
+	.set ALLOCATE_SCRIPT_CMD_TABLE, 1
 	.include "data/script_cmd_table.inc"
 
 gSpecialVars::
-	.quad gSpecialVar_0x8000
-	.quad gSpecialVar_0x8001
-	.quad gSpecialVar_0x8002
-	.quad gSpecialVar_0x8003
-	.quad gSpecialVar_0x8004
-	.quad gSpecialVar_0x8005
-	.quad gSpecialVar_0x8006
-	.quad gSpecialVar_0x8007
-	.quad gSpecialVar_0x8008
-	.quad gSpecialVar_0x8009
-	.quad gSpecialVar_0x800A
-	.quad gSpecialVar_0x800B
-	.quad gSpecialVar_Facing
-	.quad gSpecialVar_Result
-	.quad gSpecialVar_ItemId
-	.quad gSpecialVar_LastTalked
-	.quad gSpecialVar_ContestRank
-	.quad gSpecialVar_ContestCategory
-	.quad gSpecialVar_MonBoxId
-	.quad gSpecialVar_MonBoxPos
-	.quad gSpecialVar_Unused_0x8014
-	.quad gTrainerBattleOpponent_A
+	ptrvalue gSpecialVar_0x8000
+	ptrvalue gSpecialVar_0x8001
+	ptrvalue gSpecialVar_0x8002
+	ptrvalue gSpecialVar_0x8003
+	ptrvalue gSpecialVar_0x8004
+	ptrvalue gSpecialVar_0x8005
+	ptrvalue gSpecialVar_0x8006
+	ptrvalue gSpecialVar_0x8007
+	ptrvalue gSpecialVar_0x8008
+	ptrvalue gSpecialVar_0x8009
+	ptrvalue gSpecialVar_0x800A
+	ptrvalue gSpecialVar_0x800B
+	ptrvalue gSpecialVar_Facing
+	ptrvalue gSpecialVar_Result
+	ptrvalue gSpecialVar_ItemId
+	ptrvalue gSpecialVar_LastTalked
+	ptrvalue gSpecialVar_ContestRank
+	ptrvalue gSpecialVar_ContestCategory
+	ptrvalue gSpecialVar_MonBoxId
+	ptrvalue gSpecialVar_MonBoxPos
+	ptrvalue gSpecialVar_Unused_0x8014
+	ptrvalue gTrainerBattleOpponent_A
 
+	.purgem def_special
+	.set ALLOCATE_SPECIAL_TABLE, 1
 	.include "data/specials.inc"
 
 gStdScripts::
-	.quad Std_ObtainItem              /* STD_OBTAIN_ITEM*/
-	.quad Std_FindItem                /* STD_FIND_ITEM*/
-	.quad Std_MsgboxNPC               /* MSGBOX_NPC*/
-	.quad Std_MsgboxSign              /* MSGBOX_SIGN*/
-	.quad Std_MsgboxDefault           /* MSGBOX_DEFAULT*/
-	.quad Std_MsgboxYesNo             /* MSGBOX_YESNO*/
-	.quad Std_MsgboxAutoclose         /* MSGBOX_AUTOCLOSE*/
-	.quad Std_ObtainDecoration        /* STD_OBTAIN_DECORATION*/
-	.quad Std_RegisteredInMatchCall   /* STD_REGISTER_MATCH_CALL*/
-	.quad Std_MsgboxGetPoints         /* MSGBOX_GETPOINTS*/
-	.quad Std_MsgboxPokenav           /* MSGBOX_POKENAV*/
+	ptrvalue Std_ObtainItem              /* STD_OBTAIN_ITEM*/
+	ptrvalue Std_FindItem                /* STD_FIND_ITEM*/
+	ptrvalue Std_MsgboxNPC               /* MSGBOX_NPC*/
+	ptrvalue Std_MsgboxSign              /* MSGBOX_SIGN*/
+	ptrvalue Std_MsgboxDefault           /* MSGBOX_DEFAULT*/
+	ptrvalue Std_MsgboxYesNo             /* MSGBOX_YESNO*/
+	ptrvalue Std_MsgboxAutoclose         /* MSGBOX_AUTOCLOSE*/
+	ptrvalue Std_ObtainDecoration        /* STD_OBTAIN_DECORATION*/
+	ptrvalue Std_RegisteredInMatchCall   /* STD_REGISTER_MATCH_CALL*/
+	ptrvalue Std_MsgboxGetPoints         /* MSGBOX_GETPOINTS*/
+	ptrvalue Std_MsgboxPokenav           /* MSGBOX_POKENAV*/
 gStdScripts_End::
 
 	.include "data/maps/PetalburgCity/scripts.inc"
@@ -563,8 +568,8 @@ gStdScripts_End::
 	.include "data/maps/Route110_TrickHousePuzzle6/scripts.inc"
 	.include "data/maps/Route110_TrickHousePuzzle7/scripts.inc"
 	.include "data/maps/Route110_TrickHousePuzzle8/scripts.inc"
-	.include "data/maps/Route110_SeasideCyclingRoadNorthEntrance/scripts.inc"
 	.include "data/maps/Route110_SeasideCyclingRoadSouthEntrance/scripts.inc"
+	.include "data/maps/Route110_SeasideCyclingRoadNorthEntrance/scripts.inc"
 	.include "data/maps/Route113_GlassWorkshop/scripts.inc"
 	.include "data/maps/Route123_BerryMastersHouse/scripts.inc"
 	.include "data/maps/Route119_WeatherInstitute_1F/scripts.inc"
@@ -728,7 +733,6 @@ EventScript_RegionMap::
 	msgbox Common_Text_LookCloserAtMap, MSGBOX_DEFAULT
 	fadescreen FADE_TO_BLACK
 	special FieldShowRegionMap
-	waitstate
 	releaseall
 	end
 
@@ -774,8 +778,8 @@ EventScript_HideMrBriney::
 	return
 
 RusturfTunnel_EventScript_SetRusturfTunnelOpen::
-	removeobject LOCALID_WANDAS_BF
-	removeobject LOCALID_WANDA
+	removeobject LOCALID_RUSTURF_TUNNEL_WANDAS_BF
+	removeobject LOCALID_RUSTURF_TUNNEL_WANDA
 	clearflag FLAG_HIDE_VERDANTURF_TOWN_WANDAS_HOUSE_WANDAS_BOYFRIEND
 	clearflag FLAG_HIDE_VERDANTURF_TOWN_WANDAS_HOUSE_WANDA
 	setvar VAR_RUSTURF_TUNNEL_STATE, 6
@@ -784,11 +788,11 @@ RusturfTunnel_EventScript_SetRusturfTunnelOpen::
 
 EventScript_UnusedBoardFerry::
 	delay 30
-	applymovement OBJ_EVENT_ID_PLAYER, Common_Movement_WalkInPlaceFasterUp
+	applymovement LOCALID_PLAYER, Common_Movement_WalkInPlaceFasterUp
 	waitmovement 0
-	showobjectat OBJ_EVENT_ID_PLAYER, 0
+	showplayer
 	delay 30
-	applymovement OBJ_EVENT_ID_PLAYER, Movement_UnusedBoardFerry
+	applymovement LOCALID_PLAYER, Movement_UnusedBoardFerry
 	waitmovement 0
 	delay 30
 	return
@@ -801,7 +805,7 @@ Common_EventScript_FerryDepartIsland::
 	call_if_eq VAR_FACING, DIR_SOUTH, Ferry_EventScript_DepartIslandSouth
 	call_if_eq VAR_FACING, DIR_WEST, Ferry_EventScript_DepartIslandWest
 	delay 30
-	hideobjectat OBJ_EVENT_ID_PLAYER, 0
+	hideplayer
 	call Common_EventScript_FerryDepart
 	return
 
@@ -811,7 +815,6 @@ Common_EventScript_FerryDepartIsland::
 Common_EventScript_NameReceivedPartyMon::
 	fadescreen FADE_TO_BLACK
 	special ChangePokemonNickname
-	waitstate
 	return
 
 Common_EventScript_PlayerHandedOverTheItem::

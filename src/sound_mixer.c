@@ -1,3 +1,4 @@
+#ifdef PORTABLE
 #include "global.h"
 #include "music_player.h"
 #include "sound_mixer.h"
@@ -463,3 +464,4 @@ static s8 sub_82DF758(struct MixerSource *chan, u32 current) {
     }
     return gBDPCMBlockBuffer[current & 63]; // index same as current % 64
 }
+#endif //PORTABLE

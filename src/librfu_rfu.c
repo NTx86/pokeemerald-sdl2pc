@@ -76,11 +76,11 @@ static void rfu_STC_NI_receive_Sender(u8, u8, const struct RfuLocalStruct *, UNU
 static void rfu_STC_NI_initSlot_asRecvDataEntity(u8, struct NIComm *);
 static void rfu_STC_NI_initSlot_asRecvControllData(u8, struct NIComm *);
 
-struct RfuSlotStatusUNI *gRfuSlotStatusUNI[RFU_CHILD_MAX];
-struct RfuSlotStatusNI *gRfuSlotStatusNI[RFU_CHILD_MAX];
-struct RfuLinkStatus *gRfuLinkStatus;
-struct RfuStatic *gRfuStatic;
-struct RfuFixed *gRfuFixed;
+COMMON_DATA struct RfuSlotStatusUNI *gRfuSlotStatusUNI[RFU_CHILD_MAX] = {0};
+COMMON_DATA struct RfuSlotStatusNI *gRfuSlotStatusNI[RFU_CHILD_MAX] = {0};
+COMMON_DATA struct RfuLinkStatus *gRfuLinkStatus = NULL;
+COMMON_DATA struct RfuStatic *gRfuStatic = NULL;
+COMMON_DATA struct RfuFixed *gRfuFixed = NULL;
 
 static const struct LLSFStruct llsf_struct[2] = {
     [MODE_CHILD] = {
@@ -1780,11 +1780,7 @@ static void rfu_constructSendLLFrame(void)
         }
         if (pakcketSize != 0)
         {
-            #ifdef VER_64BIT
-            while ((u64)llf_p & 3)
-            #else
-            while ((u32)llf_p & 3)
-            #endif
+            while ((uintptr_t)llf_p & 3)
                 *llf_p++ = 0;
             gRfuFixed->LLFBuffer[0] = pakcketSize;
             if (gRfuLinkStatus->parentChild == MODE_CHILD)

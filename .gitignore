@@ -14,6 +14,9 @@ pokeemerald-linux
 *.8bpp
 *.gbapal
 *.lz
+*.smol
+*.fastSmol
+*.smolTM
 *.rl
 *.latfont
 *.hwjpnfont
@@ -21,12 +24,14 @@ pokeemerald-linux
 sound/**/*.bin
 sound/songs/midi/*.s
 tools/agbcc
+tools/compresSmol/
 *.map
 *.bat
 *.dump
 *.sa*
 Thumbs.db
 build/
+SDL2/
 .DS_Store
 *.ddump
 .idea/
@@ -39,3 +44,5 @@ prefabs.json
 *.diff
 *.sym
 *.js
+/pokeemerald-*.png
+/pokeemerald_modern-*.png

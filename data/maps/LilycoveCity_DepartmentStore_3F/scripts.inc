@@ -19,9 +19,7 @@ LilycoveCity_DepartmentStore_3F_Pokemart_Vitamins:
 	.short ITEM_ZINC
 	.short ITEM_CARBOS
 	.short ITEM_HP_UP
-	.short ITEM_NONE
-	release
-	end
+	pokemartlistend
 
 LilycoveCity_DepartmentStore_3F_EventScript_ClerkRight::
 	lock
@@ -42,9 +40,7 @@ LilycoveCity_DepartmentStore_3F_Pokemart_StatBoosters:
 	.short ITEM_DIRE_HIT
 	.short ITEM_GUARD_SPEC
 	.short ITEM_X_ACCURACY
-	.short ITEM_NONE
-	release
-	end
+	pokemartlistend
 
 LilycoveCity_DepartmentStore_3F_EventScript_TriathleteM::
 	msgbox LilycoveCity_DepartmentStore_3F_Text_ItemsBestForTougheningPokemon, MSGBOX_NPC

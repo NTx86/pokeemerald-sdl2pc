@@ -627,7 +627,7 @@ static const u8 sVerticalShakeData[][2] =
     {-1,   0}
 };
 
-static void (* const sMonAnimFunctions[])(struct Sprite *sprite) =
+static void (*const sMonAnimFunctions[])(struct Sprite *sprite) =
 {
     [ANIM_V_SQUISH_AND_BOUNCE]               = Anim_VerticalSquishBounce,
     [ANIM_CIRCULAR_STRETCH_TWICE]            = Anim_CircularStretchTwice,
@@ -898,7 +898,7 @@ u8 GetSpeciesBackAnimSet(u16 species)
 static void Task_HandleMonAnimation(u8 taskId)
 {
     u32 i;
-    struct Sprite *sprite = gTasks[taskId].spritePtr;
+    struct Sprite *sprite = gTasks[taskId].ptr.spritePtr;
 
     if (gTasks[taskId].tState == 0)
     {
@@ -928,7 +928,7 @@ static void Task_HandleMonAnimation(u8 taskId)
 void LaunchAnimationTaskForFrontSprite(struct Sprite *sprite, u8 frontAnimId)
 {
     u8 taskId = CreateTask(Task_HandleMonAnimation, 128);
-    gTasks[taskId].spritePtr = sprite;
+    gTasks[taskId].ptr.spritePtr = sprite;
     gTasks[taskId].tAnimId = frontAnimId;
 }
 
@@ -941,13 +941,13 @@ void StartMonSummaryAnimation(struct Sprite *sprite, u8 frontAnimId)
 
 void LaunchAnimationTaskForBackSprite(struct Sprite *sprite, u8 backAnimSet)
 {
-    u8 nature, taskId, animId, battlerId;
+    u8 nature, taskId, animId, battler;
 
     taskId = CreateTask(Task_HandleMonAnimation, 128);
-    gTasks[taskId].spritePtr = sprite;
+    gTasks[taskId].ptr.spritePtr = sprite;
 
-    battlerId = sprite->data[0];
-    nature = GetNature(&gPlayerParty[gBattlerPartyIndexes[battlerId]]);
+    battler = sprite->data[0];
+    nature = GetNature(&gPlayerParty[gBattlerPartyIndexes[battler]]);
 
     // * 3 below because each back anim has 3 variants depending on nature
     animId = 3 * backAnimSet + sBackAnimNatureModTable[nature];

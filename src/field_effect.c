@@ -35,6 +35,12 @@
 
 #define subsprite_table(ptr) {.subsprites = ptr, .subspriteCount = (sizeof ptr) / (sizeof(struct Subsprite))}
 
+#ifdef VER_64BIT
+	#define ptrSize 8
+#else
+	#define ptrSize 4
+#endif
+
 EWRAM_DATA s32 gFieldEffectArguments[8] = {0};
 
 // Static type declarations
@@ -243,34 +249,34 @@ extern const struct CompressedSpriteSheet gTrainerFrontPicTable[];
 extern u8 *gFieldEffectScriptPointers[];
 extern const struct SpriteTemplate *const gFieldEffectObjectTemplatePointers[];
 
-static const u32 sNewGameBirch_Gfx[] = INCBIN_U32("graphics/birch_speech/birch.4bpp");
-static const u32 sUnusedBirchBeauty[] = INCBIN_U32("graphics/birch_speech/unused_beauty.4bpp");
-static const u16 sNewGameBirch_Pal[16] = INCBIN_U16("graphics/birch_speech/birch.gbapal");
+static const u32 sNewGameBirch_Gfx[] = INCGFX_U32("graphics/birch_speech/birch.png", ".4bpp");
+static const u32 sUnusedBirchBeauty[] = INCGFX_U32("graphics/birch_speech/unused_beauty.png", ".4bpp", "-num_tiles 822 -Wnum_tiles");
+static const u16 sNewGameBirch_Pal[16] = INCGFX_U16("graphics/birch_speech/birch.png", ".gbapal");
 
-static const u32 sPokeballGlow_Gfx[] = INCBIN_U32("graphics/field_effects/pics/pokeball_glow.4bpp");
-static const u16 sPokeballGlow_Pal[16] = INCBIN_U16("graphics/field_effects/palettes/pokeball_glow.gbapal");
-static const u32 sPokecenterMonitor0_Gfx[] = INCBIN_U32("graphics/field_effects/pics/pokecenter_monitor/0.4bpp");
-static const u32 sPokecenterMonitor1_Gfx[] = INCBIN_U32("graphics/field_effects/pics/pokecenter_monitor/1.4bpp");
-static const u32 sHofMonitorBig_Gfx[] = INCBIN_U32("graphics/field_effects/pics/hof_monitor_big.4bpp");
-static const u8 sHofMonitorSmall_Gfx[] = INCBIN_U8("graphics/field_effects/pics/hof_monitor_small.4bpp");
-static const u16 sHofMonitor_Pal[16] = INCBIN_U16("graphics/field_effects/palettes/hof_monitor.gbapal");
+static const u32 sPokeballGlow_Gfx[] = INCGFX_U32("graphics/field_effects/pics/pokeball_glow.png", ".4bpp");
+static const u16 sPokeballGlow_Pal[16] = INCGFX_U16("graphics/field_effects/palettes/pokeball_glow.pal", ".gbapal");
+static const u32 sPokecenterMonitor0_Gfx[] = INCGFX_U32("graphics/field_effects/pics/pokecenter_monitor/0.png", ".4bpp");
+static const u32 sPokecenterMonitor1_Gfx[] = INCGFX_U32("graphics/field_effects/pics/pokecenter_monitor/1.png", ".4bpp");
+static const u32 sHofMonitorBig_Gfx[] = INCGFX_U32("graphics/field_effects/pics/hof_monitor_big.png", ".4bpp");
+static const u8 sHofMonitorSmall_Gfx[] = INCGFX_U8("graphics/field_effects/pics/hof_monitor_small.png", ".4bpp");
+static const u16 sHofMonitor_Pal[16] = INCGFX_U16("graphics/field_effects/palettes/hof_monitor.pal", ".gbapal");
 
 // Graphics for the lights streaking past your Pokémon when it uses a field move.
-static const u32 sFieldMoveStreaksOutdoors_Gfx[] = INCBIN_U32("graphics/field_effects/pics/field_move_streaks.4bpp");
-static const u16 sFieldMoveStreaksOutdoors_Pal[16] = INCBIN_U16("graphics/field_effects/pics/field_move_streaks.gbapal");
+static const u32 sFieldMoveStreaksOutdoors_Gfx[] = INCGFX_U32("graphics/field_effects/pics/field_move_streaks.png", ".4bpp");
+static const u16 sFieldMoveStreaksOutdoors_Pal[16] = INCGFX_U16("graphics/field_effects/pics/field_move_streaks.png", ".gbapal");
 static const u16 sFieldMoveStreaksOutdoors_Tilemap[320] = INCBIN_U16("graphics/field_effects/pics/field_move_streaks.bin");
 
 // The following light streaks effect is used when the map is indoors
-static const u32 sFieldMoveStreaksIndoors_Gfx[] = INCBIN_U32("graphics/field_effects/pics/field_move_streaks_indoors.4bpp");
-static const u16 sFieldMoveStreaksIndoors_Pal[16] = INCBIN_U16("graphics/field_effects/pics/field_move_streaks_indoors.gbapal");
+static const u32 sFieldMoveStreaksIndoors_Gfx[] = INCGFX_U32("graphics/field_effects/pics/field_move_streaks_indoors.png", ".4bpp");
+static const u16 sFieldMoveStreaksIndoors_Pal[16] = INCGFX_U16("graphics/field_effects/pics/field_move_streaks_indoors.png", ".gbapal");
 static const u16 sFieldMoveStreaksIndoors_Tilemap[320] = INCBIN_U16("graphics/field_effects/pics/field_move_streaks_indoors.bin");
 
-static const u16 sSpotlight_Pal[16] = INCBIN_U16("graphics/field_effects/pics/spotlight.gbapal");
-static const u8 sSpotlight_Gfx[] = INCBIN_U8("graphics/field_effects/pics/spotlight.4bpp");
-static const u8 sRockFragment_TopLeft[] = INCBIN_U8("graphics/field_effects/pics/deoxys_rock_fragment_top_left.4bpp");
-static const u8 sRockFragment_TopRight[] = INCBIN_U8("graphics/field_effects/pics/deoxys_rock_fragment_top_right.4bpp");
-static const u8 sRockFragment_BottomLeft[] = INCBIN_U8("graphics/field_effects/pics/deoxys_rock_fragment_bottom_left.4bpp");
-static const u8 sRockFragment_BottomRight[] = INCBIN_U8("graphics/field_effects/pics/deoxys_rock_fragment_bottom_right.4bpp");
+static const u16 sSpotlight_Pal[16] = INCGFX_U16("graphics/field_effects/pics/spotlight.png", ".gbapal");
+static const u8 sSpotlight_Gfx[] = INCGFX_U8("graphics/field_effects/pics/spotlight.png", ".4bpp");
+static const u8 sRockFragment_TopLeft[] = INCGFX_U8("graphics/field_effects/pics/deoxys_rock_fragment_top_left.png", ".4bpp");
+static const u8 sRockFragment_TopRight[] = INCGFX_U8("graphics/field_effects/pics/deoxys_rock_fragment_top_right.png", ".4bpp");
+static const u8 sRockFragment_BottomLeft[] = INCGFX_U8("graphics/field_effects/pics/deoxys_rock_fragment_bottom_left.png", ".4bpp");
+static const u8 sRockFragment_BottomRight[] = INCGFX_U8("graphics/field_effects/pics/deoxys_rock_fragment_bottom_right.png", ".4bpp");
 
 bool8 (*const gFieldEffectScriptFuncs[])(u8 **, u32 *) =
 {
@@ -782,7 +788,7 @@ u32 FieldEffectScript_ReadPtr(u8 **script)
     return (*script)[0]
          + ((*script)[1] << 8)
          + ((*script)[2] << 16)
-         + ((*script)[3] << 24)
+         + ((*script)[3] << 24);
 }
 #endif
 
@@ -792,7 +798,7 @@ void FieldEffectScript_LoadTiles(u8 **script)
     struct SpriteSheet *sheet = (struct SpriteSheet *)FieldEffectScript_ReadPtr(script);
     if (GetSpriteTileStartByTag(sheet->tag) == 0xFFFF)
         LoadSpriteSheet(sheet);
-    (*script) += 8;
+    (*script) += ptrSize;
 }
 
 void FieldEffectScript_LoadFadedPalette(u8 **script)
@@ -800,21 +806,21 @@ void FieldEffectScript_LoadFadedPalette(u8 **script)
     struct SpritePalette *palette = (struct SpritePalette *)FieldEffectScript_ReadPtr(script);
     LoadSpritePalette(palette);
     UpdateSpritePaletteWithWeather(IndexOfSpritePaletteTag(palette->tag));
-    (*script) += 8;
+    (*script) += ptrSize;
 }
 
 void FieldEffectScript_LoadPalette(u8 **script)
 {
     struct SpritePalette *palette = (struct SpritePalette *)FieldEffectScript_ReadPtr(script);
     LoadSpritePalette(palette);
-    (*script) += 8;
+    (*script) += ptrSize;
 }
 
 void FieldEffectScript_CallNative(u8 **script, u32 *val)
 {
     u32 (*func)(void) = (u32 (*)(void))FieldEffectScript_ReadPtr(script);
     *val = func();
-    (*script) += 8;
+    (*script) += ptrSize;
 }
 
 void FieldEffectFreeGraphicsResources(struct Sprite *sprite)
@@ -1310,7 +1316,8 @@ static void CreateHofMonitorSprite(s16 taskId, s16 x, s16 y, bool8 isSmallMonito
     {
         spriteId = CreateSpriteAtEnd(&sSpriteTemplate_HofMonitorBig, x, y, 0);
         SetSubspriteTables(&gSprites[spriteId], &sSubspriteTable_HofMonitorBig);
-    } else
+    }
+    else
     {
         spriteId = CreateSpriteAtEnd(&sSpriteTemplate_HofMonitorSmall, x, y, 0);
     }
@@ -2020,7 +2027,8 @@ static bool8 LavaridgeGymB1FWarpEffect_Rise(struct Task *task, struct ObjectEven
         {
             task->data[1] <<= 1;
         }
-    } else if (!(task->data[2] & 4) && (task->data[1] > 0))
+    }
+    else if (!(task->data[2] & 4) && (task->data[1] > 0))
     {
         task->data[1] >>= 1;
     }
@@ -2034,7 +2042,8 @@ static bool8 LavaridgeGymB1FWarpEffect_Rise(struct Task *task, struct ObjectEven
             {
                 task->data[3]++;
             }
-        } else
+        }
+        else
         {
             task->data[4] = 1;
         }
@@ -2186,7 +2195,8 @@ static bool8 LavaridgeGym1FWarpEffect_AshPuff(struct Task *task, struct ObjectEv
             gFieldEffectArguments[3] = sprite->oam.priority;
             task->data[1] = FieldEffectStart(FLDEFF_ASH_PUFF);
             task->data[0]++;
-        } else
+        }
+        else
         {
             task->data[1]++;
             ObjectEventSetHeldMovement(objectEvent, GetWalkInPlaceFasterMovementAction(objectEvent->facingDirection));
@@ -2516,7 +2526,8 @@ static void TeleportWarpInFieldEffect_SpinEnter(struct Task *task)
             objectEvent->triggerGroundEffectsOnMove = TRUE;
             sprite->subspriteMode = task->data[14];
         }
-    } else
+    }
+    else
     {
         sprite->oam.priority = 1;
         if (sprite->subspriteMode != SUBSPRITES_OFF)
@@ -2626,7 +2637,7 @@ static void FieldMoveShowMonOutdoorsEffect_Init(struct Task *task)
 {
     task->data[11] = GetGpuWindowIn();
     task->data[12] = GetGpuWindowOut();
-    task->funcPtr = gMain.vblankCallback;
+    task->ptr.funcPtr = gMain.vblankCallback;
     task->tWinHoriz = WIN_RANGE(DisplayWidth(), DisplayWidth() + 1);
     task->tWinVert = WIN_RANGE(DisplayHeight() / 2, DisplayHeight() / 2 + 1);
     task->tWinIn = WININ_WIN0_BG_ALL | WININ_WIN0_OBJ | WININ_WIN0_CLR;
@@ -2722,7 +2733,7 @@ static void FieldMoveShowMonOutdoorsEffect_RestoreBg(struct Task *task)
 static void FieldMoveShowMonOutdoorsEffect_End(struct Task *task)
 {
     IntrCallback callback;
-    callback = task->funcPtr;
+    callback = task->ptr.funcPtr;
     SetVBlankCallback(callback);
     InitTextBoxGfxAndPrinters();
     FreeResourcesAndDestroySprite(&gSprites[task->tMonSpriteId], task->tMonSpriteId);
@@ -2734,7 +2745,7 @@ static void VBlankCB_FieldMoveShowMonOutdoors(void)
 {
     struct Task *task = &gTasks[FindTaskIdByFunc(Task_FieldMoveShowMonOutdoors)];
     IntrCallback callback;
-    callback = task->funcPtr;
+    callback = task->ptr.funcPtr;
     callback();
     SetGpuWindowX(0, task->tWinHoriz);
     SetGpuWindowY(0, task->tWinVert);
@@ -2791,14 +2802,14 @@ static void FieldMoveShowMonIndoorsEffect_Init(struct Task *task)
 {
     SetGpuBackgroundX(0, task->tBgHoriz);
     SetGpuBackgroundY(0, task->tBgVert);
-    task->funcPtr = gMain.vblankCallback;
+    task->ptr.funcPtr = gMain.vblankCallback;
     SetVBlankCallback(VBlankCB_FieldMoveShowMonIndoors);
     task->tState++;
 }
 
 static void FieldMoveShowMonIndoorsEffect_LoadGfx(struct Task *task)
 {
-    task->genericPtr[1] = GpuGetTilemapPtr(0);
+    task->ptr.genericPtr[1] = GpuGetTilemapPtr(0);
     CpuCopy16(sFieldMoveStreaksIndoors_Gfx, GpuGetGfxPtr(0), 0x80);
     GpuClearTilemap(0);
     LoadPalette(sFieldMoveStreaksIndoors_Pal, BG_PLTT_ID(15), sizeof(sFieldMoveStreaksIndoors_Pal));
@@ -2845,7 +2856,7 @@ static void FieldMoveShowMonIndoorsEffect_End(struct Task *task)
 {
     IntrCallback intrCallback;
     GpuClearTilemap(0);
-    intrCallback = task->funcPtr;
+    intrCallback = task->ptr.funcPtr;
     SetVBlankCallback(intrCallback);
     InitTextBoxGfxAndPrinters();
     FreeResourcesAndDestroySprite(&gSprites[task->tMonSpriteId], task->tMonSpriteId);
@@ -2858,7 +2869,7 @@ static void VBlankCB_FieldMoveShowMonIndoors(void)
     IntrCallback intrCallback;
     struct Task *task;
     task = &gTasks[FindTaskIdByFunc(Task_FieldMoveShowMonIndoors)];
-    intrCallback = task->funcPtr;
+    intrCallback = task->ptr.funcPtr;
     intrCallback();
     SetGpuBackgroundX(0, task->tBgHoriz);
     SetGpuBackgroundY(0, task->tBgVert);
@@ -2885,7 +2896,7 @@ static bool8 SlideIndoorBannerOnscreen(struct Task *task)
     {
         dstOffs = (32 - dstOffs) & 0x1f;
         srcOffs = (32 - task->tBgOffset) & 0x1f;
-        dest = (u16 *)(task->genericPtr[1] + 0x140);
+        dest = (u16 *)(task->ptr.genericPtr[1] + 0x140);
         for (i = 0; i < 10; i++)
         {
             dest[dstOffs + i * 32] = sFieldMoveStreaksIndoors_Tilemap[srcOffs + i * 32];
@@ -2912,7 +2923,7 @@ static bool8 SlideIndoorBannerOffscreen(struct Task *task)
     if (dstOffs >= task->tBgOffset)
     {
         dstOffs = (task->tBgHoriz >> 3) & 0x1f;
-        dest = (u16 *)(task->genericPtr[1] + 0x140);
+        dest = (u16 *)(task->ptr.genericPtr[1] + 0x140);
         for (i = 0; i < 10; i++)
         {
             dest[dstOffs + i * 32] = 0xf000;

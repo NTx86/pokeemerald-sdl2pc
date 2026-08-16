@@ -49,6 +49,7 @@
 #include "tv.h"
 #include "window.h"
 #include "constants/event_objects.h"
+#include "constants/comparison_operators.h"
 
 typedef u16 (*SpecialFunc)(void);
 typedef void (*NativeFunc)(void);
@@ -71,20 +72,20 @@ static void CloseBrailleWindow(void);
 
 // This is defined in here so the optimizer can't see its value when compiling
 // script.c.
-void * const gNullScriptPtr = NULL;
+void *const gNullScriptPtr = NULL;
 
-static const u8 sScriptConditionTable[6][3] =
+static const u8 sScriptConditionTable[COMPARISON_OPERATORS_COUNT][3] =
 {
-//  <  =  >
-    {1, 0, 0}, // <
-    {0, 1, 0}, // =
-    {0, 0, 1}, // >
-    {1, 1, 0}, // <=
-    {0, 1, 1}, // >=
-    {1, 0, 1}, // !=
+//                              <  =  >
+    [LESS_THAN] =              {1, 0, 0},
+    [EQUAL] =                  {0, 1, 0},
+    [GREATER_THAN] =           {0, 0, 1},
+    [LESS_THAN_OR_EQUAL] =     {1, 1, 0},
+    [GREATER_THAN_OR_EQUAL] =  {0, 1, 1},
+    [NOT_EQUAL] =              {1, 0, 1},
 };
 
-static u8 * const sScriptStringVars[] =
+static u8 *const sScriptStringVars[] =
 {
     gStringVar1,
     gStringVar2,
@@ -169,7 +170,7 @@ bool8 ScrCmd_call(struct ScriptContext *ctx)
 
 bool8 ScrCmd_goto_if(struct ScriptContext *ctx)
 {
-    u8 condition = ScriptReadByte(ctx);
+    enum ComparisonOperators condition = ScriptReadByte(ctx);
     const u8 *ptr = (const u8 *)ScriptReadPointer(ctx);
 
     if (sScriptConditionTable[condition][ctx->comparisonResult] == 1)
@@ -179,7 +180,7 @@ bool8 ScrCmd_goto_if(struct ScriptContext *ctx)
 
 bool8 ScrCmd_call_if(struct ScriptContext *ctx)
 {
-    u8 condition = ScriptReadByte(ctx);
+    enum ComparisonOperators condition = ScriptReadByte(ctx);
     const u8 *ptr = (const u8 *)ScriptReadPointer(ctx);
 
     if (sScriptConditionTable[condition][ctx->comparisonResult] == 1)
@@ -189,12 +190,8 @@ bool8 ScrCmd_call_if(struct ScriptContext *ctx)
 
 bool8 ScrCmd_setvaddress(struct ScriptContext *ctx)
 {
-    #ifdef VER_64BIT
-    u64 addr1 = (u64)ctx->scriptPtr - 1;
-    #else
-    u32 addr1 = (u32)ctx->scriptPtr - 1;
-    #endif
-    u32 addr2 = ScriptReadPointer(ctx);
+    uintptr_t addr1 = (uintptr_t)ctx->scriptPtr - 1;
+    uintptr_t addr2 = ScriptReadPointer(ctx);
 
     sAddressOffset = addr2 - addr1;
     return FALSE;
@@ -202,11 +199,7 @@ bool8 ScrCmd_setvaddress(struct ScriptContext *ctx)
 
 bool8 ScrCmd_vgoto(struct ScriptContext *ctx)
 {
-	#ifdef VER_64BIT
-    u64 addr = ScriptReadPointer(ctx);
-	#else
-	u32 addr = ScriptReadPointer(ctx);
-	#endif
+    uintptr_t addr = ScriptReadPointer(ctx);
 
     ScriptJump(ctx, (u8 *)(addr - sAddressOffset));
     return FALSE;
@@ -214,11 +207,7 @@ bool8 ScrCmd_vgoto(struct ScriptContext *ctx)
 
 bool8 ScrCmd_vcall(struct ScriptContext *ctx)
 {
-	#ifdef VER_64BIT
-    u64 addr = ScriptReadPointer(ctx);
-	#else
-	u32 addr = ScriptReadPointer(ctx);
-	#endif
+    uintptr_t addr = ScriptReadPointer(ctx);
 
     ScriptCall(ctx, (u8 *)(addr - sAddressOffset));
     return FALSE;
@@ -226,7 +215,7 @@ bool8 ScrCmd_vcall(struct ScriptContext *ctx)
 
 bool8 ScrCmd_vgoto_if(struct ScriptContext *ctx)
 {
-    u8 condition = ScriptReadByte(ctx);
+    enum ComparisonOperators condition = ScriptReadByte(ctx);
     const u8 *ptr = (const u8 *)(ScriptReadPointer(ctx) - sAddressOffset);
 
     if (sScriptConditionTable[condition][ctx->comparisonResult] == 1)
@@ -236,7 +225,7 @@ bool8 ScrCmd_vgoto_if(struct ScriptContext *ctx)
 
 bool8 ScrCmd_vcall_if(struct ScriptContext *ctx)
 {
-    u8 condition = ScriptReadByte(ctx);
+    enum ComparisonOperators condition = ScriptReadByte(ctx);
     const u8 *ptr = (const u8 *)(ScriptReadPointer(ctx) - sAddressOffset);
 
     if (sScriptConditionTable[condition][ctx->comparisonResult] == 1)
@@ -266,7 +255,7 @@ bool8 ScrCmd_callstd(struct ScriptContext *ctx)
 
 bool8 ScrCmd_gotostd_if(struct ScriptContext *ctx)
 {
-    u8 condition = ScriptReadByte(ctx);
+    enum ComparisonOperators condition = ScriptReadByte(ctx);
     u8 index = ScriptReadByte(ctx);
 
     if (sScriptConditionTable[condition][ctx->comparisonResult] == 1)
@@ -280,7 +269,7 @@ bool8 ScrCmd_gotostd_if(struct ScriptContext *ctx)
 
 bool8 ScrCmd_callstd_if(struct ScriptContext *ctx)
 {
-    u8 condition = ScriptReadByte(ctx);
+    enum ComparisonOperators condition = ScriptReadByte(ctx);
     u8 index = ScriptReadByte(ctx);
 
     if (sScriptConditionTable[condition][ctx->comparisonResult] == 1)
@@ -317,7 +306,7 @@ bool8 ScrCmd_loadword(struct ScriptContext *ctx)
 {
     u8 index = ScriptReadByte(ctx);
 
-    ctx->data[index] = ScriptReadQuadWord(ctx);
+    ctx->data[index] = ScriptReadPointer(ctx);
     return FALSE;
 }
 
@@ -802,7 +791,7 @@ bool8 ScrCmd_warphole(struct ScriptContext *ctx)
     u16 y;
 
     PlayerGetDestCoords(&x, &y);
-    if (mapGroup == MAP_GROUP(UNDEFINED) && mapNum == MAP_NUM(UNDEFINED))
+    if (mapGroup == MAP_GROUP(MAP_UNDEFINED) && mapNum == MAP_NUM(MAP_UNDEFINED))
         SetWarpDestinationToFixedHoleWarp(x - MAP_OFFSET, y - MAP_OFFSET_Y);
     else
         SetWarpDestination(mapGroup, mapNum, WARP_ID_NONE, x - MAP_OFFSET, y - MAP_OFFSET_Y);
@@ -1036,7 +1025,7 @@ bool8 ScrCmd_waitmovement(struct ScriptContext *ctx)
 {
     u16 localId = VarGet(ScriptReadHalfword(ctx));
 
-    if (localId != 0)
+    if (localId != LOCALID_NONE)
         sMovingNpcId = localId;
     sMovingNpcMapGroup = gScriptLocation.mapGroup;
     sMovingNpcMapNum = gScriptLocation.mapNum;
@@ -1050,7 +1039,7 @@ bool8 ScrCmd_waitmovementat(struct ScriptContext *ctx)
     u8 mapGroup;
     u8 mapNum;
 
-    if (localId != 0)
+    if (localId != LOCALID_NONE)
         sMovingNpcId = localId;
     mapGroup = ScriptReadByte(ctx);
     mapNum = ScriptReadByte(ctx);
@@ -1257,7 +1246,7 @@ bool8 ScrCmd_releaseall(struct ScriptContext *ctx)
     u8 playerObjectId;
 
     HideFieldMessageBox();
-    playerObjectId = GetObjectEventIdByLocalIdAndMap(OBJ_EVENT_ID_PLAYER, 0, 0);
+    playerObjectId = GetObjectEventIdByLocalIdAndMap(LOCALID_PLAYER, 0, 0);
     ObjectEventClearHeldMovementIfFinished(&gObjectEvents[playerObjectId]);
     ScriptMovement_UnfreezeObjectEvents();
     UnfreezeObjectEvents();
@@ -1271,7 +1260,7 @@ bool8 ScrCmd_release(struct ScriptContext *ctx)
     HideFieldMessageBox();
     if (gObjectEvents[gSelectedObjectEvent].active)
         ObjectEventClearHeldMovementIfFinished(&gObjectEvents[gSelectedObjectEvent]);
-    playerObjectId = GetObjectEventIdByLocalIdAndMap(OBJ_EVENT_ID_PLAYER, 0, 0);
+    playerObjectId = GetObjectEventIdByLocalIdAndMap(LOCALID_PLAYER, 0, 0);
     ObjectEventClearHeldMovementIfFinished(&gObjectEvents[playerObjectId]);
     ScriptMovement_UnfreezeObjectEvents();
     UnfreezeObjectEvents();
@@ -1556,7 +1545,7 @@ bool8 ScrCmd_closebraillemessage(struct ScriptContext *ctx)
 
 bool8 ScrCmd_vmessage(struct ScriptContext *ctx)
 {
-    u64 msg = ScriptReadPointer(ctx);
+    uintptr_t msg = ScriptReadPointer(ctx);
 
     ShowFieldMessage((u8 *)(msg - sAddressOffset));
     return FALSE;
@@ -1623,9 +1612,9 @@ bool8 ScrCmd_bufferdecorationname(struct ScriptContext *ctx)
 bool8 ScrCmd_buffermovename(struct ScriptContext *ctx)
 {
     u8 stringVarIndex = ScriptReadByte(ctx);
-    u16 moveId = VarGet(ScriptReadHalfword(ctx));
+    u16 move = VarGet(ScriptReadHalfword(ctx));
 
-    StringCopy(sScriptStringVars[stringVarIndex], gMoveNames[moveId]);
+    StringCopy(sScriptStringVars[stringVarIndex], gMoveNames[move]);
     return FALSE;
 }
 
@@ -1677,7 +1666,7 @@ bool8 ScrCmd_vbuffermessage(struct ScriptContext *ctx)
 bool8 ScrCmd_vbufferstring(struct ScriptContext *ctx)
 {
     u8 stringVarIndex = ScriptReadByte(ctx);
-    u64 addr = ScriptReadPointer(ctx);
+    uintptr_t addr = ScriptReadPointer(ctx);
 
     const u8 *src = (u8 *)(addr - sAddressOffset);
     u8 *dest = sScriptStringVars[stringVarIndex];
@@ -1728,7 +1717,7 @@ bool8 ScrCmd_setmonmove(struct ScriptContext *ctx)
 bool8 ScrCmd_checkpartymove(struct ScriptContext *ctx)
 {
     u8 i;
-    u16 moveId = ScriptReadHalfword(ctx);
+    u16 move = ScriptReadHalfword(ctx);
 
     gSpecialVar_Result = PARTY_SIZE;
     for (i = 0; i < PARTY_SIZE; i++)
@@ -1736,7 +1725,7 @@ bool8 ScrCmd_checkpartymove(struct ScriptContext *ctx)
         u16 species = GetMonData(&gPlayerParty[i], MON_DATA_SPECIES, NULL);
         if (!species)
             break;
-        if (!GetMonData(&gPlayerParty[i], MON_DATA_IS_EGG) && MonKnowsMove(&gPlayerParty[i], moveId) == TRUE)
+        if (!GetMonData(&gPlayerParty[i], MON_DATA_IS_EGG) && MonKnowsMove(&gPlayerParty[i], move) == TRUE)
         {
             gSpecialVar_Result = i;
             gSpecialVar_0x8004 = species;
@@ -2059,7 +2048,7 @@ bool8 ScrCmd_setmetatile(struct ScriptContext *ctx)
     if (!isImpassable)
         MapGridSetMetatileIdAt(x, y, metatileId);
     else
-        MapGridSetMetatileIdAt(x, y, metatileId | MAPGRID_COLLISION_MASK);
+        MapGridSetMetatileIdAt(x, y, metatileId | MAPGRID_IMPASSABLE);
     return FALSE;
 }
 

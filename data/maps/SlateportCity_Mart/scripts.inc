@@ -22,9 +22,7 @@ SlateportCity_Mart_Pokemart:
 	.short ITEM_ESCAPE_ROPE
 	.short ITEM_REPEL
 	.short ITEM_HARBOR_MAIL
-	.short ITEM_NONE
-	release
-	end
+	pokemartlistend
 
 SlateportCity_Mart_EventScript_BlackBelt::
 	msgbox SlateportCity_Mart_Text_SomeItemsOnlyAtMart, MSGBOX_NPC

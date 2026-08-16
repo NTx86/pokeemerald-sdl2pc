@@ -82,7 +82,7 @@ struct GameBorder {
 extern struct GameBorder borderList[NUM_GAME_BORDERS];
 
 void GameInit(void);
-void GameLoop(void);
+void MainLoop(void);
 void AgbMain(void);
 void FrameUpdate(void);
 void DoHBlankUpdate(void);
@@ -92,7 +92,7 @@ void SetVBlankCallback(IntrCallback callback);
 void SetHBlankCallback(IntrCallback callback);
 void SetSerialCallback(IntrCallback callback);
 void InitFlashTimer(void);
-void SetTrainerHillVBlankCounter(u32 *var);
+void SetTrainerHillVBlankCounter(u32 *counter);
 void ClearTrainerHillVBlankCounter(void);
 void DoSoftReset(void);
 void ClearPokemonCrySongs(void);

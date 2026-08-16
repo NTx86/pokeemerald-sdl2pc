@@ -29,6 +29,12 @@
 
 #define TAG_NEEDLE 0x2000
 
+#ifdef PORTABLE
+    typedef float SampleDataType;
+#else
+    typedef u8 SampleDataType;
+#endif
+
 struct PokedexCryMeterNeedle {
     s8 rotation;
     s8 targetRotation;
@@ -38,10 +44,10 @@ struct PokedexCryMeterNeedle {
 
 struct PokedexCryScreen
 {
-    float cryWaveformBuffer[16];
+    SampleDataType cryWaveformBuffer[16];
     u8 cryState;
     u8 playhead;
-    float waveformPreviousY;
+    SampleDataType waveformPreviousY;
     u16 unk; // Never read
     u8 playStartPos;
     u16 species;
@@ -53,26 +59,26 @@ static void PlayCryScreenCry(u16);
 static void BufferCryWaveformSegment(void);
 static void DrawWaveformFlatline(void);
 static void AdvancePlayhead(u8);
-static void DrawWaveformSegment(u8, float);
+static void DrawWaveformSegment(u8, SampleDataType);
 static void DrawWaveformWindow(u8);
 static void ShiftWaveformOver(u8, s16, bool8);
 static void SpriteCB_CryMeterNeedle(struct Sprite *);
 static void SetCryMeterNeedleTarget(s8);
 
 // IWRAM common
-u8 gDexCryScreenState;
+COMMON_DATA u8 gDexCryScreenState = 0;
 
 // EWRAM vars
 static EWRAM_DATA struct PokedexCryScreen *sDexCryScreen = NULL;
 static EWRAM_DATA u8 *sCryWaveformWindowTiledata = NULL;
 static EWRAM_DATA struct PokedexCryMeterNeedle *sCryMeterNeedle = NULL;
 
-static const u16 sCryMeterNeedle_Pal[] = INCBIN_U16("graphics/pokedex/cry_meter_needle.gbapal");
-static const u8 sCryMeterNeedle_Gfx[] = INCBIN_U8("graphics/pokedex/cry_meter_needle.4bpp");
+static const u16 sCryMeterNeedle_Pal[] = INCGFX_U16("graphics/pokedex/cry_meter_needle.png", ".gbapal");
+static const u8 sCryMeterNeedle_Gfx[] = INCGFX_U8("graphics/pokedex/cry_meter_needle.png", ".4bpp");
 
 static const u16 sCryMeter_Tilemap[] = INCBIN_U16("graphics/pokedex/cry_meter_map.bin"); // Unused
-static const u16 sCryMeter_Pal[] = INCBIN_U16("graphics/pokedex/cry_meter.gbapal");
-static const u8 sCryMeter_Gfx[] = INCBIN_U8("graphics/pokedex/cry_meter.4bpp.lz");
+static const u16 sCryMeter_Pal[] = INCGFX_U16("graphics/pokedex/cry_meter.png", ".gbapal");
+static const u8 sCryMeter_Gfx[] = INCGFX_U8("graphics/pokedex/cry_meter.png", ".4bpp.lz");
 
 static const u16 sWaveformOffsets[][72] =
 {
@@ -159,8 +165,8 @@ static const u16 sWaveformOffsets[][72] =
     }
 };
 
-static const u16 sCryScreenBg_Pal[] = INCBIN_U16("graphics/pokedex/cry_screen_bg.gbapal");
-static const u8 sCryScreenBg_Gfx[] = INCBIN_U8("graphics/pokedex/cry_screen_bg.4bpp");
+static const u16 sCryScreenBg_Pal[] = INCGFX_U16("graphics/pokedex/cry_screen_bg.png", ".gbapal");
+static const u8 sCryScreenBg_Gfx[] = INCGFX_U8("graphics/pokedex/cry_screen_bg.png", ".4bpp");
 
 static const u8 sWaveformTileDataNybbleMasks[] = {0xF0, 0x0F};
 
@@ -354,8 +360,8 @@ static void PlayCryScreenCry(u16 species)
 static void BufferCryWaveformSegment(void)
 {
     u8 i;
-    float *baseBuffer;
-    float *buffer;
+    SampleDataType *baseBuffer;
+    SampleDataType *buffer;
 
     if (gPcmDmaCounter < 2)
         baseBuffer = gSoundInfo.pcmBuffer;
@@ -387,14 +393,14 @@ static void AdvancePlayhead(u8 windowId)
 
 // Waveform segments are drawn in alternate vertical slices
 // Note that the waveform isnt put on screen until DrawWaveformWindow
-static void DrawWaveformSegment(u8 position, float amplitude)
+static void DrawWaveformSegment(u8 position, SampleDataType amplitude)
 {
     // Position is a bitfield containing the play start pos, the playhead pos, and which vertical slice half to draw
     #define PLAY_START_POS (position >> 3)
     #define PLAYHEAD_POS   (position & ((1 << 3) - 1))
     #define VERT_SLICE     (position & 1)
 
-    float currentPointY;
+    SampleDataType currentPointY;
     u8 nybble;
     u16 offset;
     u16 temp;

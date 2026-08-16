@@ -1,5 +1,6 @@
 	.section .rodata
 
+	.include "asm/macros/bit_width.inc"
 	.include "asm/macros/m4a.inc"
 	.include "asm/macros/music_voice.inc"
 

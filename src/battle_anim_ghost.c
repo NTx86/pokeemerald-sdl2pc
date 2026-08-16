@@ -281,7 +281,9 @@ static void AnimConfuseRayBallBounce_Step2(struct Sprite *sprite)
         sprite->callback = DestroyAnimSpriteAndDisableBlend;
     }
     else
+    {
         UpdateConfuseRayBallBlend(sprite);
+    }
 }
 
 static void UpdateConfuseRayBallBlend(struct Sprite *sprite)

@@ -23,6 +23,13 @@
 #define getBlueChannel(x) ((x >>  10) & 0x1F)
 #define isbgEnabled(x) ((REG_DISPCNT >> 8) & 0xF) & (1 << x)
 
+#ifdef PLATFORM_WIN32
+//gcc doesn't optimally inline some functions which causes a significant framerate drop in frame rate
+#define inline_hack __attribute__ ((always_inline))
+#else
+#define inline_hack
+#endif
+
 extern void (*const gIntrTable[])(void);
 
 struct scanlineData {
@@ -177,7 +184,7 @@ static void RenderBGScanlineWinBlend(int bgNum, uint16_t control, uint16_t hoffs
         }
         return;
     }
-    exitBlankScanlineLoop:
+    exitBlankScanlineLoop:;
     
     unsigned int startTileX = xx / 8;
     unsigned int startTileY = yy / 8;
@@ -427,7 +434,7 @@ static void RenderBGScanlineWin(int bgNum, uint16_t control, uint16_t hoffs, uin
         }
         return;
     }
-    exitBlankScanlineLoop:
+    exitBlankScanlineLoop:;
     
     unsigned int startTileX = xx / 8;
     unsigned int startTileY = yy / 8;
@@ -662,7 +669,7 @@ static void RenderBGScanlineBlend(int bgNum, uint16_t control, uint16_t hoffs, u
         }
         return;
     }
-    exitBlankScanlineLoop:
+    exitBlankScanlineLoop:;
     
     unsigned int startTileX = xx / 8;
     unsigned int startTileY = yy / 8;
@@ -902,7 +909,7 @@ static void RenderBGScanlineNoEffect(int bgNum, uint16_t control, uint16_t hoffs
         }
         return;
     }
-    exitBlankScanlineLoop:
+    exitBlankScanlineLoop:;
     
     unsigned int startTileX = xx / 8;
     unsigned int startTileY = yy / 8;
@@ -1688,11 +1695,7 @@ const u8 spriteSizes[][2] =
 static void DrawSpritesWinMask(struct scanlineData* scanline, uint16_t vcount)
 {
     int i;
-    unsigned int x;
-    unsigned int y;
     void *objtiles = VRAM_ + 0x10000;
-    unsigned int blendMode = (REG_BLDCNT >> 6) & 3;
-    bool winShouldBlendPixel = true;
 
     int16_t matrix[2][2] = {};
 
@@ -1709,11 +1712,9 @@ static void DrawSpritesWinMask(struct scanlineData* scanline, uint16_t vcount)
         
         unsigned int width;
         unsigned int height;
-        //uint16_t *pixels;
 
         bool isAffine  = oam->affineMode & 1;
         bool doubleSizeOrDisabled = (oam->affineMode >> 1) & 1;
-        bool isSemiTransparent = (oam->objMode == 1);
 
         if (!(isAffine) && doubleSizeOrDisabled) // disable for non-affine
         {
@@ -1745,8 +1746,6 @@ static void DrawSpritesWinMask(struct scanlineData* scanline, uint16_t vcount)
 
         int half_width = width / 2;
         int half_height = height / 2;
-
-        //pixels = scanline->spriteLayers[oam->priority];
 
         int32_t x = oam->x;
         int32_t y = oam->y;
@@ -1795,8 +1794,6 @@ static void DrawSpritesWinMask(struct scanlineData* scanline, uint16_t vcount)
         if (vcount >= (y - half_height) && vcount < (y + half_height))
         {
             int local_y = (oam->mosaic == 1) ? applySpriteVerticalMosaicEffect(vcount) - y : vcount - y;
-            int number  = oam->tileNum;
-            int palette = oam->paletteNum;
             bool flipX  = !isAffine && ((oam->matrixNum >> 3) & 1);
             bool flipY  = !isAffine && ((oam->matrixNum >> 4) & 1);
             bool is8BPP  = oam->bpp & 1;
@@ -1871,15 +1868,565 @@ static void DrawSpritesWinMask(struct scanlineData* scanline, uint16_t vcount)
     }
 }
 
-// Parts of this code heavily borrowed from NanoboyAdvance.
-static void DrawSprites(struct scanlineData* scanline, uint16_t vcount, bool windowsEnabled, uint8_t priority, uint16_t* pixels, bool IsInsideWinIn)
+static void inline_hack DrawAffineSprite(int SpriteIndex, struct scanlineData* scanline, uint16_t vcount, bool windowsEnabled, uint16_t* pixels, bool IsInsideWinIn)
 {
-    int i;
-    unsigned int x;
-    unsigned int y;
+    struct OamData *oam = &((struct OamData *)OAM)[SpriteIndex];
     void *objtiles = VRAM_ + 0x10000;
     unsigned int blendMode = (REG_BLDCNT >> 6) & 3;
     bool winShouldBlendPixel = true;
+    unsigned int width;
+    unsigned int height;
+
+    bool isAffine  = oam->affineMode & 1;
+    bool doubleSizeOrDisabled = (oam->affineMode >> 1) & 1;
+    bool isSemiTransparent = (oam->objMode == 1);
+
+    if (!(isAffine) && doubleSizeOrDisabled) // disable for non-affine
+    {
+        return;
+    }
+
+    if (oam->shape == 0)
+    {
+        width = (1 << oam->size) * 8;
+        height = (1 << oam->size) * 8;
+    }
+    else if (oam->shape == 1) // wide
+    {
+        width = spriteSizes[oam->size][1];
+        height = spriteSizes[oam->size][0];
+    }
+    else if (oam->shape == 2) // tall
+    {
+        width = spriteSizes[oam->size][0];
+        height = spriteSizes[oam->size][1];
+    }
+    else
+    {
+        return; // prohibited, do not draw
+    }
+
+    int rect_width = width;
+    int rect_height = height;
+
+    int half_width = width / 2;
+    int half_height = height / 2;
+
+    int32_t x = oam->x;
+    int32_t y = oam->y;
+
+    if (x >= DISPLAY_WIDTH)
+        x -= 512;
+    if (y >= DISPLAY_HEIGHT)
+        y -= 256;
+    
+    int16_t matrix[2][2];
+
+    if (isAffine)
+    {
+        //TODO: there is probably a better way to do this
+        u8 matrixNum = oam->matrixNum * 4;
+
+        struct OamData *oam1 = &((struct OamData *)OAM)[matrixNum];
+        struct OamData *oam2 = &((struct OamData *)OAM)[matrixNum + 1];
+        struct OamData *oam3 = &((struct OamData *)OAM)[matrixNum + 2];
+        struct OamData *oam4 = &((struct OamData *)OAM)[matrixNum + 3];
+
+        matrix[0][0] = oam1->affineParam;
+        matrix[0][1] = oam2->affineParam;
+        matrix[1][0] = oam3->affineParam;
+        matrix[1][1] = oam4->affineParam;
+
+        if (doubleSizeOrDisabled) // double size for affine
+        {
+            rect_width *= 2;
+            rect_height *= 2;
+            half_width *= 2;
+            half_height *= 2;
+        }
+    }
+    else
+    {
+        // Identity
+        matrix[0][0] = 0x100;
+        matrix[0][1] = 0;
+        matrix[1][0] = 0;
+        matrix[1][1] = 0x100;
+    }
+
+    x += half_width;
+    y += half_height;
+
+    // Does this sprite actually draw on this scanline?
+    if (vcount >= (y - half_height) && vcount < (y + half_height))
+    {
+        int local_y = (oam->mosaic == 1) ? applySpriteVerticalMosaicEffect(vcount) - y : vcount - y;
+        bool flipX  = !isAffine && ((oam->matrixNum >> 3) & 1);
+        bool flipY  = !isAffine && ((oam->matrixNum >> 4) & 1);
+        bool is8BPP  = oam->bpp & 1;
+
+        for (int local_x = -half_width; local_x <= half_width; local_x++)
+        {
+            uint8_t *tiledata = (uint8_t *)objtiles;
+            uint16_t *palette = (uint16_t *)(PLTT + 0x200);
+            int local_mosaicX;
+            int tex_x;
+            int tex_y;
+
+            unsigned int global_x = local_x + x;
+
+            if (global_x < 0 || global_x >= DISPLAY_WIDTH)
+                continue;
+
+            if (isAffine)
+            {
+                if (oam->mosaic == 1)
+                {
+                    //mosaic effect has to be applied to global coordinates otherwise the mosaic will scroll
+                    local_mosaicX = applySpriteHorizontalMosaicEffect(global_x) - x;
+                    tex_x = ((matrix[0][0] * local_mosaicX + matrix[0][1] * local_y) >> 8) + (width / 2);
+                    tex_y = ((matrix[1][0] * local_mosaicX + matrix[1][1] * local_y) >> 8) + (height / 2);
+                }
+                else
+                {
+                    tex_x = ((matrix[0][0] * local_x + matrix[0][1] * local_y) >> 8) + (width / 2);
+                    tex_y = ((matrix[1][0] * local_x + matrix[1][1] * local_y) >> 8) + (height / 2);
+                }
+            }
+            else
+            {
+                tex_x = (oam->mosaic == 1 ? applySpriteHorizontalMosaicEffect(global_x) - x : local_x) + (width / 2);
+                tex_y = local_y + (height / 2);
+            }
+
+
+            /* Check if transformed coordinates are inside bounds. */
+
+            if (tex_x >= width || tex_y >= height || tex_x < 0 || tex_y < 0)
+                continue;
+
+            if (flipX)
+                tex_x = width  - tex_x - 1;
+            if (flipY)
+                tex_y = height - tex_y - 1;
+
+            int tile_x = tex_x % 8;
+            int tile_y = tex_y % 8;
+            int block_x = tex_x / 8;
+            int block_y = tex_y / 8;
+            int block_offset = ((block_y * (REG_DISPCNT & 0x40 ? (width / 8) : 16)) + block_x);
+            uint16_t pixel = 0;
+
+            if (!is8BPP)
+            {
+                pixel = tiledata[(block_offset + oam->tileNum) * 32 + (tile_y * 4) + (tile_x / 2)];
+                if (tile_x & 1)
+                    pixel >>= 4;
+                else
+                    pixel &= 0xF;
+                palette += oam->paletteNum * 16;
+            }
+            else
+            {
+                pixel = tiledata[(block_offset * 2 + oam->tileNum) * 32 + (tile_y * 8) + tile_x];
+            }
+
+            if (pixel != 0)
+            {
+                uint16_t color = palette[pixel];;
+                
+                //if sprite mode is 2 then write to the window mask instead
+                /*if (isObjWin)
+                {
+                    if (scanline->winMask[global_x] & WINMASK_WINOUT)
+                    scanline->winMask[global_x] = (REG_WINOUT >> 8) & 0x3F;
+                    continue;
+                }*/
+                if (windowsEnabled && !(scanline->winMask[global_x] & WINMASK_OBJ) && IsInsideWinIn == true)
+                {
+                    continue;
+                }
+                
+                //this code runs if pixel is to be drawn
+                if (global_x < DISPLAY_WIDTH && global_x >= 0)
+                {
+                    //check if its enabled in the window (if window is enabled)
+                    if (IsInsideWinIn == true)
+                        winShouldBlendPixel = (windowsEnabled == false || scanline->winMask[global_x] & WINMASK_CLR);
+                    else
+                        winShouldBlendPixel = (windowsEnabled == false || REG_WINOUT & WINOUT_WIN01_CLR);
+                    //has to be separated from the blend mode switch statement because of OBJ semi transparancy feature
+                    if ((blendMode == 1 && REG_BLDCNT & BLDCNT_TGT1_OBJ && winShouldBlendPixel) || isSemiTransparent)
+                    {
+                        uint16_t targetA = color;
+
+                        if (scanline->bgMask[global_x] & (REG_BLDCNT >> 8))
+                            color = alphaBlendColor(targetA, pixels[global_x]);
+                    }
+                    else if (REG_BLDCNT & BLDCNT_TGT1_OBJ && winShouldBlendPixel)
+                    {
+                        switch (blendMode)
+                        {
+                        case 2:
+                            color = alphaBrightnessIncrease(color);
+                            break;
+                        case 3:
+                            color = alphaBrightnessDecrease(color);
+                            break;
+                        }
+                    }
+                    
+                    //write pixel to pixel framebuffer
+                    pixels[global_x] = color | (1 << 15);
+                    scanline->bgMask[global_x] = (1 << 4); // top most obj pixel bit
+                }
+            }
+        }
+    }
+}
+
+static void inline_hack DrawNonAffineSprite(int SpriteIndex, struct scanlineData* scanline, uint16_t vcount, bool windowsEnabled, uint16_t* pixels, bool IsInsideWinIn)
+{
+    struct OamData *oam = &((struct OamData *)OAM)[SpriteIndex];
+    void *objtiles = VRAM_ + 0x10000;
+    unsigned int blendMode = (REG_BLDCNT >> 6) & 3;
+    bool winShouldBlendPixel = true;
+    unsigned int width;
+    unsigned int height;
+
+    bool isAffine  = oam->affineMode & 1;
+    bool doubleSizeOrDisabled = (oam->affineMode >> 1) & 1;
+    bool isSemiTransparent = (oam->objMode == 1);
+
+    if (!(isAffine) && doubleSizeOrDisabled) // disable for non-affine
+    {
+        return;
+    }
+
+    if (oam->shape == 0)
+    {
+        width = (1 << oam->size) * 8;
+        height = (1 << oam->size) * 8;
+    }
+    else if (oam->shape == 1) // wide
+    {
+        width = spriteSizes[oam->size][1];
+        height = spriteSizes[oam->size][0];
+    }
+    else if (oam->shape == 2) // tall
+    {
+        width = spriteSizes[oam->size][0];
+        height = spriteSizes[oam->size][1];
+    }
+    else
+    {
+        return; // prohibited, do not draw
+    }
+
+    int half_height = height / 2;
+    int32_t x = oam->x;
+    int32_t y = oam->y;
+
+    if (x >= DISPLAY_WIDTH)
+        x -= 512;
+    if (y >= DISPLAY_HEIGHT)
+        y -= 256;
+
+    y += half_height;
+
+    // Does this sprite actually draw on this scanline?
+    if (vcount >= (y - half_height) && vcount < (y + half_height))
+    {
+        int local_y = (oam->mosaic == 1) ? applySpriteVerticalMosaicEffect(vcount) - y : vcount - y;
+        //int palette = oam->paletteNum;
+        bool flipX  = !isAffine && ((oam->matrixNum >> 3) & 1);
+        bool flipY  = !isAffine && ((oam->matrixNum >> 4) & 1);
+        uint8_t *tiledata = (uint8_t *)objtiles;
+        uint16_t *palette = (uint16_t *)OBJ_PLTT;
+        palette += oam->paletteNum * 16; //choose the palette
+        int tex_y = local_y + (height / 2);
+        if (flipY)
+            tex_y = height - tex_y - 1;
+        //run the block drawing loop in reverse if sprite is flipped otherwise run as normal
+        int blockStart, blockEnd, blockIncrement;
+        if (flipX)
+        {
+            blockStart = width / TILE_WIDTH-1;
+            blockEnd = -1;
+            blockIncrement = -1;
+        }
+        else
+        {
+            blockStart = 0;
+            blockEnd = width / TILE_WIDTH;
+            blockIncrement = 1;
+        }
+        
+        for (int block_x = blockStart; block_x != blockEnd; block_x += blockIncrement)
+        {
+            int tile_y = tex_y & (TILE_HEIGHT-1);
+            int block_y = tex_y / TILE_HEIGHT;
+            int block_offset = ((block_y * (REG_DISPCNT & DISPCNT_OBJ_1D_MAP ? (width / 8) : 16)) + block_x);
+            uint8_t* pixelData = &tiledata[(oam->tileNum + block_offset) * TILE_SIZE_4BPP + (tile_y * 4)];
+            uint32_t pixel32 = *(uint32_t*)pixelData; //load whole tile worth of palette pixels
+            
+            if (x >= 0 && x + TILE_WIDTH <= DISPLAY_WIDTH)
+            {
+                if (windowsEnabled)
+                {
+                    if (blendMode != 0 || isSemiTransparent) //Windowing and blending
+                    {
+                        #define writeSpritePixelWinBlend(pixel, x) \
+                            if (pixel && ((IsInsideWinIn && scanline->winMask[x] & WINMASK_OBJ) || (!IsInsideWinIn && REG_WINOUT & WINOUT_WIN01_OBJ))) { \
+                                uint16_t color = palette[pixel]; \
+                                winShouldBlendPixel = (IsInsideWinIn && scanline->winMask[x] & WINMASK_CLR) || (!IsInsideWinIn && REG_WINOUT & WINOUT_WIN01_CLR); \
+                                \
+                                if (((blendMode == 1 && REG_BLDCNT & BLDCNT_TGT1_OBJ) && winShouldBlendPixel) || isSemiTransparent) \
+                                { \
+                                    if (scanline->bgMask[x] & (REG_BLDCNT >> 8)) \
+                                        color = alphaBlendColor(color, pixels[x]); \
+                                } \
+                                else if(REG_BLDCNT & BLDCNT_TGT1_OBJ && winShouldBlendPixel) \
+                                { \
+                                    switch (blendMode) \
+                                    { \
+                                        case 2: \
+                                            color = alphaBrightnessIncrease(color); \
+                                            break; \
+                                        case 3: \
+                                            color = alphaBrightnessDecrease(color); \
+                                            break; \
+                                    } \
+                                } \
+                                pixels[x] = color | (1 << 15); \
+                                scanline->bgMask[x] = (1 << 4); \
+                            }
+
+                        if (flipX)
+                        {
+                            writeSpritePixelWinBlend(pixel32 >> 28, x)
+                            writeSpritePixelWinBlend((pixel32 >> 24) & 0xF, x+1)
+                            writeSpritePixelWinBlend((pixel32 >> 20) & 0xF, x+2)
+                            writeSpritePixelWinBlend((pixel32 >> 16) & 0xF, x+3)
+                            writeSpritePixelWinBlend((pixel32 >> 12) & 0xF, x+4)
+                            writeSpritePixelWinBlend((pixel32 >> 8) & 0xF, x+5)
+                            writeSpritePixelWinBlend((pixel32 >> 4) & 0xF, x+6)
+                            writeSpritePixelWinBlend(pixel32 & 0xF, x+7)
+                        }
+                        else
+                        {
+                            writeSpritePixelWinBlend(pixel32 & 0xF, x)
+                            writeSpritePixelWinBlend((pixel32 >> 4) & 0xF, x+1)
+                            writeSpritePixelWinBlend((pixel32 >> 8) & 0xF, x+2)
+                            writeSpritePixelWinBlend((pixel32 >> 12) & 0xF, x+3)
+                            writeSpritePixelWinBlend((pixel32 >> 16) & 0xF, x+4)
+                            writeSpritePixelWinBlend((pixel32 >> 20) & 0xF, x+5)
+                            writeSpritePixelWinBlend((pixel32 >> 24) & 0xF, x+6)
+                            writeSpritePixelWinBlend(pixel32 >> 28, x+7)
+                        }
+                        #undef writeSpritePixelWinBlend
+                    }
+                    else //Windowing
+                    {
+                        #define writeSpritePixelWin(pixel, x) \
+                            if (pixel && ((IsInsideWinIn && scanline->winMask[x] & WINMASK_OBJ) || (!IsInsideWinIn && REG_WINOUT & WINOUT_WIN01_OBJ))) { \
+                                pixels[x] = palette[pixel] | (1 << 15); \
+                                scanline->bgMask[x] = (1 << 4); \
+                            }
+
+                        if (flipX)
+                        {
+                            writeSpritePixelWin(pixel32 >> 28, x)
+                            writeSpritePixelWin((pixel32 >> 24) & 0xF, x+1)
+                            writeSpritePixelWin((pixel32 >> 20) & 0xF, x+2)
+                            writeSpritePixelWin((pixel32 >> 16) & 0xF, x+3)
+                            writeSpritePixelWin((pixel32 >> 12) & 0xF, x+4)
+                            writeSpritePixelWin((pixel32 >> 8) & 0xF, x+5)
+                            writeSpritePixelWin((pixel32 >> 4) & 0xF, x+6)
+                            writeSpritePixelWin(pixel32 & 0xF, x+7)
+                        }
+                        else
+                        {
+                            writeSpritePixelWin(pixel32 & 0xF, x)
+                            writeSpritePixelWin((pixel32 >> 4) & 0xF, x+1)
+                            writeSpritePixelWin((pixel32 >> 8) & 0xF, x+2)
+                            writeSpritePixelWin((pixel32 >> 12) & 0xF, x+3)
+                            writeSpritePixelWin((pixel32 >> 16) & 0xF, x+4)
+                            writeSpritePixelWin((pixel32 >> 20) & 0xF, x+5)
+                            writeSpritePixelWin((pixel32 >> 24) & 0xF, x+6)
+                            writeSpritePixelWin(pixel32 >> 28, x+7)
+                        }
+                        #undef writeSpritePixelWin
+                    }
+                }
+                else //Choose between Blend and none
+                {
+                    if (blendMode != 0 || isSemiTransparent) //Blend
+                    {
+                        #define writeSpritePixelBlend(pixel, x) \
+                        if (pixel) { \
+                            uint16_t color = palette[pixel]; \
+                            \
+                            if ( (blendMode == 1 && REG_BLDCNT & BLDCNT_TGT1_OBJ) || isSemiTransparent) \
+                            { \
+                                if (scanline->bgMask[x] & (REG_BLDCNT >> 8)) \
+                                    color = alphaBlendColor(color, pixels[x]); \
+                            } \
+                            else if(REG_BLDCNT & BLDCNT_TGT1_OBJ) \
+                            { \
+                                switch (blendMode) \
+                                { \
+                                    case 2: \
+                                        color = alphaBrightnessIncrease(color); \
+                                        break; \
+                                    case 3: \
+                                        color = alphaBrightnessDecrease(color); \
+                                        break; \
+                                } \
+                            } \
+                            \
+                            pixels[x] = color | (1 << 15); \
+                            scanline->bgMask[x] = (1 << 4); \
+                        }
+
+                        if (flipX)
+                        {
+                            writeSpritePixelBlend(pixel32 >> 28, x)
+                            writeSpritePixelBlend((pixel32 >> 24) & 0xF, x+1)
+                            writeSpritePixelBlend((pixel32 >> 20) & 0xF, x+2)
+                            writeSpritePixelBlend((pixel32 >> 16) & 0xF, x+3)
+                            writeSpritePixelBlend((pixel32 >> 12) & 0xF, x+4)
+                            writeSpritePixelBlend((pixel32 >> 8) & 0xF, x+5)
+                            writeSpritePixelBlend((pixel32 >> 4) & 0xF, x+6)
+                            writeSpritePixelBlend(pixel32 & 0xF, x+7)
+                        }
+                        else
+                        {
+                            writeSpritePixelBlend(pixel32 & 0xF, x)
+                            writeSpritePixelBlend((pixel32 >> 4) & 0xF, x+1)
+                            writeSpritePixelBlend((pixel32 >> 8) & 0xF, x+2)
+                            writeSpritePixelBlend((pixel32 >> 12) & 0xF, x+3)
+                            writeSpritePixelBlend((pixel32 >> 16) & 0xF, x+4)
+                            writeSpritePixelBlend((pixel32 >> 20) & 0xF, x+5)
+                            writeSpritePixelBlend((pixel32 >> 24) & 0xF, x+6)
+                            writeSpritePixelBlend(pixel32 >> 28, x+7)
+                        }
+                        #undef writeSpritePixelBlend
+                    }
+                    else //None
+                    {
+                        #define writeSpritePixel(pixel, x) \
+                            if (pixel) { \
+                                pixels[x] = palette[pixel] | (1 << 15); \
+                                scanline->bgMask[x] = (1 << 4); \
+                            }
+
+                        if (flipX)
+                        {
+                            writeSpritePixel(pixel32 >> 28, x)
+                            writeSpritePixel((pixel32 >> 24) & 0xF, x+1)
+                            writeSpritePixel((pixel32 >> 20) & 0xF, x+2)
+                            writeSpritePixel((pixel32 >> 16) & 0xF, x+3)
+                            writeSpritePixel((pixel32 >> 12) & 0xF, x+4)
+                            writeSpritePixel((pixel32 >> 8) & 0xF, x+5)
+                            writeSpritePixel((pixel32 >> 4) & 0xF, x+6)
+                            writeSpritePixel(pixel32 & 0xF, x+7)
+                        }
+                        else
+                        {
+                            writeSpritePixel(pixel32 & 0xF, x)
+                            writeSpritePixel((pixel32 >> 4) & 0xF, x+1)
+                            writeSpritePixel((pixel32 >> 8) & 0xF, x+2)
+                            writeSpritePixel((pixel32 >> 12) & 0xF, x+3)
+                            writeSpritePixel((pixel32 >> 16) & 0xF, x+4)
+                            writeSpritePixel((pixel32 >> 20) & 0xF, x+5)
+                            writeSpritePixel((pixel32 >> 24) & 0xF, x+6)
+                            writeSpritePixel(pixel32 >> 28, x+7)
+                        }
+                        #undef writeSpritePixel
+                    }
+                }
+            }
+            else //handle tiles that are partially cut off screen, for the sake of readibility the writeSpritePixel handles all special effect spaces, should affect performance very little
+            {
+                bool winShouldDraw = true;
+                #define writeSpritePixel(pixel, x) \
+                    winShouldDraw = windowsEnabled == false || ((IsInsideWinIn && scanline->winMask[x] & WINMASK_OBJ) || (!IsInsideWinIn && REG_WINOUT & WINOUT_WIN01_OBJ));\
+                    if (pixel && winShouldDraw) { \
+                        uint16_t color = palette[pixel]; \
+                        \
+                        winShouldBlendPixel = windowsEnabled == false || ( (IsInsideWinIn && scanline->winMask[x] & WINMASK_CLR) || (!IsInsideWinIn && REG_WINOUT & WINOUT_WIN01_CLR) ); \
+                        if ((blendMode == 1 && REG_BLDCNT & BLDCNT_TGT1_OBJ && winShouldBlendPixel) || isSemiTransparent) \
+                        { \
+                            if (scanline->bgMask[x] & (REG_BLDCNT >> 8)) \
+                                color = alphaBlendColor(color, pixels[x]); \
+                        } \
+                        else if(REG_BLDCNT & BLDCNT_TGT1_OBJ && winShouldBlendPixel) \
+                        { \
+                            switch (blendMode) \
+                            { \
+                                case 2: \
+                                    color = alphaBrightnessIncrease(color); \
+                                    break; \
+                                case 3: \
+                                    color = alphaBrightnessDecrease(color); \
+                                    break; \
+                            } \
+                        } \
+                        \
+                        pixels[x] = color | (1 << 15); \
+                        scanline->bgMask[x] = (1 << 4); \
+                    }
+
+                if (x > -TILE_WIDTH && x < 0) //left side
+                {
+                    int amountOfPixelsToBeDrawn = TILE_WIDTH - abs(x);
+                    if (flipX)
+                    {
+                        for (int i = 0; i < amountOfPixelsToBeDrawn; i++)
+                        {
+                            int pixelOffset = abs(x);
+                            writeSpritePixel((pixel32 >> (28-((pixelOffset+i)*4))) & 0xF, i);
+                        }
+                    }
+                    else
+                    {
+                        for (int i = 0; i < amountOfPixelsToBeDrawn; i++)
+                        {
+                            int pixelOffset = abs(x);
+                            writeSpritePixel((pixel32 >> ((pixelOffset+i)*4)) & 0xF, i);
+                        }
+                    }
+                }
+                else if(x < DISPLAY_WIDTH && x + TILE_WIDTH > DISPLAY_WIDTH) //right side
+                {
+                    int amountOfPixelsToBeDrawn = DISPLAY_WIDTH-x;
+                    if (flipX)
+                    {
+                        for (int i = 0; i < amountOfPixelsToBeDrawn; i++)
+                        {
+                            writeSpritePixel((pixel32 >> (28-(i*4))) & 0xF, x+i);
+                        }
+                    }
+                    else
+                    {
+                        for (int i = 0; i < amountOfPixelsToBeDrawn; i++)
+                        {
+                            writeSpritePixel((pixel32 >> i*4) & 0xF, x+i);
+                        }
+                    }
+                }
+                #undef writeSpritePixel
+            }
+            x += TILE_WIDTH; //Move on onto the next block
+        }
+    }
+}
+
+// Parts of this code heavily borrowed from NanoboyAdvance.
+static void DrawSprites(struct scanlineData* scanline, uint16_t vcount, bool windowsEnabled, uint8_t priority, uint16_t* pixels, bool IsInsideWinIn)
+{
+    int SpriteIndex;
     
     if (windowsEnabled == true && IsInsideWinIn == false)
     {
@@ -1887,226 +2434,24 @@ static void DrawSprites(struct scanlineData* scanline, uint16_t vcount, bool win
             return;
     }
 
-    int16_t matrix[2][2] = {};
-
     if (!(REG_DISPCNT & (1 << 6)))
     {
         puts("2-D OBJ Character mapping not supported.");
     }
 
-    for (i = 127; i >= 0; i--)
+    for (SpriteIndex = 127; SpriteIndex >= 0; SpriteIndex--)
     {
-        struct OamData *oam = &((struct OamData *)OAM)[i];
+        struct OamData *oam = &((struct OamData *)OAM)[SpriteIndex];
+        
         if (oam->priority != priority)
             continue;
         if (oam->objMode == 2)
             continue;
-        unsigned int width;
-        unsigned int height;
-        //uint16_t *pixels;
-
-        bool isAffine  = oam->affineMode & 1;
-        bool doubleSizeOrDisabled = (oam->affineMode >> 1) & 1;
-        bool isSemiTransparent = (oam->objMode == 1);
-        bool isObjWin = (oam->objMode == 2);
-
-        if (!(isAffine) && doubleSizeOrDisabled) // disable for non-affine
-        {
-            continue;
-        }
-
-        if (oam->shape == 0)
-        {
-            width = (1 << oam->size) * 8;
-            height = (1 << oam->size) * 8;
-        }
-        else if (oam->shape == 1) // wide
-        {
-            width = spriteSizes[oam->size][1];
-            height = spriteSizes[oam->size][0];
-        }
-        else if (oam->shape == 2) // tall
-        {
-            width = spriteSizes[oam->size][0];
-            height = spriteSizes[oam->size][1];
-        }
+        
+        if (oam->affineMode & 1 || oam->bpp & 1 || oam->mosaic == 1)
+            DrawAffineSprite(SpriteIndex, scanline, vcount, windowsEnabled, pixels, IsInsideWinIn);
         else
-        {
-            continue; // prohibited, do not draw
-        }
-
-        int rect_width = width;
-        int rect_height = height;
-
-        int half_width = width / 2;
-        int half_height = height / 2;
-
-        //pixels = scanline->spriteLayers[oam->priority];
-
-        int32_t x = oam->x;
-        int32_t y = oam->y;
-
-        if (x >= DISPLAY_WIDTH)
-            x -= 512;
-        if (y >= DISPLAY_HEIGHT)
-            y -= 256;
-
-        if (isAffine)
-        {
-            //TODO: there is probably a better way to do this
-            u8 matrixNum = oam->matrixNum * 4;
-
-            struct OamData *oam1 = &((struct OamData *)OAM)[matrixNum];
-            struct OamData *oam2 = &((struct OamData *)OAM)[matrixNum + 1];
-            struct OamData *oam3 = &((struct OamData *)OAM)[matrixNum + 2];
-            struct OamData *oam4 = &((struct OamData *)OAM)[matrixNum + 3];
-
-            matrix[0][0] = oam1->affineParam;
-            matrix[0][1] = oam2->affineParam;
-            matrix[1][0] = oam3->affineParam;
-            matrix[1][1] = oam4->affineParam;
-
-            if (doubleSizeOrDisabled) // double size for affine
-            {
-                rect_width *= 2;
-                rect_height *= 2;
-                half_width *= 2;
-                half_height *= 2;
-            }
-        }
-        else
-        {
-            // Identity
-            matrix[0][0] = 0x100;
-            matrix[0][1] = 0;
-            matrix[1][0] = 0;
-            matrix[1][1] = 0x100;
-        }
-
-        x += half_width;
-        y += half_height;
-
-        // Does this sprite actually draw on this scanline?
-        if (vcount >= (y - half_height) && vcount < (y + half_height))
-        {
-            int local_y = (oam->mosaic == 1) ? applySpriteVerticalMosaicEffect(vcount) - y : vcount - y;
-            int number  = oam->tileNum;
-            int palette = oam->paletteNum;
-            bool flipX  = !isAffine && ((oam->matrixNum >> 3) & 1);
-            bool flipY  = !isAffine && ((oam->matrixNum >> 4) & 1);
-            bool is8BPP  = oam->bpp & 1;
-
-            for (int local_x = -half_width; local_x <= half_width; local_x++)
-            {
-                uint8_t *tiledata = (uint8_t *)objtiles;
-                uint16_t *palette = (uint16_t *)(PLTT + 0x200);
-                int local_mosaicX;
-                int tex_x;
-                int tex_y;
-
-                unsigned int global_x = local_x + x;
-
-                if (global_x < 0 || global_x >= DISPLAY_WIDTH)
-                    continue;
-
-                if (oam->mosaic == 1)
-                {
-                    //mosaic effect has to be applied to global coordinates otherwise the mosaic will scroll
-                    local_mosaicX = applySpriteHorizontalMosaicEffect(global_x) - x;
-                    tex_x = ((matrix[0][0] * local_mosaicX + matrix[0][1] * local_y) >> 8) + (width / 2);
-                    tex_y = ((matrix[1][0] * local_mosaicX + matrix[1][1] * local_y) >> 8) + (height / 2);
-                }else{
-                    tex_x = ((matrix[0][0] * local_x + matrix[0][1] * local_y) >> 8) + (width / 2);
-                    tex_y = ((matrix[1][0] * local_x + matrix[1][1] * local_y) >> 8) + (height / 2);
-                }
-
-
-                /* Check if transformed coordinates are inside bounds. */
-
-                if (tex_x >= width || tex_y >= height || tex_x < 0 || tex_y < 0)
-                    continue;
-
-                if (flipX)
-                    tex_x = width  - tex_x - 1;
-                if (flipY)
-                    tex_y = height - tex_y - 1;
-
-                int tile_x = tex_x % 8;
-                int tile_y = tex_y % 8;
-                int block_x = tex_x / 8;
-                int block_y = tex_y / 8;
-                int block_offset = ((block_y * (REG_DISPCNT & 0x40 ? (width / 8) : 16)) + block_x);
-                uint16_t pixel = 0;
-
-                if (!is8BPP)
-                {
-                    pixel = tiledata[(block_offset + oam->tileNum) * 32 + (tile_y * 4) + (tile_x / 2)];
-                    if (tile_x & 1)
-                        pixel >>= 4;
-                    else
-                        pixel &= 0xF;
-                    palette += oam->paletteNum * 16;
-                }
-                else
-                {
-                    pixel = tiledata[(block_offset * 2 + oam->tileNum) * 32 + (tile_y * 8) + tile_x];
-                }
-
-                if (pixel != 0)
-                {
-                    uint16_t color = palette[pixel];;
-                    
-                    //if sprite mode is 2 then write to the window mask instead
-                    /*if (isObjWin)
-                    {
-                        if (scanline->winMask[global_x] & WINMASK_WINOUT)
-                        scanline->winMask[global_x] = (REG_WINOUT >> 8) & 0x3F;
-                        continue;
-                    }*/
-                    if (windowsEnabled && !(scanline->winMask[global_x] & WINMASK_OBJ) && IsInsideWinIn == true)
-                    {
-                        continue;
-                    }
-                    
-                    //this code runs if pixel is to be drawn
-                    if (global_x < DISPLAY_WIDTH && global_x >= 0)
-                    {
-                        //check if its enabled in the window (if window is enabled)
-                        if (IsInsideWinIn == true)
-                            winShouldBlendPixel = (windowsEnabled == false || scanline->winMask[global_x] & WINMASK_CLR);
-                        else
-                            winShouldBlendPixel = (windowsEnabled == false || REG_WINOUT & WINOUT_WIN01_CLR);
-                        //has to be separated from the blend mode switch statement because of OBJ semi transparancy feature
-                        if ((blendMode == 1 && REG_BLDCNT & BLDCNT_TGT1_OBJ && winShouldBlendPixel) || isSemiTransparent)
-                        {
-                            uint16_t targetA = color;
-                            uint16_t targetB = 0;
-                            //if (alphaBlendSelectTargetB(scanline, &targetB, oam->priority, 0, global_x, false))
-                            //{
-                            if (scanline->bgMask[global_x] & (REG_BLDCNT >> 8))
-                                color = alphaBlendColor(targetA, pixels[global_x]);
-                            //}
-                        }
-                        else if (REG_BLDCNT & BLDCNT_TGT1_OBJ && winShouldBlendPixel)
-                        {
-                            switch (blendMode)
-                            {
-                            case 2:
-                                color = alphaBrightnessIncrease(color);
-                                break;
-                            case 3:
-                                color = alphaBrightnessDecrease(color);
-                                break;
-                            }
-                        }
-                        
-                        //write pixel to pixel framebuffer
-                        pixels[global_x] = color | (1 << 15);
-                        scanline->bgMask[global_x] = (1 << 4); // top most obj pixel bit
-                    }
-                }
-            }
-        }
+            DrawNonAffineSprite(SpriteIndex, scanline, vcount, windowsEnabled, pixels, IsInsideWinIn);
     }
 }
 

@@ -25,9 +25,7 @@ PetalburgCity_Mart_Pokemart_Basic:
 	.short ITEM_X_ATTACK
 	.short ITEM_X_DEFEND
 	.short ITEM_ORANGE_MAIL
-	.short ITEM_NONE
-	release
-	end
+	pokemartlistend
 
 PetalburgCity_Mart_EventScript_ExpandedItems::
 	pokemart PetalburgCity_Mart_Pokemart_Expanded
@@ -50,9 +48,7 @@ PetalburgCity_Mart_Pokemart_Expanded:
 	.short ITEM_X_ATTACK
 	.short ITEM_X_DEFEND
 	.short ITEM_ORANGE_MAIL
-	.short ITEM_NONE
-	release
-	end
+	pokemartlistend
 
 PetalburgCity_Mart_EventScript_Woman::
 	msgbox PetalburgCity_Mart_Text_WeakWillGrowStronger, MSGBOX_NPC

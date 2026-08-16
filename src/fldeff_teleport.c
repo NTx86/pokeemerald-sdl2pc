@@ -31,7 +31,7 @@ static void FieldCallback_Teleport(void)
 bool8 FldEff_UseTeleport(void)
 {
     u8 taskId = CreateFieldMoveTask();
-    gTasks[taskId].funcPtr = StartTeleportFieldEffect;
+    gTasks[taskId].ptr.funcPtr = StartTeleportFieldEffect;
     SetPlayerAvatarTransitionFlags(PLAYER_AVATAR_FLAG_ON_FOOT);
     return FALSE;
 }

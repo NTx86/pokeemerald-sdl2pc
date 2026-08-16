@@ -18,9 +18,7 @@ OldaleTown_Mart_Pokemart_Basic:
 	.short ITEM_ANTIDOTE
 	.short ITEM_PARALYZE_HEAL
 	.short ITEM_AWAKENING
-	.short ITEM_NONE
-	release
-	end
+	pokemartlistend
 
 OldaleTown_Mart_ExpandedItems::
 	pokemart OldaleTown_Mart_Pokemart_Expanded
@@ -35,9 +33,7 @@ OldaleTown_Mart_Pokemart_Expanded:
 	.short ITEM_ANTIDOTE
 	.short ITEM_PARALYZE_HEAL
 	.short ITEM_AWAKENING
-	.short ITEM_NONE
-	release
-	end
+	pokemartlistend
 
 OldaleTown_Mart_EventScript_Woman::
 	lock

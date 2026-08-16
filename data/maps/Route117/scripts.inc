@@ -1,5 +1,3 @@
-.set LOCALID_DAYCARE_MAN, 3
-
 Route117_MapScripts::
 	map_script MAP_SCRIPT_ON_SETUP_OBJECTS, Route117_OnSetupObjects
 	.byte 0

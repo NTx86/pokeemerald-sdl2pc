@@ -62,13 +62,13 @@ static const struct FlashStruct sTransitionTypes[] =
     {},
 };
 
-static const u16 sCaveTransitionPalette_White[] = INCBIN_U16("graphics/cave_transition/white.gbapal");
-static const u16 sCaveTransitionPalette_Black[] = INCBIN_U16("graphics/cave_transition/black.gbapal");
+static const u16 sCaveTransitionPalette_White[] = INCGFX_U16("graphics/cave_transition/white.pal", ".gbapal");
+static const u16 sCaveTransitionPalette_Black[] = INCGFX_U16("graphics/cave_transition/black.pal", ".gbapal");
 
-static const u16 sCaveTransitionPalette_Enter[] = INCBIN_U16("graphics/cave_transition/enter.gbapal");
-static const u16 sCaveTransitionPalette_Exit[] = INCBIN_U16("graphics/cave_transition/exit.gbapal");
-static const u32 sCaveTransitionTilemap[] = INCBIN_U32("graphics/cave_transition/tilemap.bin.lz");
-static const u32 sCaveTransitionTiles[] = INCBIN_U32("graphics/cave_transition/tiles.4bpp.lz");
+static const u16 sCaveTransitionPalette_Enter[] = INCGFX_U16("graphics/cave_transition/enter.pal", ".gbapal");
+
+static const u32 sCaveTransitionTilemap[] = INCGFX_U32("graphics/cave_transition/tilemap.bin", ".lz");
+static const u32 sCaveTransitionTiles[] = INCGFX_U32("graphics/cave_transition/tiles.png", ".4bpp.lz");
 
 bool8 SetUpFieldMove_Flash(void)
 {
@@ -95,7 +95,7 @@ static void FieldCallback_Flash(void)
 {
     u8 taskId = CreateFieldMoveTask();
     gFieldEffectArguments[0] = GetCursorSelectionMonId();
-    gTasks[taskId].funcPtr = FldEff_UseFlash;
+    gTasks[taskId].ptr.funcPtr = FldEff_UseFlash;
 }
 
 static void FldEff_UseFlash(void)
@@ -122,8 +122,6 @@ static void VBC_ChangeMapVBlank(void)
 
 void CB2_DoChangeMap(void)
 {
-    u16 ime;
-
     SetVBlankCallback(NULL);
     ResetGpuDisplayControl();
     ClearGpuBackgroundState(2);
@@ -142,10 +140,7 @@ void CB2_DoChangeMap(void)
     ResetPaletteFade();
     ResetTasks();
     ResetSpriteData();
-    ime = REG_IME;
-    REG_IME = 0;
-    REG_IE |= INTR_FLAG_VBLANK;
-    REG_IME = ime;
+    IntrEnable(INTR_FLAG_VBLANK);
     SetVBlankCallback(VBC_ChangeMapVBlank);
     SetMainCallback2(CB2_ChangeMapMain);
     if (!TryDoMapTransition())
@@ -220,7 +215,7 @@ static void Task_ExitCaveTransition2(u8 taskId)
     LZ77UnCompVram(sCaveTransitionTiles, (void *)(gpu.gfxData + (BG_CHAR_SIZE * 3)));
     LZ77UnCompVram(sCaveTransitionTilemap, (void *)(gpu.tileMaps + (BG_SCREEN_SIZE * 0x1F)));
     LoadPalette(sCaveTransitionPalette_White, BG_PLTT_ID(14), PLTT_SIZE_4BPP);
-    LoadPalette(sCaveTransitionPalette_Exit, BG_PLTT_ID(14), PLTT_SIZEOF(8));
+    LoadPalette(&sCaveTransitionPalette_Enter[8], BG_PLTT_ID(14), PLTT_SIZEOF(8));
     SetGpuState(GPU_STATE_BLDCNT, BLDCNT_TGT1_BG0
                                 | BLDCNT_EFFECT_BLEND
                                 | BLDCNT_TGT2_BG1
@@ -249,7 +244,7 @@ static void Task_ExitCaveTransition3(u8 taskId)
     u16 blend = count + 0x1000;
 
     SetGpuState(GPU_STATE_BLDALPHA, blend);
-    if (count <= 0x10)
+    if (count <= 16)
     {
         gTasks[taskId].data[1]++;
     }
@@ -270,7 +265,7 @@ static void Task_ExitCaveTransition4(u8 taskId)
     if (count < 8)
     {
         gTasks[taskId].data[2]++;
-        LoadPalette(&sCaveTransitionPalette_Exit[count], BG_PLTT_ID(14), sizeof(sCaveTransitionPalette_Exit) - PLTT_SIZEOF(count));
+        LoadPalette(&sCaveTransitionPalette_Enter[8 + count], BG_PLTT_ID(14), PLTT_SIZEOF(8) - PLTT_SIZEOF(count));
     }
     else
     {
@@ -325,25 +320,12 @@ static void Task_EnterCaveTransition2(u8 taskId)
 static void Task_EnterCaveTransition3(u8 taskId)
 {
     u16 count = gTasks[taskId].data[2];
-    //The original code intentionally accesses sCaveTransitionPalette_Enter array out of bounds to access the sCaveTransitionPalette_Exit
-    //Of course compiler doesn't always put data together so in O3 pc build the data that follows are zeros, making the transition look incorrect
-    //The solution is to copy both arrays into one so the code wouldn't have to rely on undefined behavior
-    #ifdef UBFIX
-    u16 CaveTransitionPalette_Combined[16];
-    
-    memcpy(CaveTransitionPalette_Combined, sCaveTransitionPalette_Enter, sizeof(sCaveTransitionPalette_Enter));
-    memcpy(&CaveTransitionPalette_Combined[8], sCaveTransitionPalette_Exit, sizeof(sCaveTransitionPalette_Exit));
-    #endif
 
     if (count < 16)
     {
         gTasks[taskId].data[2]++;
         gTasks[taskId].data[2]++;
-        #ifdef UBFIX
-        LoadPalette(&CaveTransitionPalette_Combined[15 - count], BG_PLTT_ID(14), PLTT_SIZEOF(count + 1));
-        #else
         LoadPalette(&sCaveTransitionPalette_Enter[15 - count], BG_PLTT_ID(14), PLTT_SIZEOF(count + 1));
-        #endif
     }
     else
     {

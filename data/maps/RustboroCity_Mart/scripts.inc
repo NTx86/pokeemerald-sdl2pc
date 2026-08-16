@@ -28,9 +28,7 @@ RustboroCity_Mart_Pokemart_Basic:
 	.short ITEM_X_SPEED
 	.short ITEM_X_ATTACK
 	.short ITEM_X_DEFEND
-	.short ITEM_NONE
-	release
-	end
+	pokemartlistend
 
 RustboroCity_Mart_EventScript_PokemartExpanded::
 	pokemart RustboroCity_Mart_Pokemart_Expanded
@@ -52,9 +50,7 @@ RustboroCity_Mart_Pokemart_Expanded:
 	.short ITEM_X_SPEED
 	.short ITEM_X_ATTACK
 	.short ITEM_X_DEFEND
-	.short ITEM_NONE
-	release
-	end
+	pokemartlistend
 
 RustboroCity_Mart_EventScript_PokefanF::
 	msgbox RustboroCity_Mart_Text_BuyingHealsInCaseOfShroomish, MSGBOX_NPC

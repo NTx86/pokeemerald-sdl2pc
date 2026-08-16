@@ -24,6 +24,7 @@
 #include "gba/flash_internal.h"
 #include "platform/dma.h"
 #include "platform/framedraw.h"
+#include "platform/system.h"
 
 #define STB_IMAGE_IMPLEMENTATION
 #define STBI_NO_GIF
@@ -130,8 +131,6 @@ static void UpdateInternalClock(void);
 
 static void RunFrame(void);
 static void RunScanlineEffect(void);
-
-static void AudioUpdate(void);
 
 static bool InGbaRenderMode(void)
 {
@@ -448,22 +447,15 @@ int main(int argc, char **argv)
     LoadBorders();
 
     GameInit();
-
-#ifdef USE_THREAD
-    isFrameAvailable.value = 0;
-    vBlankSemaphore = SDL_CreateSemaphore(0);
-
-    mainLoopThread = SDL_CreateThread(DoMain, "AgbMain", NULL);
-#endif
-
+	
     double accumulator = 0.0;
     double accumulator60 = 0.0;
     bool isGameStepDrawn = false;
 
-    while (isRunning)
-    {
-        ProcessEvents();
-
+	while (isRunning)
+	{
+		ProcessEvents();
+		
         if (videoScaleChanged)
         {
             SDL_SetWindowSize(sdlWindow, windowWidth, windowHeight);
@@ -493,7 +485,9 @@ int main(int argc, char **argv)
             accumulator += deltaTime;
             accumulator60 += deltaTime60;
 
-            while (accumulator >= dt)
+            isGameStepDrawn = false;
+
+            while (accumulator >= fixedTimestep)
             {
 #ifdef USE_THREAD
                 if (SDL_AtomicGet(&isFrameAvailable))
@@ -1874,9 +1868,7 @@ static void RunFrame(void)
 {
     UpdateBorder();
 
-#ifndef USE_THREAD
-    GameLoop();
-#endif
+    MainLoop();
 
     gpu.displayStatus |= INTR_FLAG_VBLANK;
 
@@ -2243,32 +2235,9 @@ void RenderFrame(SDL_Texture *texture)
     gpu.vCount = displayHeight + 1; // prep for being in VBlank period
 }
 
-#ifdef USE_THREAD
-int DoMain(void *data)
-{
-    while (TRUE)
-        GameLoop();
-}
-#endif
-
-void AudioUpdate(void)
-{
-    if (gSoundInit == FALSE)
-        return;
-
-    gPcmDmaCounter = gSoundInfo.pcmDmaCounter;
-
-    m4aSoundMain();
-
-    m4aSoundVSync();
-}
-
 void VBlankIntrWait(void)
 {
-#ifdef USE_THREAD
-    SDL_AtomicSet(&isFrameAvailable, 1);
-    SDL_SemWait(vBlankSemaphore);
-#endif
+    return;
 }
 
 u8 BinToBcd(u8 bin)
@@ -2301,7 +2270,7 @@ static void UpdateInternalClock(void)
     struct tm *time = localtime(&rawTime);
 
     internalClock.year = BinToBcd(time->tm_year - 100);
-    internalClock.month = BinToBcd(time->tm_mon) + 1;
+    internalClock.month = BinToBcd(time->tm_mon + 1);
     internalClock.day = BinToBcd(time->tm_mday);
     internalClock.dayOfWeek = BinToBcd(time->tm_wday);
     internalClock.hour = BinToBcd(time->tm_hour);

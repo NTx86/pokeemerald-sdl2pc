@@ -38,7 +38,7 @@ static void AnimRevengeScratch(struct Sprite *);
 static void AnimFocusPunchFist(struct Sprite *);
 static void AnimSpinningKickOrPunchFinish(struct Sprite *);
 
-extern struct SpriteTemplate gBasicHitSplatSpriteTemplate;
+extern const struct SpriteTemplate gBasicHitSplatSpriteTemplate;
 
 // Unused
 static const struct SpriteTemplate sUnusedHumanoidFootSpriteTemplate =
@@ -839,7 +839,7 @@ static void AnimSuperpowerRock(struct Sprite *sprite)
     sprite->y = 120;
 
     sprite->data[0] = gBattleAnimArgs[3];
-    StorePointerInVars(&sprite->intPtr, (void *)(sprite->y << 8));
+    StorePointerInVars(&sprite->ptr.intPtr, (void *)(sprite->y << 8));
 
     sprite->data[6] = gBattleAnimArgs[1];
     sprite->oam.tileNum += gBattleAnimArgs[2] * 4;
@@ -853,9 +853,9 @@ static void AnimSuperpowerRock_Step1(struct Sprite *sprite)
 
     if (sprite->data[0] != 0)
     {
-        var0 = LoadPointerFromVars(sprite->intPtr);
+        var0 = LoadPointerFromVars(sprite->ptr.intPtr);
         var0 -= sprite->data[6];
-        StorePointerInVars(&sprite->intPtr, var0);
+        StorePointerInVars(&sprite->ptr.intPtr, var0);
 
         var0 = (void *)(((intptr_t)var0) >> 8);
         sprite->y = (intptr_t)var0;

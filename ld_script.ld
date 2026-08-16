@@ -13,8 +13,6 @@ MEMORY
 /* Modify the following load addresses as needed to make more room. Alternately, delete both the
    declarations below and their references further down to get rid of the gaps.                  */
 
-__anim_mon_load_address = 0x8b00000;
-__gfx_load_address = 0x8c00000;
 
 SECTIONS {
 
@@ -23,7 +21,6 @@ SECTIONS {
     {
         INCLUDE "sym_ewram.ld"
         src/*.o(ewram_data);
-        gflib/*.o(ewram_data);
 
         *libc.a:impure.o(.data);
         *libc.a:locale.o(.data);
@@ -36,7 +33,6 @@ SECTIONS {
         /* .bss starts at 0x3000000 */
         INCLUDE "sym_bss.ld"
         src/*.o(.bss);
-        gflib/*.o(.bss);
         data/*.o(.bss);
 
         /* .bss.code starts at 0x3001AA8 */
@@ -44,6 +40,7 @@ SECTIONS {
 
         /* COMMON starts at 0x30022A8 */
         INCLUDE "sym_common.ld"
+        src/*.o(COMMON);
         *libc.a:sbrkr.o(COMMON);
     } > IWRAM
 
@@ -57,15 +54,15 @@ SECTIONS {
         src/rom_header_gf.o(.text.*);
         src/crt0.o(.text);
         src/main.o(.text);
-        gflib/malloc.o(.text);
-        gflib/dma3_manager.o(.text);
-        gflib/gpu_regs.o(.text);
-        gflib/bg.o(.text);
-        gflib/blit.o(.text);
-        gflib/window.o(.text);
-        gflib/text.o(.text);
-        gflib/sprite.o(.text);
-        gflib/string_util.o(.text);
+        src/malloc.o(.text);
+        src/dma3_manager.o(.text);
+        src/gpu_regs.o(.text);
+        src/bg.o(.text);
+        src/blit.o(.text);
+        src/window.o(.text);
+        src/text.o(.text);
+        src/sprite.o(.text);
+        src/string_util.o(.text);
         src/link.o(.text);
         src/AgbRfu_LinkManager.o(.text);
         src/link_rfu_3.o(.text);
@@ -181,6 +178,7 @@ SECTIONS {
         src/script_pokemon_util.o(.text);
         src/field_poison.o(.text);
         src/pokemon_size_record.o(.text);
+        src/give_gift_ribbon_to_party.o(.text);
         src/fldeff_misc.o(.text);
         src/field_special_scene.o(.text);
         src/rotating_gate.o(.text);
@@ -446,12 +444,12 @@ SECTIONS {
         src/rom_header.o(.rodata);
         src/rom_header_gf.o(.rodata);
         src/main.o(.rodata);
-        gflib/bg.o(.rodata);
-        gflib/window.o(.rodata);
-        gflib/text.o(.rodata);
-        gflib/sprite.o(.rodata);
-        gflib/io_reg.o(.rodata);
-        gflib/string_util.o(.rodata);
+        src/bg.o(.rodata);
+        src/window.o(.rodata);
+        src/text.o(.rodata);
+        src/sprite.o(.rodata);
+        src/io_reg.o(.rodata);
+        src/string_util.o(.rodata);
         src/link.o(.rodata);
         src/link.o(.rodata.str1.4);
         src/AgbRfu_LinkManager.o(.rodata);
@@ -558,6 +556,7 @@ SECTIONS {
         src/contest_util.o(.rodata);
         src/script_pokemon_util.o(.rodata);
         src/pokemon_size_record.o(.rodata)
+        src/give_gift_ribbon_to_party.o(.rodata);
         src/fldeff_misc.o(.rodata);
         src/field_special_scene.o(.rodata);
         src/rotating_gate.o(.rodata);
@@ -714,8 +713,8 @@ SECTIONS {
         sound/songs/midi/se_pc_off.o(.rodata);
         sound/songs/midi/se_pc_on.o(.rodata);
         sound/songs/midi/se_select.o(.rodata);
-        sound/songs/se_win_open.o(.rodata);
-        sound/songs/se_wall_hit.o(.rodata);
+        sound/songs/midi/se_win_open.o(.rodata);
+        sound/songs/midi/se_wall_hit.o(.rodata);
         sound/songs/midi/se_door.o(.rodata);
         sound/songs/midi/se_exit.o(.rodata);
         sound/songs/midi/se_ledge.o(.rodata);
@@ -816,8 +815,8 @@ SECTIONS {
         sound/songs/midi/se_applause.o(.rodata);
         sound/songs/midi/se_vend.o(.rodata);
         sound/songs/midi/se_orb.o(.rodata);
-        sound/songs/se_dex_scroll.o(.rodata);
-        sound/songs/se_dex_page.o(.rodata);
+        sound/songs/midi/se_dex_scroll.o(.rodata);
+        sound/songs/midi/se_dex_page.o(.rodata);
         sound/songs/midi/se_pokenav_on.o(.rodata);
         sound/songs/midi/se_pokenav_off.o(.rodata);
         sound/songs/midi/se_dex_search.o(.rodata);
@@ -826,136 +825,136 @@ SECTIONS {
         sound/songs/midi/se_ball_tray_ball.o(.rodata);
         sound/songs/midi/se_ball_tray_exit.o(.rodata);
         sound/songs/midi/se_glass_flute.o(.rodata);
-        sound/songs/se_m_thunderbolt.o(.rodata);
-        sound/songs/se_m_thunderbolt2.o(.rodata);
-        sound/songs/se_m_harden.o(.rodata);
-        sound/songs/se_m_nightmare.o(.rodata);
-        sound/songs/se_m_vital_throw.o(.rodata);
-        sound/songs/se_m_vital_throw2.o(.rodata);
-        sound/songs/se_m_bubble.o(.rodata);
-        sound/songs/se_m_bubble2.o(.rodata);
-        sound/songs/se_m_bubble3.o(.rodata);
-        sound/songs/se_m_rain_dance.o(.rodata);
+        sound/songs/midi/se_m_thunderbolt.o(.rodata);
+        sound/songs/midi/se_m_thunderbolt2.o(.rodata);
+        sound/songs/midi/se_m_harden.o(.rodata);
+        sound/songs/midi/se_m_nightmare.o(.rodata);
+        sound/songs/midi/se_m_vital_throw.o(.rodata);
+        sound/songs/midi/se_m_vital_throw2.o(.rodata);
+        sound/songs/midi/se_m_bubble.o(.rodata);
+        sound/songs/midi/se_m_bubble2.o(.rodata);
+        sound/songs/midi/se_m_bubble3.o(.rodata);
+        sound/songs/midi/se_m_rain_dance.o(.rodata);
         sound/songs/midi/se_m_cut.o(.rodata);
-        sound/songs/se_m_string_shot.o(.rodata);
-        sound/songs/se_m_string_shot2.o(.rodata);
-        sound/songs/se_m_rock_throw.o(.rodata);
+        sound/songs/midi/se_m_string_shot.o(.rodata);
+        sound/songs/midi/se_m_string_shot2.o(.rodata);
+        sound/songs/midi/se_m_rock_throw.o(.rodata);
         sound/songs/midi/se_m_gust.o(.rodata);
         sound/songs/midi/se_m_gust2.o(.rodata);
         sound/songs/midi/se_m_double_slap.o(.rodata);
-        sound/songs/se_m_double_team.o(.rodata);
+        sound/songs/midi/se_m_double_team.o(.rodata);
         sound/songs/midi/se_m_razor_wind.o(.rodata);
-        sound/songs/se_m_icy_wind.o(.rodata);
-        sound/songs/se_m_thunder_wave.o(.rodata);
+        sound/songs/midi/se_m_icy_wind.o(.rodata);
+        sound/songs/midi/se_m_thunder_wave.o(.rodata);
         sound/songs/midi/se_m_comet_punch.o(.rodata);
         sound/songs/midi/se_m_mega_kick.o(.rodata);
         sound/songs/midi/se_m_mega_kick2.o(.rodata);
-        sound/songs/se_m_crabhammer.o(.rodata);
+        sound/songs/midi/se_m_crabhammer.o(.rodata);
         sound/songs/midi/se_m_jump_kick.o(.rodata);
-        sound/songs/se_m_flame_wheel.o(.rodata);
-        sound/songs/se_m_flame_wheel2.o(.rodata);
-        sound/songs/se_m_flamethrower.o(.rodata);
+        sound/songs/midi/se_m_flame_wheel.o(.rodata);
+        sound/songs/midi/se_m_flame_wheel2.o(.rodata);
+        sound/songs/midi/se_m_flamethrower.o(.rodata);
         sound/songs/midi/se_m_fire_punch.o(.rodata);
-        sound/songs/se_m_toxic.o(.rodata);
-        sound/songs/se_m_sacred_fire.o(.rodata);
-        sound/songs/se_m_sacred_fire2.o(.rodata);
-        sound/songs/se_m_ember.o(.rodata);
+        sound/songs/midi/se_m_toxic.o(.rodata);
+        sound/songs/midi/se_m_sacred_fire.o(.rodata);
+        sound/songs/midi/se_m_sacred_fire2.o(.rodata);
+        sound/songs/midi/se_m_ember.o(.rodata);
         sound/songs/midi/se_m_take_down.o(.rodata);
-        sound/songs/se_m_blizzard.o(.rodata);
-        sound/songs/se_m_blizzard2.o(.rodata);
+        sound/songs/midi/se_m_blizzard.o(.rodata);
+        sound/songs/midi/se_m_blizzard2.o(.rodata);
         sound/songs/midi/se_m_scratch.o(.rodata);
         sound/songs/midi/se_m_vicegrip.o(.rodata);
         sound/songs/midi/se_m_wing_attack.o(.rodata);
         sound/songs/midi/se_m_fly.o(.rodata);
         sound/songs/midi/se_m_sand_attack.o(.rodata);
         sound/songs/midi/se_m_razor_wind2.o(.rodata);
-        sound/songs/se_m_bite.o(.rodata);
+        sound/songs/midi/se_m_bite.o(.rodata);
         sound/songs/midi/se_m_headbutt.o(.rodata);
-        sound/songs/se_m_surf.o(.rodata);
-        sound/songs/se_m_hydro_pump.o(.rodata);
-        sound/songs/se_m_whirlpool.o(.rodata);
+        sound/songs/midi/se_m_surf.o(.rodata);
+        sound/songs/midi/se_m_hydro_pump.o(.rodata);
+        sound/songs/midi/se_m_whirlpool.o(.rodata);
         sound/songs/midi/se_m_horn_attack.o(.rodata);
         sound/songs/midi/se_m_tail_whip.o(.rodata);
-        sound/songs/se_m_mist.o(.rodata);
-        sound/songs/se_m_poison_powder.o(.rodata);
+        sound/songs/midi/se_m_mist.o(.rodata);
+        sound/songs/midi/se_m_poison_powder.o(.rodata);
         sound/songs/midi/se_m_bind.o(.rodata);
-        sound/songs/se_m_dragon_rage.o(.rodata);
-        sound/songs/se_m_sing.o(.rodata);
-        sound/songs/se_m_perish_song.o(.rodata);
+        sound/songs/midi/se_m_dragon_rage.o(.rodata);
+        sound/songs/midi/se_m_sing.o(.rodata);
+        sound/songs/midi/se_m_perish_song.o(.rodata);
         sound/songs/midi/se_m_pay_day.o(.rodata);
-        sound/songs/se_m_dig.o(.rodata);
-        sound/songs/se_m_dizzy_punch.o(.rodata);
-        sound/songs/se_m_self_destruct.o(.rodata);
-        sound/songs/se_m_explosion.o(.rodata);
-        sound/songs/se_m_absorb_2.o(.rodata);
-        sound/songs/se_m_absorb.o(.rodata);
-        sound/songs/se_m_screech.o(.rodata);
-        sound/songs/se_m_bubble_beam.o(.rodata);
-        sound/songs/se_m_bubble_beam2.o(.rodata);
-        sound/songs/se_m_supersonic.o(.rodata);
-        sound/songs/se_m_belly_drum.o(.rodata);
-        sound/songs/se_m_metronome.o(.rodata);
-        sound/songs/se_m_bonemerang.o(.rodata);
-        sound/songs/se_m_lick.o(.rodata);
-        sound/songs/se_m_psybeam.o(.rodata);
-        sound/songs/se_m_faint_attack.o(.rodata);
+        sound/songs/midi/se_m_dig.o(.rodata);
+        sound/songs/midi/se_m_dizzy_punch.o(.rodata);
+        sound/songs/midi/se_m_self_destruct.o(.rodata);
+        sound/songs/midi/se_m_explosion.o(.rodata);
+        sound/songs/midi/se_m_absorb_2.o(.rodata);
+        sound/songs/midi/se_m_absorb.o(.rodata);
+        sound/songs/midi/se_m_screech.o(.rodata);
+        sound/songs/midi/se_m_bubble_beam.o(.rodata);
+        sound/songs/midi/se_m_bubble_beam2.o(.rodata);
+        sound/songs/midi/se_m_supersonic.o(.rodata);
+        sound/songs/midi/se_m_belly_drum.o(.rodata);
+        sound/songs/midi/se_m_metronome.o(.rodata);
+        sound/songs/midi/se_m_bonemerang.o(.rodata);
+        sound/songs/midi/se_m_lick.o(.rodata);
+        sound/songs/midi/se_m_psybeam.o(.rodata);
+        sound/songs/midi/se_m_faint_attack.o(.rodata);
         sound/songs/midi/se_m_swords_dance.o(.rodata);
         sound/songs/midi/se_m_leer.o(.rodata);
-        sound/songs/se_m_swagger.o(.rodata);
-        sound/songs/se_m_swagger2.o(.rodata);
-        sound/songs/se_m_heal_bell.o(.rodata);
-        sound/songs/se_m_confuse_ray.o(.rodata);
-        sound/songs/se_m_snore.o(.rodata);
-        sound/songs/se_m_brick_break.o(.rodata);
-        sound/songs/se_m_giga_drain.o(.rodata);
-        sound/songs/se_m_psybeam2.o(.rodata);
-        sound/songs/se_m_solar_beam.o(.rodata);
-        sound/songs/se_m_petal_dance.o(.rodata);
-        sound/songs/se_m_teleport.o(.rodata);
-        sound/songs/se_m_minimize.o(.rodata);
-        sound/songs/se_m_sketch.o(.rodata);
-        sound/songs/se_m_swift.o(.rodata);
-        sound/songs/se_m_reflect.o(.rodata);
-        sound/songs/se_m_barrier.o(.rodata);
-        sound/songs/se_m_detect.o(.rodata);
-        sound/songs/se_m_lock_on.o(.rodata);
-        sound/songs/se_m_moonlight.o(.rodata);
-        sound/songs/se_m_charm.o(.rodata);
-        sound/songs/se_m_charge.o(.rodata);
-        sound/songs/se_m_strength.o(.rodata);
-        sound/songs/se_m_hyper_beam.o(.rodata);
-        sound/songs/se_m_waterfall.o(.rodata);
-        sound/songs/se_m_reversal.o(.rodata);
-        sound/songs/se_m_acid_armor.o(.rodata);
-        sound/songs/se_m_sandstorm.o(.rodata);
-        sound/songs/se_m_tri_attack.o(.rodata);
-        sound/songs/se_m_tri_attack2.o(.rodata);
-        sound/songs/se_m_encore.o(.rodata);
-        sound/songs/se_m_encore2.o(.rodata);
-        sound/songs/se_m_baton_pass.o(.rodata);
-        sound/songs/se_m_milk_drink.o(.rodata);
-        sound/songs/se_m_attract.o(.rodata);
-        sound/songs/se_m_attract2.o(.rodata);
-        sound/songs/se_m_morning_sun.o(.rodata);
-        sound/songs/se_m_flatter.o(.rodata);
-        sound/songs/se_m_sand_tomb.o(.rodata);
-        sound/songs/se_m_grasswhistle.o(.rodata);
-        sound/songs/se_m_spit_up.o(.rodata);
-        sound/songs/se_m_dive.o(.rodata);
-        sound/songs/se_m_earthquake.o(.rodata);
-        sound/songs/se_m_twister.o(.rodata);
-        sound/songs/se_m_sweet_scent.o(.rodata);
-        sound/songs/se_m_yawn.o(.rodata);
-        sound/songs/se_m_sky_uppercut.o(.rodata);
-        sound/songs/se_m_stat_increase.o(.rodata);
-        sound/songs/se_m_heat_wave.o(.rodata);
-        sound/songs/se_m_uproar.o(.rodata);
-        sound/songs/se_m_hail.o(.rodata);
-        sound/songs/se_m_cosmic_power.o(.rodata);
-        sound/songs/se_m_teeter_dance.o(.rodata);
-        sound/songs/se_m_stat_decrease.o(.rodata);
-        sound/songs/se_m_haze.o(.rodata);
-        sound/songs/se_m_hyper_beam2.o(.rodata);
+        sound/songs/midi/se_m_swagger.o(.rodata);
+        sound/songs/midi/se_m_swagger2.o(.rodata);
+        sound/songs/midi/se_m_heal_bell.o(.rodata);
+        sound/songs/midi/se_m_confuse_ray.o(.rodata);
+        sound/songs/midi/se_m_snore.o(.rodata);
+        sound/songs/midi/se_m_brick_break.o(.rodata);
+        sound/songs/midi/se_m_giga_drain.o(.rodata);
+        sound/songs/midi/se_m_psybeam2.o(.rodata);
+        sound/songs/midi/se_m_solar_beam.o(.rodata);
+        sound/songs/midi/se_m_petal_dance.o(.rodata);
+        sound/songs/midi/se_m_teleport.o(.rodata);
+        sound/songs/midi/se_m_minimize.o(.rodata);
+        sound/songs/midi/se_m_sketch.o(.rodata);
+        sound/songs/midi/se_m_swift.o(.rodata);
+        sound/songs/midi/se_m_reflect.o(.rodata);
+        sound/songs/midi/se_m_barrier.o(.rodata);
+        sound/songs/midi/se_m_detect.o(.rodata);
+        sound/songs/midi/se_m_lock_on.o(.rodata);
+        sound/songs/midi/se_m_moonlight.o(.rodata);
+        sound/songs/midi/se_m_charm.o(.rodata);
+        sound/songs/midi/se_m_charge.o(.rodata);
+        sound/songs/midi/se_m_strength.o(.rodata);
+        sound/songs/midi/se_m_hyper_beam.o(.rodata);
+        sound/songs/midi/se_m_waterfall.o(.rodata);
+        sound/songs/midi/se_m_reversal.o(.rodata);
+        sound/songs/midi/se_m_acid_armor.o(.rodata);
+        sound/songs/midi/se_m_sandstorm.o(.rodata);
+        sound/songs/midi/se_m_tri_attack.o(.rodata);
+        sound/songs/midi/se_m_tri_attack2.o(.rodata);
+        sound/songs/midi/se_m_encore.o(.rodata);
+        sound/songs/midi/se_m_encore2.o(.rodata);
+        sound/songs/midi/se_m_baton_pass.o(.rodata);
+        sound/songs/midi/se_m_milk_drink.o(.rodata);
+        sound/songs/midi/se_m_attract.o(.rodata);
+        sound/songs/midi/se_m_attract2.o(.rodata);
+        sound/songs/midi/se_m_morning_sun.o(.rodata);
+        sound/songs/midi/se_m_flatter.o(.rodata);
+        sound/songs/midi/se_m_sand_tomb.o(.rodata);
+        sound/songs/midi/se_m_grasswhistle.o(.rodata);
+        sound/songs/midi/se_m_spit_up.o(.rodata);
+        sound/songs/midi/se_m_dive.o(.rodata);
+        sound/songs/midi/se_m_earthquake.o(.rodata);
+        sound/songs/midi/se_m_twister.o(.rodata);
+        sound/songs/midi/se_m_sweet_scent.o(.rodata);
+        sound/songs/midi/se_m_yawn.o(.rodata);
+        sound/songs/midi/se_m_sky_uppercut.o(.rodata);
+        sound/songs/midi/se_m_stat_increase.o(.rodata);
+        sound/songs/midi/se_m_heat_wave.o(.rodata);
+        sound/songs/midi/se_m_uproar.o(.rodata);
+        sound/songs/midi/se_m_hail.o(.rodata);
+        sound/songs/midi/se_m_cosmic_power.o(.rodata);
+        sound/songs/midi/se_m_teeter_dance.o(.rodata);
+        sound/songs/midi/se_m_stat_decrease.o(.rodata);
+        sound/songs/midi/se_m_haze.o(.rodata);
+        sound/songs/midi/se_m_hyper_beam2.o(.rodata);
         sound/songs/midi/se_rg_door.o(.rodata);
         sound/songs/midi/se_rg_card_flip.o(.rodata);
         sound/songs/midi/se_rg_card_flipping.o(.rodata);
@@ -1301,13 +1300,13 @@ SECTIONS {
         data/multiboot_pokemon_colosseum.o(.rodata);
     } > ROM =0
 
-    anim_mon_front_pic_data __anim_mon_load_address :
+    anim_mon_front_pic_data :
     ALIGN(4)
     {
         src/anim_mon_front_pics.o(.rodata);
     } > ROM =0
 
-    gfx_data __gfx_load_address :
+    gfx_data :
     ALIGN(4)
     {
         src/graphics.o(.rodata);
@@ -1317,9 +1316,7 @@ SECTIONS {
     ALIGN(4)
     {
         src/*.o(.text);
-        gflib/*.o(.text);
         src/*.o(.rodata);
-        gflib/*.o(.rodata);
         data/*.o(.rodata);
     } > ROM = 0
 

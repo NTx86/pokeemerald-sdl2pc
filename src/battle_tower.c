@@ -45,7 +45,7 @@ EWRAM_DATA const struct BattleFrontierTrainer *gFacilityTrainers = NULL;
 EWRAM_DATA const struct FacilityMon *gFacilityTrainerMons = NULL;
 
 // IWRAM common
-u16 gFrontierTempParty[MAX_FRONTIER_PARTY_SIZE];
+COMMON_DATA u16 gFrontierTempParty[MAX_FRONTIER_PARTY_SIZE] = {0};
 
 // This file's functions.
 static void InitTowerChallenge(void);
@@ -799,7 +799,7 @@ struct
 
 #include "data/battle_frontier/battle_tent.h"
 
-static void (* const sBattleTowerFuncs[])(void) =
+static void (*const sBattleTowerFuncs[])(void) =
 {
     [BATTLE_TOWER_FUNC_INIT]                = InitTowerChallenge,
     [BATTLE_TOWER_FUNC_GET_DATA]            = GetTowerData,
@@ -2417,7 +2417,7 @@ static void LoadMultiPartnerCandidatesData(void)
 
 static void GetPotentialPartnerMoveAndSpecies(u16 trainerId, u16 monId)
 {
-    u16 move = 0;
+    u16 move = MOVE_NONE;
     u16 species = 0;
     SetFacilityPtrsGetLevel();
 

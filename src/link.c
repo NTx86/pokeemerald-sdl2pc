@@ -69,41 +69,41 @@ static u16 sRecvNonzeroCheck;
 static u8 sChecksumAvailable;
 static u8 sHandshakePlayerCount;
 
-u16 gLinkPartnersHeldKeys[6];
-u32 gLinkDebugSeed;
-struct LinkPlayerBlock gLocalLinkPlayerBlock;
-bool8 gLinkErrorOccurred;
-u32 gLinkDebugFlags;
-u32 gLinkFiller1;
-bool8 gRemoteLinkPlayersNotReceived[MAX_LINK_PLAYERS];
-u8 gBlockReceivedStatus[MAX_LINK_PLAYERS];
-u32 gLinkFiller2;
-u16 gLinkHeldKeys;
-u16 ALIGNED(4) gRecvCmds[MAX_RFU_PLAYERS][CMD_LENGTH];
-u32 gLinkStatus;
-bool8 gLinkDummy1; // Never read
-bool8 gLinkDummy2; // Never read
-bool8 gReadyToExitStandby[MAX_LINK_PLAYERS];
-bool8 gReadyToCloseLink[MAX_LINK_PLAYERS];
-u16 gReadyCloseLinkType; // Never read
-u8 gSuppressLinkErrorMessage;
-bool8 gWirelessCommType;
-bool8 gSavedLinkPlayerCount;
-u16 gSendCmd[CMD_LENGTH];
-u8 gSavedMultiplayerId;
-bool8 gReceivedRemoteLinkPlayers;
-struct LinkTestBGInfo gLinkTestBGInfo;
-void (*gLinkCallback)(void);
-u8 gShouldAdvanceLinkState;
-u16 gLinkTestBlockChecksums[MAX_LINK_PLAYERS];
-u8 gBlockRequestType;
-u32 gLinkFiller3;
-u32 gLinkFiller4;
-u32 gLinkFiller5;
-u8 gLastSendQueueCount;
-struct Link gLink;
-u8 gLastRecvQueueCount;
-u16 gLinkSavedIme;
+COMMON_DATA u16 gLinkPartnersHeldKeys[6] = {0};
+COMMON_DATA u32 gLinkDebugSeed = 0;
+COMMON_DATA struct LinkPlayerBlock gLocalLinkPlayerBlock = {0};
+COMMON_DATA bool8 gLinkErrorOccurred = 0;
+COMMON_DATA u32 gLinkDebugFlags = 0;
+COMMON_DATA u32 gLinkFiller1 = 0;
+COMMON_DATA bool8 gRemoteLinkPlayersNotReceived[MAX_LINK_PLAYERS] = {0};
+COMMON_DATA u8 gBlockReceivedStatus[MAX_LINK_PLAYERS] = {0};
+COMMON_DATA u32 gLinkFiller2 = 0;
+COMMON_DATA u16 gLinkHeldKeys = 0;
+COMMON_DATA u16 ALIGNED(4) gRecvCmds[MAX_RFU_PLAYERS][CMD_LENGTH] = {0};
+COMMON_DATA u32 gLinkStatus = 0;
+COMMON_DATA bool8 gLinkDummy1 = 0; // Never read
+COMMON_DATA bool8 gLinkDummy2 = 0; // Never read
+COMMON_DATA bool8 gReadyToExitStandby[MAX_LINK_PLAYERS] = {0};
+COMMON_DATA bool8 gReadyToCloseLink[MAX_LINK_PLAYERS] = {0};
+COMMON_DATA u16 gReadyCloseLinkType = 0; // Never read
+COMMON_DATA u8 gSuppressLinkErrorMessage = 0;
+COMMON_DATA bool8 gWirelessCommType = 0;
+COMMON_DATA bool8 gSavedLinkPlayerCount = 0;
+COMMON_DATA u16 gSendCmd[CMD_LENGTH] = {0};
+COMMON_DATA u8 gSavedMultiplayerId = 0;
+COMMON_DATA bool8 gReceivedRemoteLinkPlayers = 0;
+COMMON_DATA struct LinkTestBGInfo gLinkTestBGInfo = {0};
+COMMON_DATA void (*gLinkCallback)(void) = NULL;
+COMMON_DATA u8 gShouldAdvanceLinkState = 0;
+COMMON_DATA u16 gLinkTestBlockChecksums[MAX_LINK_PLAYERS] = {0};
+COMMON_DATA u8 gBlockRequestType = 0;
+COMMON_DATA u32 gLinkFiller3 = 0;
+COMMON_DATA u32 gLinkFiller4 = 0;
+COMMON_DATA u32 gLinkFiller5 = 0;
+COMMON_DATA u8 gLastSendQueueCount = 0;
+COMMON_DATA struct Link gLink = {0};
+COMMON_DATA u8 gLastRecvQueueCount = 0;
+COMMON_DATA u16 gLinkSavedIme = 0;
 
 static EWRAM_DATA u8 sLinkTestDebugValuesEnabled = 0;
 static EWRAM_DATA u8 sDummyFlag = FALSE;
@@ -166,13 +166,13 @@ static void DoSend(void);
 static void StopTimer(void);
 static void SendRecvDone(void);
 
-static const u16 sWirelessLinkDisplayPal[] = INCBIN_U16("graphics/link/wireless_display.gbapal");
-static const u32 sWirelessLinkDisplayGfx[] = INCBIN_U32("graphics/link/wireless_display.4bpp.lz");
-static const u32 sWirelessLinkDisplayTilemap[] = INCBIN_U32("graphics/link/wireless_display.bin.lz");
-static const u16 sLinkTestDigitsPal[] = INCBIN_U16("graphics/link/test_digits.gbapal");
-static const u16 sLinkTestDigitsGfx[] = INCBIN_U16("graphics/link/test_digits.4bpp");
+static const u16 sWirelessLinkDisplayPal[] = INCGFX_U16("graphics/link/wireless_display.png", ".gbapal");
+static const u32 sWirelessLinkDisplayGfx[] = INCGFX_U32("graphics/link/wireless_display.png", ".4bpp.lz");
+static const u32 sWirelessLinkDisplayTilemap[] = INCGFX_U32("graphics/link/wireless_display.bin", ".lz");
+static const u16 sLinkTestDigitsPal[] = INCGFX_U16("graphics/link/test_digits.png", ".gbapal");
+static const u16 sLinkTestDigitsGfx[] = INCGFX_U16("graphics/link/test_digits.png", ".4bpp");
 static const u8 sUnusedTransparentWhite[] = _("{HIGHLIGHT TRANSPARENT}{COLOR WHITE}");
-static const u16 sCommErrorBg_Gfx[] = INCBIN_U16("graphics/link/comm_error_bg.4bpp");
+static const u16 sCommErrorBg_Gfx[] = INCGFX_U16("graphics/link/comm_error_bg.png", ".4bpp");
 static const struct BlockRequest sBlockRequests[] = {
     [BLOCK_REQ_SIZE_NONE] = {gBlockSendBuffer, 200},
     [BLOCK_REQ_SIZE_200]  = {gBlockSendBuffer, 200},

@@ -18,220 +18,220 @@
 
 .align 2
 gBattleScriptsForMoveEffects::
-	.quad BattleScript_EffectHit                    /* EFFECT_HIT*/
-	.quad BattleScript_EffectSleep                  /* EFFECT_SLEEP*/
-	.quad BattleScript_EffectPoisonHit              /* EFFECT_POISON_HIT*/
-	.quad BattleScript_EffectAbsorb                 /* EFFECT_ABSORB*/
-	.quad BattleScript_EffectBurnHit                /* EFFECT_BURN_HIT*/
-	.quad BattleScript_EffectFreezeHit              /* EFFECT_FREEZE_HIT*/
-	.quad BattleScript_EffectParalyzeHit            /* EFFECT_PARALYZE_HIT*/
-	.quad BattleScript_EffectExplosion              /* EFFECT_EXPLOSION*/
-	.quad BattleScript_EffectDreamEater             /* EFFECT_DREAM_EATER*/
-	.quad BattleScript_EffectMirrorMove             /* EFFECT_MIRROR_MOVE*/
-	.quad BattleScript_EffectAttackUp               /* EFFECT_ATTACK_UP*/
-	.quad BattleScript_EffectDefenseUp              /* EFFECT_DEFENSE_UP*/
-	.quad BattleScript_EffectHit                    /* EFFECT_SPEED_UP*/
-	.quad BattleScript_EffectSpecialAttackUp        /* EFFECT_SPECIAL_ATTACK_UP*/
-	.quad BattleScript_EffectHit                    /* EFFECT_SPECIAL_DEFENSE_UP*/
-	.quad BattleScript_EffectHit                    /* EFFECT_ACCURACY_UP*/
-	.quad BattleScript_EffectEvasionUp              /* EFFECT_EVASION_UP*/
-	.quad BattleScript_EffectHit                    /* EFFECT_ALWAYS_HIT*/
-	.quad BattleScript_EffectAttackDown             /* EFFECT_ATTACK_DOWN*/
-	.quad BattleScript_EffectDefenseDown            /* EFFECT_DEFENSE_DOWN*/
-	.quad BattleScript_EffectSpeedDown              /* EFFECT_SPEED_DOWN*/
-	.quad BattleScript_EffectHit                    /* EFFECT_SPECIAL_ATTACK_DOWN*/
-	.quad BattleScript_EffectHit                    /* EFFECT_SPECIAL_DEFENSE_DOWN*/
-	.quad BattleScript_EffectAccuracyDown           /* EFFECT_ACCURACY_DOWN*/
-	.quad BattleScript_EffectEvasionDown            /* EFFECT_EVASION_DOWN*/
-	.quad BattleScript_EffectHaze                   /* EFFECT_HAZE*/
-	.quad BattleScript_EffectBide                   /* EFFECT_BIDE*/
-	.quad BattleScript_EffectRampage                /* EFFECT_RAMPAGE*/
-	.quad BattleScript_EffectRoar                   /* EFFECT_ROAR*/
-	.quad BattleScript_EffectMultiHit               /* EFFECT_MULTI_HIT*/
-	.quad BattleScript_EffectConversion             /* EFFECT_CONVERSION*/
-	.quad BattleScript_EffectFlinchHit              /* EFFECT_FLINCH_HIT*/
-	.quad BattleScript_EffectRestoreHp              /* EFFECT_RESTORE_HP*/
-	.quad BattleScript_EffectToxic                  /* EFFECT_TOXIC*/
-	.quad BattleScript_EffectPayDay                 /* EFFECT_PAY_DAY*/
-	.quad BattleScript_EffectLightScreen            /* EFFECT_LIGHT_SCREEN*/
-	.quad BattleScript_EffectTriAttack              /* EFFECT_TRI_ATTACK*/
-	.quad BattleScript_EffectRest                   /* EFFECT_REST*/
-	.quad BattleScript_EffectOHKO                   /* EFFECT_OHKO*/
-	.quad BattleScript_EffectRazorWind              /* EFFECT_RAZOR_WIND*/
-	.quad BattleScript_EffectSuperFang              /* EFFECT_SUPER_FANG*/
-	.quad BattleScript_EffectDragonRage             /* EFFECT_DRAGON_RAGE*/
-	.quad BattleScript_EffectTrap                   /* EFFECT_TRAP*/
-	.quad BattleScript_EffectHit                    /* EFFECT_HIGH_CRITICAL*/
-	.quad BattleScript_EffectDoubleHit              /* EFFECT_DOUBLE_HIT*/
-	.quad BattleScript_EffectRecoilIfMiss           /* EFFECT_RECOIL_IF_MISS*/
-	.quad BattleScript_EffectMist                   /* EFFECT_MIST*/
-	.quad BattleScript_EffectFocusEnergy            /* EFFECT_FOCUS_ENERGY*/
-	.quad BattleScript_EffectRecoil                 /* EFFECT_RECOIL*/
-	.quad BattleScript_EffectConfuse                /* EFFECT_CONFUSE*/
-	.quad BattleScript_EffectAttackUp2              /* EFFECT_ATTACK_UP_2*/
-	.quad BattleScript_EffectDefenseUp2             /* EFFECT_DEFENSE_UP_2*/
-	.quad BattleScript_EffectSpeedUp2               /* EFFECT_SPEED_UP_2*/
-	.quad BattleScript_EffectSpecialAttackUp2       /* EFFECT_SPECIAL_ATTACK_UP_2*/
-	.quad BattleScript_EffectSpecialDefenseUp2      /* EFFECT_SPECIAL_DEFENSE_UP_2*/
-	.quad BattleScript_EffectHit                    /* EFFECT_ACCURACY_UP_2*/
-	.quad BattleScript_EffectHit                    /* EFFECT_EVASION_UP_2*/
-	.quad BattleScript_EffectTransform              /* EFFECT_TRANSFORM*/
-	.quad BattleScript_EffectAttackDown2            /* EFFECT_ATTACK_DOWN_2*/
-	.quad BattleScript_EffectDefenseDown2           /* EFFECT_DEFENSE_DOWN_2*/
-	.quad BattleScript_EffectSpeedDown2             /* EFFECT_SPEED_DOWN_2*/
-	.quad BattleScript_EffectHit                    /* EFFECT_SPECIAL_ATTACK_DOWN_2*/
-	.quad BattleScript_EffectSpecialDefenseDown2    /* EFFECT_SPECIAL_DEFENSE_DOWN_2*/
-	.quad BattleScript_EffectHit                    /* EFFECT_ACCURACY_DOWN_2*/
-	.quad BattleScript_EffectHit                    /* EFFECT_EVASION_DOWN_2*/
-	.quad BattleScript_EffectReflect                /* EFFECT_REFLECT*/
-	.quad BattleScript_EffectPoison                 /* EFFECT_POISON*/
-	.quad BattleScript_EffectParalyze               /* EFFECT_PARALYZE*/
-	.quad BattleScript_EffectAttackDownHit          /* EFFECT_ATTACK_DOWN_HIT*/
-	.quad BattleScript_EffectDefenseDownHit         /* EFFECT_DEFENSE_DOWN_HIT*/
-	.quad BattleScript_EffectSpeedDownHit           /* EFFECT_SPEED_DOWN_HIT*/
-	.quad BattleScript_EffectSpecialAttackDownHit   /* EFFECT_SPECIAL_ATTACK_DOWN_HIT*/
-	.quad BattleScript_EffectSpecialDefenseDownHit  /* EFFECT_SPECIAL_DEFENSE_DOWN_HIT*/
-	.quad BattleScript_EffectAccuracyDownHit        /* EFFECT_ACCURACY_DOWN_HIT*/
-	.quad BattleScript_EffectHit                    /* EFFECT_EVASION_DOWN_HIT*/
-	.quad BattleScript_EffectSkyAttack              /* EFFECT_SKY_ATTACK*/
-	.quad BattleScript_EffectConfuseHit             /* EFFECT_CONFUSE_HIT*/
-	.quad BattleScript_EffectTwineedle              /* EFFECT_TWINEEDLE*/
-	.quad BattleScript_EffectHit                    /* EFFECT_VITAL_THROW*/
-	.quad BattleScript_EffectSubstitute             /* EFFECT_SUBSTITUTE*/
-	.quad BattleScript_EffectRecharge               /* EFFECT_RECHARGE*/
-	.quad BattleScript_EffectRage                   /* EFFECT_RAGE*/
-	.quad BattleScript_EffectMimic                  /* EFFECT_MIMIC*/
-	.quad BattleScript_EffectMetronome              /* EFFECT_METRONOME*/
-	.quad BattleScript_EffectLeechSeed              /* EFFECT_LEECH_SEED*/
-	.quad BattleScript_EffectSplash                 /* EFFECT_SPLASH*/
-	.quad BattleScript_EffectDisable                /* EFFECT_DISABLE*/
-	.quad BattleScript_EffectLevelDamage            /* EFFECT_LEVEL_DAMAGE*/
-	.quad BattleScript_EffectPsywave                /* EFFECT_PSYWAVE*/
-	.quad BattleScript_EffectCounter                /* EFFECT_COUNTER*/
-	.quad BattleScript_EffectEncore                 /* EFFECT_ENCORE*/
-	.quad BattleScript_EffectPainSplit              /* EFFECT_PAIN_SPLIT*/
-	.quad BattleScript_EffectSnore                  /* EFFECT_SNORE*/
-	.quad BattleScript_EffectConversion2            /* EFFECT_CONVERSION_2*/
-	.quad BattleScript_EffectLockOn                 /* EFFECT_LOCK_ON*/
-	.quad BattleScript_EffectSketch                 /* EFFECT_SKETCH*/
-	.quad BattleScript_EffectHit                    /* EFFECT_UNUSED_60*/
-	.quad BattleScript_EffectSleepTalk              /* EFFECT_SLEEP_TALK*/
-	.quad BattleScript_EffectDestinyBond            /* EFFECT_DESTINY_BOND*/
-	.quad BattleScript_EffectFlail                  /* EFFECT_FLAIL*/
-	.quad BattleScript_EffectSpite                  /* EFFECT_SPITE*/
-	.quad BattleScript_EffectHit                    /* EFFECT_FALSE_SWIPE*/
-	.quad BattleScript_EffectHealBell               /* EFFECT_HEAL_BELL*/
-	.quad BattleScript_EffectHit                    /* EFFECT_QUICK_ATTACK*/
-	.quad BattleScript_EffectTripleKick             /* EFFECT_TRIPLE_KICK*/
-	.quad BattleScript_EffectThief                  /* EFFECT_THIEF*/
-	.quad BattleScript_EffectMeanLook               /* EFFECT_MEAN_LOOK*/
-	.quad BattleScript_EffectNightmare              /* EFFECT_NIGHTMARE*/
-	.quad BattleScript_EffectMinimize               /* EFFECT_MINIMIZE*/
-	.quad BattleScript_EffectCurse                  /* EFFECT_CURSE*/
-	.quad BattleScript_EffectHit                    /* EFFECT_UNUSED_6E*/
-	.quad BattleScript_EffectProtect                /* EFFECT_PROTECT*/
-	.quad BattleScript_EffectSpikes                 /* EFFECT_SPIKES*/
-	.quad BattleScript_EffectForesight              /* EFFECT_FORESIGHT*/
-	.quad BattleScript_EffectPerishSong             /* EFFECT_PERISH_SONG*/
-	.quad BattleScript_EffectSandstorm              /* EFFECT_SANDSTORM*/
-	.quad BattleScript_EffectEndure                 /* EFFECT_ENDURE*/
-	.quad BattleScript_EffectRollout                /* EFFECT_ROLLOUT*/
-	.quad BattleScript_EffectSwagger                /* EFFECT_SWAGGER*/
-	.quad BattleScript_EffectFuryCutter             /* EFFECT_FURY_CUTTER*/
-	.quad BattleScript_EffectAttract                /* EFFECT_ATTRACT*/
-	.quad BattleScript_EffectReturn                 /* EFFECT_RETURN*/
-	.quad BattleScript_EffectPresent                /* EFFECT_PRESENT*/
-	.quad BattleScript_EffectFrustration            /* EFFECT_FRUSTRATION*/
-	.quad BattleScript_EffectSafeguard              /* EFFECT_SAFEGUARD*/
-	.quad BattleScript_EffectThawHit                /* EFFECT_THAW_HIT*/
-	.quad BattleScript_EffectMagnitude              /* EFFECT_MAGNITUDE*/
-	.quad BattleScript_EffectBatonPass              /* EFFECT_BATON_PASS*/
-	.quad BattleScript_EffectHit                    /* EFFECT_PURSUIT*/
-	.quad BattleScript_EffectRapidSpin              /* EFFECT_RAPID_SPIN*/
-	.quad BattleScript_EffectSonicboom              /* EFFECT_SONICBOOM*/
-	.quad BattleScript_EffectHit                    /* EFFECT_UNUSED_83*/
-	.quad BattleScript_EffectMorningSun             /* EFFECT_MORNING_SUN*/
-	.quad BattleScript_EffectSynthesis              /* EFFECT_SYNTHESIS*/
-	.quad BattleScript_EffectMoonlight              /* EFFECT_MOONLIGHT*/
-	.quad BattleScript_EffectHiddenPower            /* EFFECT_HIDDEN_POWER*/
-	.quad BattleScript_EffectRainDance              /* EFFECT_RAIN_DANCE*/
-	.quad BattleScript_EffectSunnyDay               /* EFFECT_SUNNY_DAY*/
-	.quad BattleScript_EffectDefenseUpHit           /* EFFECT_DEFENSE_UP_HIT*/
-	.quad BattleScript_EffectAttackUpHit            /* EFFECT_ATTACK_UP_HIT*/
-	.quad BattleScript_EffectAllStatsUpHit          /* EFFECT_ALL_STATS_UP_HIT*/
-	.quad BattleScript_EffectHit                    /* EFFECT_UNUSED_8D*/
-	.quad BattleScript_EffectBellyDrum              /* EFFECT_BELLY_DRUM*/
-	.quad BattleScript_EffectPsychUp                /* EFFECT_PSYCH_UP*/
-	.quad BattleScript_EffectMirrorCoat             /* EFFECT_MIRROR_COAT*/
-	.quad BattleScript_EffectSkullBash              /* EFFECT_SKULL_BASH*/
-	.quad BattleScript_EffectTwister                /* EFFECT_TWISTER*/
-	.quad BattleScript_EffectEarthquake             /* EFFECT_EARTHQUAKE*/
-	.quad BattleScript_EffectFutureSight            /* EFFECT_FUTURE_SIGHT*/
-	.quad BattleScript_EffectGust                   /* EFFECT_GUST*/
-	.quad BattleScript_EffectStomp                  /* EFFECT_FLINCH_MINIMIZE_HIT*/
-	.quad BattleScript_EffectSolarBeam              /* EFFECT_SOLAR_BEAM*/
-	.quad BattleScript_EffectThunder                /* EFFECT_THUNDER*/
-	.quad BattleScript_EffectTeleport               /* EFFECT_TELEPORT*/
-	.quad BattleScript_EffectBeatUp                 /* EFFECT_BEAT_UP*/
-	.quad BattleScript_EffectSemiInvulnerable       /* EFFECT_SEMI_INVULNERABLE*/
-	.quad BattleScript_EffectDefenseCurl            /* EFFECT_DEFENSE_CURL*/
-	.quad BattleScript_EffectSoftboiled             /* EFFECT_SOFTBOILED*/
-	.quad BattleScript_EffectFakeOut                /* EFFECT_FAKE_OUT*/
-	.quad BattleScript_EffectUproar                 /* EFFECT_UPROAR*/
-	.quad BattleScript_EffectStockpile              /* EFFECT_STOCKPILE*/
-	.quad BattleScript_EffectSpitUp                 /* EFFECT_SPIT_UP*/
-	.quad BattleScript_EffectSwallow                /* EFFECT_SWALLOW*/
-	.quad BattleScript_EffectHit                    /* EFFECT_UNUSED_A3*/
-	.quad BattleScript_EffectHail                   /* EFFECT_HAIL*/
-	.quad BattleScript_EffectTorment                /* EFFECT_TORMENT*/
-	.quad BattleScript_EffectFlatter                /* EFFECT_FLATTER*/
-	.quad BattleScript_EffectWillOWisp              /* EFFECT_WILL_O_WISP*/
-	.quad BattleScript_EffectMemento                /* EFFECT_MEMENTO*/
-	.quad BattleScript_EffectFacade                 /* EFFECT_FACADE*/
-	.quad BattleScript_EffectFocusPunch             /* EFFECT_FOCUS_PUNCH*/
-	.quad BattleScript_EffectSmellingsalt           /* EFFECT_SMELLINGSALT*/
-	.quad BattleScript_EffectFollowMe               /* EFFECT_FOLLOW_ME*/
-	.quad BattleScript_EffectNaturePower            /* EFFECT_NATURE_POWER*/
-	.quad BattleScript_EffectCharge                 /* EFFECT_CHARGE*/
-	.quad BattleScript_EffectTaunt                  /* EFFECT_TAUNT*/
-	.quad BattleScript_EffectHelpingHand            /* EFFECT_HELPING_HAND*/
-	.quad BattleScript_EffectTrick                  /* EFFECT_TRICK*/
-	.quad BattleScript_EffectRolePlay               /* EFFECT_ROLE_PLAY*/
-	.quad BattleScript_EffectWish                   /* EFFECT_WISH*/
-	.quad BattleScript_EffectAssist                 /* EFFECT_ASSIST*/
-	.quad BattleScript_EffectIngrain                /* EFFECT_INGRAIN*/
-	.quad BattleScript_EffectSuperpower             /* EFFECT_SUPERPOWER*/
-	.quad BattleScript_EffectMagicCoat              /* EFFECT_MAGIC_COAT*/
-	.quad BattleScript_EffectRecycle                /* EFFECT_RECYCLE*/
-	.quad BattleScript_EffectRevenge                /* EFFECT_REVENGE*/
-	.quad BattleScript_EffectBrickBreak             /* EFFECT_BRICK_BREAK*/
-	.quad BattleScript_EffectYawn                   /* EFFECT_YAWN*/
-	.quad BattleScript_EffectKnockOff               /* EFFECT_KNOCK_OFF*/
-	.quad BattleScript_EffectEndeavor               /* EFFECT_ENDEAVOR*/
-	.quad BattleScript_EffectEruption               /* EFFECT_ERUPTION*/
-	.quad BattleScript_EffectSkillSwap              /* EFFECT_SKILL_SWAP*/
-	.quad BattleScript_EffectImprison               /* EFFECT_IMPRISON*/
-	.quad BattleScript_EffectRefresh                /* EFFECT_REFRESH*/
-	.quad BattleScript_EffectGrudge                 /* EFFECT_GRUDGE*/
-	.quad BattleScript_EffectSnatch                 /* EFFECT_SNATCH*/
-	.quad BattleScript_EffectLowKick                /* EFFECT_LOW_KICK*/
-	.quad BattleScript_EffectSecretPower            /* EFFECT_SECRET_POWER*/
-	.quad BattleScript_EffectDoubleEdge             /* EFFECT_DOUBLE_EDGE*/
-	.quad BattleScript_EffectTeeterDance            /* EFFECT_TEETER_DANCE*/
-	.quad BattleScript_EffectBurnHit                /* EFFECT_BLAZE_KICK*/
-	.quad BattleScript_EffectMudSport               /* EFFECT_MUD_SPORT*/
-	.quad BattleScript_EffectPoisonFang             /* EFFECT_POISON_FANG*/
-	.quad BattleScript_EffectWeatherBall            /* EFFECT_WEATHER_BALL*/
-	.quad BattleScript_EffectOverheat               /* EFFECT_OVERHEAT*/
-	.quad BattleScript_EffectTickle                 /* EFFECT_TICKLE*/
-	.quad BattleScript_EffectCosmicPower            /* EFFECT_COSMIC_POWER*/
-	.quad BattleScript_EffectSkyUppercut            /* EFFECT_SKY_UPPERCUT*/
-	.quad BattleScript_EffectBulkUp                 /* EFFECT_BULK_UP*/
-	.quad BattleScript_EffectPoisonHit              /* EFFECT_POISON_TAIL*/
-	.quad BattleScript_EffectWaterSport             /* EFFECT_WATER_SPORT*/
-	.quad BattleScript_EffectCalmMind               /* EFFECT_CALM_MIND*/
-	.quad BattleScript_EffectDragonDance            /* EFFECT_DRAGON_DANCE*/
-	.quad BattleScript_EffectCamouflage             /* EFFECT_CAMOUFLAGE*/
+	ptrvalue BattleScript_EffectHit                    /* EFFECT_HIT*/
+	ptrvalue BattleScript_EffectSleep                  /* EFFECT_SLEEP*/
+	ptrvalue BattleScript_EffectPoisonHit              /* EFFECT_POISON_HIT*/
+	ptrvalue BattleScript_EffectAbsorb                 /* EFFECT_ABSORB*/
+	ptrvalue BattleScript_EffectBurnHit                /* EFFECT_BURN_HIT*/
+	ptrvalue BattleScript_EffectFreezeHit              /* EFFECT_FREEZE_HIT*/
+	ptrvalue BattleScript_EffectParalyzeHit            /* EFFECT_PARALYZE_HIT*/
+	ptrvalue BattleScript_EffectExplosion              /* EFFECT_EXPLOSION*/
+	ptrvalue BattleScript_EffectDreamEater             /* EFFECT_DREAM_EATER*/
+	ptrvalue BattleScript_EffectMirrorMove             /* EFFECT_MIRROR_MOVE*/
+	ptrvalue BattleScript_EffectAttackUp               /* EFFECT_ATTACK_UP*/
+	ptrvalue BattleScript_EffectDefenseUp              /* EFFECT_DEFENSE_UP*/
+	ptrvalue BattleScript_EffectHit                    /* EFFECT_SPEED_UP*/
+	ptrvalue BattleScript_EffectSpecialAttackUp        /* EFFECT_SPECIAL_ATTACK_UP*/
+	ptrvalue BattleScript_EffectHit                    /* EFFECT_SPECIAL_DEFENSE_UP*/
+	ptrvalue BattleScript_EffectHit                    /* EFFECT_ACCURACY_UP*/
+	ptrvalue BattleScript_EffectEvasionUp              /* EFFECT_EVASION_UP*/
+	ptrvalue BattleScript_EffectHit                    /* EFFECT_ALWAYS_HIT*/
+	ptrvalue BattleScript_EffectAttackDown             /* EFFECT_ATTACK_DOWN*/
+	ptrvalue BattleScript_EffectDefenseDown            /* EFFECT_DEFENSE_DOWN*/
+	ptrvalue BattleScript_EffectSpeedDown              /* EFFECT_SPEED_DOWN*/
+	ptrvalue BattleScript_EffectHit                    /* EFFECT_SPECIAL_ATTACK_DOWN*/
+	ptrvalue BattleScript_EffectHit                    /* EFFECT_SPECIAL_DEFENSE_DOWN*/
+	ptrvalue BattleScript_EffectAccuracyDown           /* EFFECT_ACCURACY_DOWN*/
+	ptrvalue BattleScript_EffectEvasionDown            /* EFFECT_EVASION_DOWN*/
+	ptrvalue BattleScript_EffectHaze                   /* EFFECT_HAZE*/
+	ptrvalue BattleScript_EffectBide                   /* EFFECT_BIDE*/
+	ptrvalue BattleScript_EffectRampage                /* EFFECT_RAMPAGE*/
+	ptrvalue BattleScript_EffectRoar                   /* EFFECT_ROAR*/
+	ptrvalue BattleScript_EffectMultiHit               /* EFFECT_MULTI_HIT*/
+	ptrvalue BattleScript_EffectConversion             /* EFFECT_CONVERSION*/
+	ptrvalue BattleScript_EffectFlinchHit              /* EFFECT_FLINCH_HIT*/
+	ptrvalue BattleScript_EffectRestoreHp              /* EFFECT_RESTORE_HP*/
+	ptrvalue BattleScript_EffectToxic                  /* EFFECT_TOXIC*/
+	ptrvalue BattleScript_EffectPayDay                 /* EFFECT_PAY_DAY*/
+	ptrvalue BattleScript_EffectLightScreen            /* EFFECT_LIGHT_SCREEN*/
+	ptrvalue BattleScript_EffectTriAttack              /* EFFECT_TRI_ATTACK*/
+	ptrvalue BattleScript_EffectRest                   /* EFFECT_REST*/
+	ptrvalue BattleScript_EffectOHKO                   /* EFFECT_OHKO*/
+	ptrvalue BattleScript_EffectRazorWind              /* EFFECT_RAZOR_WIND*/
+	ptrvalue BattleScript_EffectSuperFang              /* EFFECT_SUPER_FANG*/
+	ptrvalue BattleScript_EffectDragonRage             /* EFFECT_DRAGON_RAGE*/
+	ptrvalue BattleScript_EffectTrap                   /* EFFECT_TRAP*/
+	ptrvalue BattleScript_EffectHit                    /* EFFECT_HIGH_CRITICAL*/
+	ptrvalue BattleScript_EffectDoubleHit              /* EFFECT_DOUBLE_HIT*/
+	ptrvalue BattleScript_EffectRecoilIfMiss           /* EFFECT_RECOIL_IF_MISS*/
+	ptrvalue BattleScript_EffectMist                   /* EFFECT_MIST*/
+	ptrvalue BattleScript_EffectFocusEnergy            /* EFFECT_FOCUS_ENERGY*/
+	ptrvalue BattleScript_EffectRecoil                 /* EFFECT_RECOIL*/
+	ptrvalue BattleScript_EffectConfuse                /* EFFECT_CONFUSE*/
+	ptrvalue BattleScript_EffectAttackUp2              /* EFFECT_ATTACK_UP_2*/
+	ptrvalue BattleScript_EffectDefenseUp2             /* EFFECT_DEFENSE_UP_2*/
+	ptrvalue BattleScript_EffectSpeedUp2               /* EFFECT_SPEED_UP_2*/
+	ptrvalue BattleScript_EffectSpecialAttackUp2       /* EFFECT_SPECIAL_ATTACK_UP_2*/
+	ptrvalue BattleScript_EffectSpecialDefenseUp2      /* EFFECT_SPECIAL_DEFENSE_UP_2*/
+	ptrvalue BattleScript_EffectHit                    /* EFFECT_ACCURACY_UP_2*/
+	ptrvalue BattleScript_EffectHit                    /* EFFECT_EVASION_UP_2*/
+	ptrvalue BattleScript_EffectTransform              /* EFFECT_TRANSFORM*/
+	ptrvalue BattleScript_EffectAttackDown2            /* EFFECT_ATTACK_DOWN_2*/
+	ptrvalue BattleScript_EffectDefenseDown2           /* EFFECT_DEFENSE_DOWN_2*/
+	ptrvalue BattleScript_EffectSpeedDown2             /* EFFECT_SPEED_DOWN_2*/
+	ptrvalue BattleScript_EffectHit                    /* EFFECT_SPECIAL_ATTACK_DOWN_2*/
+	ptrvalue BattleScript_EffectSpecialDefenseDown2    /* EFFECT_SPECIAL_DEFENSE_DOWN_2*/
+	ptrvalue BattleScript_EffectHit                    /* EFFECT_ACCURACY_DOWN_2*/
+	ptrvalue BattleScript_EffectHit                    /* EFFECT_EVASION_DOWN_2*/
+	ptrvalue BattleScript_EffectReflect                /* EFFECT_REFLECT*/
+	ptrvalue BattleScript_EffectPoison                 /* EFFECT_POISON*/
+	ptrvalue BattleScript_EffectParalyze               /* EFFECT_PARALYZE*/
+	ptrvalue BattleScript_EffectAttackDownHit          /* EFFECT_ATTACK_DOWN_HIT*/
+	ptrvalue BattleScript_EffectDefenseDownHit         /* EFFECT_DEFENSE_DOWN_HIT*/
+	ptrvalue BattleScript_EffectSpeedDownHit           /* EFFECT_SPEED_DOWN_HIT*/
+	ptrvalue BattleScript_EffectSpecialAttackDownHit   /* EFFECT_SPECIAL_ATTACK_DOWN_HIT*/
+	ptrvalue BattleScript_EffectSpecialDefenseDownHit  /* EFFECT_SPECIAL_DEFENSE_DOWN_HIT*/
+	ptrvalue BattleScript_EffectAccuracyDownHit        /* EFFECT_ACCURACY_DOWN_HIT*/
+	ptrvalue BattleScript_EffectHit                    /* EFFECT_EVASION_DOWN_HIT*/
+	ptrvalue BattleScript_EffectSkyAttack              /* EFFECT_SKY_ATTACK*/
+	ptrvalue BattleScript_EffectConfuseHit             /* EFFECT_CONFUSE_HIT*/
+	ptrvalue BattleScript_EffectTwineedle              /* EFFECT_TWINEEDLE*/
+	ptrvalue BattleScript_EffectHit                    /* EFFECT_VITAL_THROW*/
+	ptrvalue BattleScript_EffectSubstitute             /* EFFECT_SUBSTITUTE*/
+	ptrvalue BattleScript_EffectRecharge               /* EFFECT_RECHARGE*/
+	ptrvalue BattleScript_EffectRage                   /* EFFECT_RAGE*/
+	ptrvalue BattleScript_EffectMimic                  /* EFFECT_MIMIC*/
+	ptrvalue BattleScript_EffectMetronome              /* EFFECT_METRONOME*/
+	ptrvalue BattleScript_EffectLeechSeed              /* EFFECT_LEECH_SEED*/
+	ptrvalue BattleScript_EffectSplash                 /* EFFECT_SPLASH*/
+	ptrvalue BattleScript_EffectDisable                /* EFFECT_DISABLE*/
+	ptrvalue BattleScript_EffectLevelDamage            /* EFFECT_LEVEL_DAMAGE*/
+	ptrvalue BattleScript_EffectPsywave                /* EFFECT_PSYWAVE*/
+	ptrvalue BattleScript_EffectCounter                /* EFFECT_COUNTER*/
+	ptrvalue BattleScript_EffectEncore                 /* EFFECT_ENCORE*/
+	ptrvalue BattleScript_EffectPainSplit              /* EFFECT_PAIN_SPLIT*/
+	ptrvalue BattleScript_EffectSnore                  /* EFFECT_SNORE*/
+	ptrvalue BattleScript_EffectConversion2            /* EFFECT_CONVERSION_2*/
+	ptrvalue BattleScript_EffectLockOn                 /* EFFECT_LOCK_ON*/
+	ptrvalue BattleScript_EffectSketch                 /* EFFECT_SKETCH*/
+	ptrvalue BattleScript_EffectHit                    /* EFFECT_UNUSED_60*/
+	ptrvalue BattleScript_EffectSleepTalk              /* EFFECT_SLEEP_TALK*/
+	ptrvalue BattleScript_EffectDestinyBond            /* EFFECT_DESTINY_BOND*/
+	ptrvalue BattleScript_EffectFlail                  /* EFFECT_FLAIL*/
+	ptrvalue BattleScript_EffectSpite                  /* EFFECT_SPITE*/
+	ptrvalue BattleScript_EffectHit                    /* EFFECT_FALSE_SWIPE*/
+	ptrvalue BattleScript_EffectHealBell               /* EFFECT_HEAL_BELL*/
+	ptrvalue BattleScript_EffectHit                    /* EFFECT_QUICK_ATTACK*/
+	ptrvalue BattleScript_EffectTripleKick             /* EFFECT_TRIPLE_KICK*/
+	ptrvalue BattleScript_EffectThief                  /* EFFECT_THIEF*/
+	ptrvalue BattleScript_EffectMeanLook               /* EFFECT_MEAN_LOOK*/
+	ptrvalue BattleScript_EffectNightmare              /* EFFECT_NIGHTMARE*/
+	ptrvalue BattleScript_EffectMinimize               /* EFFECT_MINIMIZE*/
+	ptrvalue BattleScript_EffectCurse                  /* EFFECT_CURSE*/
+	ptrvalue BattleScript_EffectHit                    /* EFFECT_UNUSED_6E*/
+	ptrvalue BattleScript_EffectProtect                /* EFFECT_PROTECT*/
+	ptrvalue BattleScript_EffectSpikes                 /* EFFECT_SPIKES*/
+	ptrvalue BattleScript_EffectForesight              /* EFFECT_FORESIGHT*/
+	ptrvalue BattleScript_EffectPerishSong             /* EFFECT_PERISH_SONG*/
+	ptrvalue BattleScript_EffectSandstorm              /* EFFECT_SANDSTORM*/
+	ptrvalue BattleScript_EffectEndure                 /* EFFECT_ENDURE*/
+	ptrvalue BattleScript_EffectRollout                /* EFFECT_ROLLOUT*/
+	ptrvalue BattleScript_EffectSwagger                /* EFFECT_SWAGGER*/
+	ptrvalue BattleScript_EffectFuryCutter             /* EFFECT_FURY_CUTTER*/
+	ptrvalue BattleScript_EffectAttract                /* EFFECT_ATTRACT*/
+	ptrvalue BattleScript_EffectReturn                 /* EFFECT_RETURN*/
+	ptrvalue BattleScript_EffectPresent                /* EFFECT_PRESENT*/
+	ptrvalue BattleScript_EffectFrustration            /* EFFECT_FRUSTRATION*/
+	ptrvalue BattleScript_EffectSafeguard              /* EFFECT_SAFEGUARD*/
+	ptrvalue BattleScript_EffectThawHit                /* EFFECT_THAW_HIT*/
+	ptrvalue BattleScript_EffectMagnitude              /* EFFECT_MAGNITUDE*/
+	ptrvalue BattleScript_EffectBatonPass              /* EFFECT_BATON_PASS*/
+	ptrvalue BattleScript_EffectHit                    /* EFFECT_PURSUIT*/
+	ptrvalue BattleScript_EffectRapidSpin              /* EFFECT_RAPID_SPIN*/
+	ptrvalue BattleScript_EffectSonicboom              /* EFFECT_SONICBOOM*/
+	ptrvalue BattleScript_EffectHit                    /* EFFECT_UNUSED_83*/
+	ptrvalue BattleScript_EffectMorningSun             /* EFFECT_MORNING_SUN*/
+	ptrvalue BattleScript_EffectSynthesis              /* EFFECT_SYNTHESIS*/
+	ptrvalue BattleScript_EffectMoonlight              /* EFFECT_MOONLIGHT*/
+	ptrvalue BattleScript_EffectHiddenPower            /* EFFECT_HIDDEN_POWER*/
+	ptrvalue BattleScript_EffectRainDance              /* EFFECT_RAIN_DANCE*/
+	ptrvalue BattleScript_EffectSunnyDay               /* EFFECT_SUNNY_DAY*/
+	ptrvalue BattleScript_EffectDefenseUpHit           /* EFFECT_DEFENSE_UP_HIT*/
+	ptrvalue BattleScript_EffectAttackUpHit            /* EFFECT_ATTACK_UP_HIT*/
+	ptrvalue BattleScript_EffectAllStatsUpHit          /* EFFECT_ALL_STATS_UP_HIT*/
+	ptrvalue BattleScript_EffectHit                    /* EFFECT_UNUSED_8D*/
+	ptrvalue BattleScript_EffectBellyDrum              /* EFFECT_BELLY_DRUM*/
+	ptrvalue BattleScript_EffectPsychUp                /* EFFECT_PSYCH_UP*/
+	ptrvalue BattleScript_EffectMirrorCoat             /* EFFECT_MIRROR_COAT*/
+	ptrvalue BattleScript_EffectSkullBash              /* EFFECT_SKULL_BASH*/
+	ptrvalue BattleScript_EffectTwister                /* EFFECT_TWISTER*/
+	ptrvalue BattleScript_EffectEarthquake             /* EFFECT_EARTHQUAKE*/
+	ptrvalue BattleScript_EffectFutureSight            /* EFFECT_FUTURE_SIGHT*/
+	ptrvalue BattleScript_EffectGust                   /* EFFECT_GUST*/
+	ptrvalue BattleScript_EffectStomp                  /* EFFECT_FLINCH_MINIMIZE_HIT*/
+	ptrvalue BattleScript_EffectSolarBeam              /* EFFECT_SOLAR_BEAM*/
+	ptrvalue BattleScript_EffectThunder                /* EFFECT_THUNDER*/
+	ptrvalue BattleScript_EffectTeleport               /* EFFECT_TELEPORT*/
+	ptrvalue BattleScript_EffectBeatUp                 /* EFFECT_BEAT_UP*/
+	ptrvalue BattleScript_EffectSemiInvulnerable       /* EFFECT_SEMI_INVULNERABLE*/
+	ptrvalue BattleScript_EffectDefenseCurl            /* EFFECT_DEFENSE_CURL*/
+	ptrvalue BattleScript_EffectSoftboiled             /* EFFECT_SOFTBOILED*/
+	ptrvalue BattleScript_EffectFakeOut                /* EFFECT_FAKE_OUT*/
+	ptrvalue BattleScript_EffectUproar                 /* EFFECT_UPROAR*/
+	ptrvalue BattleScript_EffectStockpile              /* EFFECT_STOCKPILE*/
+	ptrvalue BattleScript_EffectSpitUp                 /* EFFECT_SPIT_UP*/
+	ptrvalue BattleScript_EffectSwallow                /* EFFECT_SWALLOW*/
+	ptrvalue BattleScript_EffectHit                    /* EFFECT_UNUSED_A3*/
+	ptrvalue BattleScript_EffectHail                   /* EFFECT_HAIL*/
+	ptrvalue BattleScript_EffectTorment                /* EFFECT_TORMENT*/
+	ptrvalue BattleScript_EffectFlatter                /* EFFECT_FLATTER*/
+	ptrvalue BattleScript_EffectWillOWisp              /* EFFECT_WILL_O_WISP*/
+	ptrvalue BattleScript_EffectMemento                /* EFFECT_MEMENTO*/
+	ptrvalue BattleScript_EffectFacade                 /* EFFECT_FACADE*/
+	ptrvalue BattleScript_EffectFocusPunch             /* EFFECT_FOCUS_PUNCH*/
+	ptrvalue BattleScript_EffectSmellingsalt           /* EFFECT_SMELLINGSALT*/
+	ptrvalue BattleScript_EffectFollowMe               /* EFFECT_FOLLOW_ME*/
+	ptrvalue BattleScript_EffectNaturePower            /* EFFECT_NATURE_POWER*/
+	ptrvalue BattleScript_EffectCharge                 /* EFFECT_CHARGE*/
+	ptrvalue BattleScript_EffectTaunt                  /* EFFECT_TAUNT*/
+	ptrvalue BattleScript_EffectHelpingHand            /* EFFECT_HELPING_HAND*/
+	ptrvalue BattleScript_EffectTrick                  /* EFFECT_TRICK*/
+	ptrvalue BattleScript_EffectRolePlay               /* EFFECT_ROLE_PLAY*/
+	ptrvalue BattleScript_EffectWish                   /* EFFECT_WISH*/
+	ptrvalue BattleScript_EffectAssist                 /* EFFECT_ASSIST*/
+	ptrvalue BattleScript_EffectIngrain                /* EFFECT_INGRAIN*/
+	ptrvalue BattleScript_EffectSuperpower             /* EFFECT_SUPERPOWER*/
+	ptrvalue BattleScript_EffectMagicCoat              /* EFFECT_MAGIC_COAT*/
+	ptrvalue BattleScript_EffectRecycle                /* EFFECT_RECYCLE*/
+	ptrvalue BattleScript_EffectRevenge                /* EFFECT_REVENGE*/
+	ptrvalue BattleScript_EffectBrickBreak             /* EFFECT_BRICK_BREAK*/
+	ptrvalue BattleScript_EffectYawn                   /* EFFECT_YAWN*/
+	ptrvalue BattleScript_EffectKnockOff               /* EFFECT_KNOCK_OFF*/
+	ptrvalue BattleScript_EffectEndeavor               /* EFFECT_ENDEAVOR*/
+	ptrvalue BattleScript_EffectEruption               /* EFFECT_ERUPTION*/
+	ptrvalue BattleScript_EffectSkillSwap              /* EFFECT_SKILL_SWAP*/
+	ptrvalue BattleScript_EffectImprison               /* EFFECT_IMPRISON*/
+	ptrvalue BattleScript_EffectRefresh                /* EFFECT_REFRESH*/
+	ptrvalue BattleScript_EffectGrudge                 /* EFFECT_GRUDGE*/
+	ptrvalue BattleScript_EffectSnatch                 /* EFFECT_SNATCH*/
+	ptrvalue BattleScript_EffectLowKick                /* EFFECT_LOW_KICK*/
+	ptrvalue BattleScript_EffectSecretPower            /* EFFECT_SECRET_POWER*/
+	ptrvalue BattleScript_EffectDoubleEdge             /* EFFECT_DOUBLE_EDGE*/
+	ptrvalue BattleScript_EffectTeeterDance            /* EFFECT_TEETER_DANCE*/
+	ptrvalue BattleScript_EffectBurnHit                /* EFFECT_BLAZE_KICK*/
+	ptrvalue BattleScript_EffectMudSport               /* EFFECT_MUD_SPORT*/
+	ptrvalue BattleScript_EffectPoisonFang             /* EFFECT_POISON_FANG*/
+	ptrvalue BattleScript_EffectWeatherBall            /* EFFECT_WEATHER_BALL*/
+	ptrvalue BattleScript_EffectOverheat               /* EFFECT_OVERHEAT*/
+	ptrvalue BattleScript_EffectTickle                 /* EFFECT_TICKLE*/
+	ptrvalue BattleScript_EffectCosmicPower            /* EFFECT_COSMIC_POWER*/
+	ptrvalue BattleScript_EffectSkyUppercut            /* EFFECT_SKY_UPPERCUT*/
+	ptrvalue BattleScript_EffectBulkUp                 /* EFFECT_BULK_UP*/
+	ptrvalue BattleScript_EffectPoisonHit              /* EFFECT_POISON_TAIL*/
+	ptrvalue BattleScript_EffectWaterSport             /* EFFECT_WATER_SPORT*/
+	ptrvalue BattleScript_EffectCalmMind               /* EFFECT_CALM_MIND*/
+	ptrvalue BattleScript_EffectDragonDance            /* EFFECT_DRAGON_DANCE*/
+	ptrvalue BattleScript_EffectCamouflage             /* EFFECT_CAMOUFLAGE*/
 
 BattleScript_EffectHit::
 	jumpifnotmove MOVE_SURF, BattleScript_HitFromAtkCanceler
@@ -2053,7 +2053,7 @@ BattleScript_EffectFakeOut::
 
 BattleScript_FailedFromAtkString::
 	attackstring
-BattleScript_FailedFromPpReduce::
+BattleScript_FailedFromPPReduce::
 	ppreduce
 BattleScript_ButItFailed::
 	pause B_WAIT_TIME_SHORT
@@ -2289,7 +2289,7 @@ BattleScript_EffectNaturePower::
 	attackcanceler
 	attackstring
 	pause B_WAIT_TIME_SHORT
-	callterrainattack
+	callenvironmentattack
 	printstring STRINGID_NATUREPOWERTURNEDINTO
 	waitmessage B_WAIT_TIME_LONG
 	return
@@ -2367,7 +2367,7 @@ BattleScript_EffectWish::
 BattleScript_EffectAssist::
 	attackcanceler
 	attackstring
-	assistattackselect BattleScript_FailedFromPpReduce
+	assistattackselect BattleScript_FailedFromPPReduce
 	attackanimation
 	waitanimation
 	setbyte sB_ANIM_TURN, 0
@@ -2521,7 +2521,7 @@ BattleScript_EffectRefresh::
 	attackcanceler
 	attackstring
 	ppreduce
-	cureifburnedparalysedorpoisoned BattleScript_ButItFailed
+	cureifburnedparalyzedorpoisoned BattleScript_ButItFailed
 	attackanimation
 	waitanimation
 	printstring STRINGID_PKMNSTATUSNORMAL
@@ -2799,7 +2799,7 @@ BattleScript_EffectCamouflage::
 	attackcanceler
 	attackstring
 	ppreduce
-	settypetoterrain BattleScript_ButItFailed
+	settypetoenvironment BattleScript_ButItFailed
 	attackanimation
 	waitanimation
 	printstring STRINGID_PKMNCHANGEDTYPE
@@ -3208,7 +3208,7 @@ BattleScript_DamagingWeatherLoop::
 	jumpifword CMP_EQUAL, gBattleMoveDamage, 0, BattleScript_DamagingWeatherLoopIncrement
 	printfromtable gSandStormHailDmgStringIds
 	waitmessage B_WAIT_TIME_LONG
-	orword gHitMarker, HITMARKER_IGNORE_BIDE | HITMARKER_IGNORE_SUBSTITUTE | HITMARKER_PASSIVE_DAMAGE | HITMARKER_GRUDGE
+	orword gHitMarker, HITMARKER_IGNORE_BIDE | HITMARKER_IGNORE_SUBSTITUTE | HITMARKER_PASSIVE_HP_UPDATE | HITMARKER_GRUDGE
 	effectivenesssound
 	hitanimation BS_ATTACKER
 	healthbarupdate BS_ATTACKER
@@ -3220,7 +3220,7 @@ BattleScript_DamagingWeatherLoopIncrement::
 	addbyte gBattleCommunication, 1
 	jumpifbytenotequal gBattleCommunication, gBattlersCount, BattleScript_DamagingWeatherLoop
 BattleScript_DamagingWeatherContinuesEnd::
-	bicword gHitMarker, HITMARKER_IGNORE_BIDE | HITMARKER_IGNORE_SUBSTITUTE | HITMARKER_PASSIVE_DAMAGE | HITMARKER_GRUDGE
+	bicword gHitMarker, HITMARKER_IGNORE_BIDE | HITMARKER_IGNORE_SUBSTITUTE | HITMARKER_PASSIVE_HP_UPDATE | HITMARKER_GRUDGE
 	end2
 
 BattleScript_SandStormHailEnds::
@@ -3264,7 +3264,7 @@ BattleScript_SafeguardEnds::
 
 BattleScript_LeechSeedTurnDrain::
 	playanimation BS_ATTACKER, B_ANIM_LEECH_SEED_DRAIN, sB_ANIM_ARG1
-	orword gHitMarker, HITMARKER_IGNORE_SUBSTITUTE | HITMARKER_PASSIVE_DAMAGE
+	orword gHitMarker, HITMARKER_IGNORE_SUBSTITUTE | HITMARKER_PASSIVE_HP_UPDATE
 	healthbarupdate BS_ATTACKER
 	datahpupdate BS_ATTACKER
 	copyword gBattleMoveDamage, gHpDealt
@@ -3275,7 +3275,7 @@ BattleScript_LeechSeedTurnDrain::
 BattleScript_LeechSeedTurnPrintLiquidOoze::
 	setbyte cMULTISTRING_CHOOSER, B_MSG_LEECH_SEED_OOZE
 BattleScript_LeechSeedTurnPrintAndUpdateHp::
-	orword gHitMarker, HITMARKER_IGNORE_SUBSTITUTE | HITMARKER_PASSIVE_DAMAGE
+	orword gHitMarker, HITMARKER_IGNORE_SUBSTITUTE | HITMARKER_PASSIVE_HP_UPDATE
 	healthbarupdate BS_TARGET
 	datahpupdate BS_TARGET
 	printfromtable gLeechSeedStringIds
@@ -3379,14 +3379,14 @@ BattleScript_EncoredNoMore::
 BattleScript_DestinyBondTakesLife::
 	printstring STRINGID_PKMNTOOKFOE
 	waitmessage B_WAIT_TIME_LONG
-	orword gHitMarker, HITMARKER_IGNORE_SUBSTITUTE | HITMARKER_PASSIVE_DAMAGE
+	orword gHitMarker, HITMARKER_IGNORE_SUBSTITUTE | HITMARKER_PASSIVE_HP_UPDATE
 	healthbarupdate BS_ATTACKER
 	datahpupdate BS_ATTACKER
 	tryfaintmon BS_ATTACKER
 	return
 
 BattleScript_SpikesOnAttacker::
-	orword gHitMarker, HITMARKER_IGNORE_SUBSTITUTE | HITMARKER_PASSIVE_DAMAGE
+	orword gHitMarker, HITMARKER_IGNORE_SUBSTITUTE | HITMARKER_PASSIVE_HP_UPDATE
 	healthbarupdate BS_ATTACKER
 	datahpupdate BS_ATTACKER
 	call BattleScript_PrintHurtBySpikes
@@ -3401,7 +3401,7 @@ BattleScript_SpikesOnAttackerFainted::
 	goto BattleScript_HandleFaintedMon
 
 BattleScript_SpikesOnTarget::
-	orword gHitMarker, HITMARKER_IGNORE_SUBSTITUTE | HITMARKER_PASSIVE_DAMAGE
+	orword gHitMarker, HITMARKER_IGNORE_SUBSTITUTE | HITMARKER_PASSIVE_HP_UPDATE
 	healthbarupdate BS_TARGET
 	datahpupdate BS_TARGET
 	call BattleScript_PrintHurtBySpikes
@@ -3416,7 +3416,7 @@ BattleScript_SpikesOnTargetFainted::
 	goto BattleScript_HandleFaintedMon
 
 BattleScript_SpikesOnFaintedBattler::
-	orword gHitMarker, HITMARKER_IGNORE_SUBSTITUTE | HITMARKER_PASSIVE_DAMAGE
+	orword gHitMarker, HITMARKER_IGNORE_SUBSTITUTE | HITMARKER_PASSIVE_HP_UPDATE
 	healthbarupdate BS_FAINTED
 	datahpupdate BS_FAINTED
 	call BattleScript_PrintHurtBySpikes
@@ -3438,7 +3438,7 @@ BattleScript_PrintHurtBySpikes::
 BattleScript_PerishSongTakesLife::
 	printstring STRINGID_PKMNPERISHCOUNTFELL
 	waitmessage B_WAIT_TIME_LONG
-	orword gHitMarker, HITMARKER_IGNORE_SUBSTITUTE | HITMARKER_PASSIVE_DAMAGE
+	orword gHitMarker, HITMARKER_IGNORE_SUBSTITUTE | HITMARKER_PASSIVE_HP_UPDATE
 	healthbarupdate BS_ATTACKER
 	datahpupdate BS_ATTACKER
 	tryfaintmon BS_ATTACKER
@@ -3659,7 +3659,7 @@ BattleScript_SelectingImprisonedMoveInPalace::
 	printstring STRINGID_PKMNCANTUSEMOVESEALED
 	goto BattleScript_SelectingUnusableMoveInPalace
 
-BattleScript_GrudgeTakesPp::
+BattleScript_GrudgeTakesPP::
 	printstring STRINGID_PKMNLOSTPPGRUDGE
 	waitmessage B_WAIT_TIME_LONG
 	return
@@ -3739,7 +3739,7 @@ BattleScript_PoisonTurnDmg::
 BattleScript_DoStatusTurnDmg::
 	statusanimation BS_ATTACKER
 BattleScript_DoTurnDmg::
-	orword gHitMarker, HITMARKER_IGNORE_SUBSTITUTE | HITMARKER_PASSIVE_DAMAGE
+	orword gHitMarker, HITMARKER_IGNORE_SUBSTITUTE | HITMARKER_PASSIVE_HP_UPDATE
 	healthbarupdate BS_ATTACKER
 	datahpupdate BS_ATTACKER
 	tryfaintmon BS_ATTACKER
@@ -3806,7 +3806,7 @@ BattleScript_DoSelfConfusionDmg::
 	effectivenesssound
 	hitanimation BS_ATTACKER
 	waitstate
-	orword gHitMarker, HITMARKER_IGNORE_SUBSTITUTE | HITMARKER_PASSIVE_DAMAGE
+	orword gHitMarker, HITMARKER_IGNORE_SUBSTITUTE | HITMARKER_PASSIVE_HP_UPDATE
 	healthbarupdate BS_ATTACKER
 	datahpupdate BS_ATTACKER
 	resultmessage
@@ -3939,7 +3939,7 @@ BattleScript_MoveEffectRecoil::
 	jumpifmove MOVE_STRUGGLE, BattleScript_DoRecoil
 	jumpifability BS_ATTACKER, ABILITY_ROCK_HEAD, BattleScript_RecoilEnd
 BattleScript_DoRecoil::
-	orword gHitMarker, HITMARKER_IGNORE_SUBSTITUTE | HITMARKER_PASSIVE_DAMAGE
+	orword gHitMarker, HITMARKER_IGNORE_SUBSTITUTE | HITMARKER_PASSIVE_HP_UPDATE
 	healthbarupdate BS_ATTACKER
 	datahpupdate BS_ATTACKER
 	printstring STRINGID_PKMNHITWITHRECOIL
@@ -4182,7 +4182,7 @@ BattleScript_ColorChangeActivates::
 	return
 
 BattleScript_RoughSkinActivates::
-	orword gHitMarker, HITMARKER_IGNORE_SUBSTITUTE | HITMARKER_PASSIVE_DAMAGE
+	orword gHitMarker, HITMARKER_IGNORE_SUBSTITUTE | HITMARKER_PASSIVE_HP_UPDATE
 	healthbarupdate BS_ATTACKER
 	datahpupdate BS_ATTACKER
 	printstring STRINGID_PKMNHURTSWITH

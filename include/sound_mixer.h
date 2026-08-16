@@ -1,3 +1,4 @@
+#ifdef PORTABLE
 #ifndef SOUND_MIXER_H
 #define SOUND_MIXER_H
 
@@ -116,3 +117,4 @@ typedef void (*MixerRamFunc)(struct SoundMixerState *, u32, u16, s8 *, u16);
 #define REG_VCOUNT (*(vu8*)REG_ADDR_VCOUNT)
 #endif
 #endif//SOUND_MIXER_H
+#endif //PORTABLE

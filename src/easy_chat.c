@@ -706,20 +706,20 @@ static const u16 sBerryMasterWifePhrases[][2] = {
     [PHRASE_SUPER_HUSTLE - 1]        = {EC_WORD_SUPER, EC_WORD_HUSTLE},
 };
 
-static const u16 sTriangleCursor_Pal[] = INCBIN_U16("graphics/easy_chat/triangle_cursor.gbapal");
-static const u32 sTriangleCursor_Gfx[] = INCBIN_U32("graphics/easy_chat/triangle_cursor.4bpp");
-static const u32 sScrollIndicator_Gfx[] = INCBIN_U32("graphics/easy_chat/scroll_indicator.4bpp");
-static const u32 sStartSelectButtons_Gfx[] = INCBIN_U32("graphics/easy_chat/start_select_buttons.4bpp");
+static const u16 sTriangleCursor_Pal[] = INCGFX_U16("graphics/easy_chat/triangle_cursor.png", ".gbapal");
+static const u32 sTriangleCursor_Gfx[] = INCGFX_U32("graphics/easy_chat/triangle_cursor.png", ".4bpp");
+static const u32 sScrollIndicator_Gfx[] = INCGFX_U32("graphics/easy_chat/scroll_indicator.png", ".4bpp");
+static const u32 sStartSelectButtons_Gfx[] = INCGFX_U32("graphics/easy_chat/start_select_buttons.png", ".4bpp");
 // In Ruby/Sapphire Easy Chat screens had a black background, and when the player & interviewer were present
 // on screen the interview_frame gfx was shown behind them.
 // In Emerald all Easy Chat screens have a filled background, so these gfx go unused
-static const u16 sRSInterviewFrame_Pal[] = INCBIN_U16("graphics/easy_chat/interview_frame.gbapal");
-static const u32 sRSInterviewFrame_Gfx[] = INCBIN_U32("graphics/easy_chat/interview_frame.4bpp.lz");
-static const u16 sTextInputFrameOrange_Pal[] = INCBIN_U16("graphics/easy_chat/text_input_frame_orange.gbapal");
-static const u16 sTextInputFrameGreen_Pal[] = INCBIN_U16("graphics/easy_chat/text_input_frame_green.gbapal");
-static const u32 sTextInputFrame_Gfx[] = INCBIN_U32("graphics/easy_chat/text_input_frame.4bpp.lz");
-static const u16 sTitleText_Pal[] = INCBIN_U16("graphics/easy_chat/title_text.gbapal");
-static const u16 sText_Pal[] = INCBIN_U16("graphics/easy_chat/text.gbapal");
+static const u16 sRSInterviewFrame_Pal[] = INCGFX_U16("graphics/easy_chat/interview_frame.png", ".gbapal");
+static const u32 sRSInterviewFrame_Gfx[] = INCGFX_U32("graphics/easy_chat/interview_frame.png", ".4bpp.lz");
+static const u16 sTextInputFrameOrange_Pal[] = INCGFX_U16("graphics/easy_chat/text_input_frame_orange.pal", ".gbapal");
+static const u16 sTextInputFrameGreen_Pal[] = INCGFX_U16("graphics/easy_chat/text_input_frame_green.pal", ".gbapal");
+static const u32 sTextInputFrame_Gfx[] = INCGFX_U32("graphics/easy_chat/text_input_frame.png", ".4bpp.lz");
+static const u16 sTitleText_Pal[] = INCGFX_U16("graphics/easy_chat/title_text.pal", ".gbapal");
+static const u16 sText_Pal[] = INCGFX_U16("graphics/easy_chat/text.pal", ".gbapal");
 
 static const struct EasyChatPhraseFrameDimensions sPhraseFrameDimensions[] = {
     [FRAMEID_GENERAL_2x2] = {
@@ -1291,8 +1291,8 @@ static const u16 sRestrictedWordSpecies[] = {
 
 #define tState        data[0]
 #define tType         data[1]
-#define tWords        intPtr[TASKIDX_WORDS]
-#define tExitCallback intPtr[TASKIDX_EXIT_CALLBACK]
+#define tWords        ptr.intPtr[TASKIDX_WORDS]
+#define tExitCallback ptr.intPtr[TASKIDX_EXIT_CALLBACK]
 #define tFuncId       data[6]
 #define tPersonType   data[7]
 
@@ -1483,10 +1483,10 @@ void ShowEasyChatScreen(void)
         break;
     case EASY_CHAT_TYPE_BARD_SONG:
         bard = &gSaveBlock1Ptr->oldMan.bard;
-        for (i = 0; i < BARD_SONG_LENGTH; i ++)
-            bard->temporaryLyrics[i] = bard->songLyrics[i];
+        for (i = 0; i < NUM_BARD_SONG_WORDS; i ++)
+            bard->newSongLyrics[i] = bard->songLyrics[i];
 
-        words = bard->temporaryLyrics;
+        words = bard->newSongLyrics;
         break;
     case EASY_CHAT_TYPE_INTERVIEW:
         words = gSaveBlock1Ptr->tvShows[gSpecialVar_0x8005].bravoTrainer.words;
@@ -3957,7 +3957,7 @@ static void PrintTitle(void)
     CopyWindowToVram(WIN_TITLE, COPYWIN_FULL);
 }
 
-static void PrintEasyChatText(u8 windowId, u8 fontId, const u8 *str, u8 x, u8 y, u8 speed, void (*callback)(struct TextPrinterTemplate *, u16))
+static void PrintEasyChatText(u8 windowId, u8 fontId, const u8 *str, u8 x, u8 y, u8 speed, TextPrinterCallback callback)
 {
     AddTextPrinterParameterized(windowId, fontId, str, x, y, speed, callback);
 }

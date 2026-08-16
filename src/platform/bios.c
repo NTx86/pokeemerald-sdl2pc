@@ -1,12 +1,7 @@
+#ifdef PORTABLE
 #include "global.h"
-// BIOS function implementations are based on the VBA-M source code.
 
-//memory defines here because there's no better spot for them
-u16 INTR_CHECK;
-void *INTR_VECTOR;
-unsigned char REG_BASE[0x400] __attribute__ ((aligned (4)));
-unsigned char FLASH_BASE[131072*4] __attribute__ ((aligned (4))); //base gba flash_base multiplied by 8 for extra storage
-struct SoundInfo *SOUND_INFO_PTR;
+// BIOS function implementations are based on the VBA-M source code.
 
 static uint32_t CPUReadMemory(const void *src)
 {
@@ -241,7 +236,7 @@ void LZ77UnCompWram(const u32 *src, void *dst)
     }
 }
 
-void RLUnCompWram(const void *src, void *dest)
+void RLUnCompWram(const u32 *src, void *dest)
 {
     int remaining = CPUReadMemory(src) >> 8;
     int padding = (4 - remaining) & 0x3;
@@ -285,7 +280,7 @@ void RLUnCompWram(const void *src, void *dest)
     }
 }
 
-void RLUnCompVram(const void *src, void *dest)
+void RLUnCompVram(const u32 *src, void *dest)
 {
     int remaining = CPUReadMemory(src) >> 8;
     int padding = (4 - remaining) & 0x3;
@@ -539,3 +534,4 @@ u16 Sqrt(u32 num)
     }
     return bound;
 }
+#endif //PORTABLE

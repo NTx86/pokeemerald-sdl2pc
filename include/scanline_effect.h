@@ -34,7 +34,7 @@ extern u32 gScanlineEffectRegBuffers[2][DISPLAY_WIDTH * DISPLAY_HEIGHT];
 
 void ScanlineEffect_Stop(void);
 void ScanlineEffect_Clear(void);
-void ScanlineEffect_SetParams(struct ScanlineEffectParams);
+void ScanlineEffect_SetParams(struct ScanlineEffectParams params);
 void ScanlineEffect_InitHBlankDmaTransfer(void);
 u8 ScanlineEffect_InitWave(u16 startLine, u16 endLine, u8 frequency, u8 amplitude, u8 delayInterval, u8 regOffset, bool8 applyBattleBgOffsets);
 

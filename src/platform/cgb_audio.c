@@ -1,3 +1,4 @@
+#ifdef PORTABLE
 #include "global.h"
 #include "cgb_audio.h"
 #include "cgb_tables.h"
@@ -256,3 +257,4 @@ void cgb_audio_generate(u16 samplesPerFrame){
 float *cgb_get_buffer(){
     return gb.outBuffer;
 }
+#endif //PORTABLE

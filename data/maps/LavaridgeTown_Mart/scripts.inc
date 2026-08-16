@@ -22,9 +22,7 @@ LavaridgeTown_Mart_Pokemart:
 	.short ITEM_REVIVE
 	.short ITEM_SUPER_REPEL
 	.short ITEM_X_SPEED
-	.short ITEM_NONE
-	release
-	end
+	pokemartlistend
 
 LavaridgeTown_Mart_EventScript_ExpertM::
 	msgbox LavaridgeTown_Mart_Text_XSpeedFirstStrike, MSGBOX_NPC

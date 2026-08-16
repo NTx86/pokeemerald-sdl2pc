@@ -16,22 +16,20 @@ SECTIONS {
     ALIGN(4)
     {
         src/*.o(ewram_data);
-        gflib/*.o(ewram_data);
     } > EWRAM
 
     iwram 0x3000000 (NOLOAD) :
     ALIGN(4)
     {
         src/*.o(.bss);
-        gflib/*.o(.bss);
         data/*.o(.bss);
         *libc.a:*.o(.bss*);
         *libnosys.a:*.o(.bss*);
 
         src/m4a.o(.bss.code);
 
+        src/*.o(common_data);
         src/*.o(COMMON);
-        gflib/*.o(COMMON);
         *libc.a:*.o(COMMON);
         *libnosys.a:*.o(COMMON);
     } > IWRAM
@@ -46,7 +44,6 @@ SECTIONS {
         src/rom_header_gf.o(.text.*);
         src/crt0.o(.text);
         src/main.o(.text);
-        gflib/*.o(.text*);
         src/*.o(.text*);
         asm/*.o(.text*);
     } > ROM =0
@@ -82,7 +79,6 @@ SECTIONS {
     ALIGN(4)
     {
         src/*.o(.rodata*);
-        gflib/*.o(.rodata*);
         data/*.o(.rodata*);
     } > ROM =0
 
@@ -153,6 +149,9 @@ SECTIONS {
     .debug_str      0 : { *(.debug_str) }
     .debug_loc      0 : { *(.debug_loc) }
     .debug_macinfo  0 : { *(.debug_macinfo) }
+
+    /* DWARF 5*/
+    .debug_line_str     0 : { *(.debug_line_str) }
 
     /* Discard everything not specifically mentioned above. */
     /DISCARD/ :

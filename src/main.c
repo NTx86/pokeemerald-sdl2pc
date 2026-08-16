@@ -123,7 +123,7 @@ void GameInit(void)
 #endif
 }
 
-void GameLoop(void)
+void MainLoop(void)
 {
     ReadKeys();
 

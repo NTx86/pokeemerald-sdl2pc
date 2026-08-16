@@ -25,9 +25,7 @@ FallarborTown_Mart_Pokemart:
 	.short ITEM_X_DEFEND
 	.short ITEM_DIRE_HIT
 	.short ITEM_GUARD_SPEC
-	.short ITEM_NONE
-	release
-	end
+	pokemartlistend
 
 FallarborTown_Mart_EventScript_Woman::
 	msgbox FallarborTown_Mart_Text_DecidingSkittyEvolve, MSGBOX_NPC

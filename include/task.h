@@ -26,7 +26,7 @@ struct Task
         TaskFunc funcPtr_task;
         struct Sprite *spritePtr;
         struct Pokemon *monPtr;
-    };
+    } ptr;
 };
 
 extern struct Task gTasks[];

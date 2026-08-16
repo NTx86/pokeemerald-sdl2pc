@@ -1,4 +1,4 @@
-#include <string.h>
+#include "global.h"
 #include "gba/m4a_internal.h"
 #include "sound_mixer.h"
 
@@ -156,7 +156,7 @@ void m4aSongNumStartOrChange(u16 n)
     }
 }
 
-void m4aSongNumStartOrContinue(u16 n)
+static void UNUSED m4aSongNumStartOrContinue(u16 n)
 {
     const struct MusicPlayer *mplayTable = gMPlayTable;
     const struct Song *songTable = gSongTable;
@@ -182,7 +182,7 @@ void m4aSongNumStop(u16 n)
         m4aMPlayStop(mplay->info);
 }
 
-void m4aSongNumContinue(u16 n)
+static void UNUSED m4aSongNumContinue(u16 n)
 {
     const struct MusicPlayer *mplayTable = gMPlayTable;
     const struct Song *songTable = gSongTable;
@@ -358,7 +358,11 @@ void SoundInit(struct SoundInfo *soundInfo)
 
     soundInfo->maxChans = 8;
     soundInfo->masterVolume = 15;
+#ifndef PORTABLE
+    soundInfo->plynote = ply_note;
+#else
     soundInfo->plynote = MP2K_event_nxx;
+#endif
     soundInfo->CgbSound = DummyFunc;
     soundInfo->CgbOscOff = (CgbOscOffFunc)DummyFunc;
     soundInfo->MidiKeyToCgbFreq = (MidiKeyToCgbFreqFunc)DummyFunc;
@@ -384,9 +388,17 @@ void SampleFreqSet(u32 freq)
 #endif
     soundInfo->pcmDmaPeriod = PCM_DMA_BUF_SIZE / soundInfo->pcmSamplesPerVBlank;
 
+#ifndef PORTABLE
+    // LCD refresh rate 59.7275Hz
+    soundInfo->pcmFreq = (597275 * soundInfo->pcmSamplesPerVBlank + 5000) / 10000;
+
+    // CPU frequency 16.78Mhz
+    soundInfo->divFreq = (16777216 / soundInfo->pcmFreq + 1) >> 1;
+#else
     soundInfo->pcmFreq = 60.0f * soundInfo->pcmSamplesPerVBlank;
 
     soundInfo->divFreq = 1.0f / soundInfo->pcmFreq;
+#endif
 
     // Turn off timer 0.
     REG_TM0CNT_H = 0;
@@ -475,11 +487,7 @@ void SoundClear(void)
     {
         ((struct SoundChannel *)chan)->statusFlags = 0;
         i--;
-        #ifdef VER_64BIT
-        chan = (void *)((s64)chan + sizeof(struct SoundChannel));
-        #else
-        chan = (void *)((s32)chan + sizeof(struct SoundChannel));
-        #endif
+        chan = (void *)((uintptr_t)chan + sizeof(struct SoundChannel));
     }
 
     chan = soundInfo->cgbChans;
@@ -493,11 +501,7 @@ void SoundClear(void)
             soundInfo->CgbOscOff(i);
             ((struct CgbChannel *)chan)->statusFlags = 0;
             i++;
-            #ifdef VER_64BIT
-            chan = (void *)((s64)chan + sizeof(struct CgbChannel));
-            #else
-            chan = (void *)((s32)chan + sizeof(struct CgbChannel));
-            #endif
+            chan = (void *)((uintptr_t)chan + sizeof(struct CgbChannel));
         }
     }
 
@@ -567,9 +571,13 @@ void MPlayOpen(struct MusicPlayerInfo *mplayInfo, struct MusicPlayerTrack *track
         // NULL assignment semantically useless, but required for match
         soundInfo->MPlayMainHead = NULL;
     }
-
+#ifndef PORTABLE
+    soundInfo->musicPlayerHead = mplayInfo;
+    soundInfo->MPlayMainHead = MPlayMain;
+#else
     soundInfo->musicPlayerHead = mplayInfo;
     soundInfo->MPlayMainHead = MP2KPlayerMain;
+#endif
     soundInfo->ident = ID_NUMBER;
     mplayInfo->ident = ID_NUMBER;
 }
@@ -968,11 +976,7 @@ void CgbSound(void)
                     cgb_set_sweep(channels->sweep);
                     // fallthrough
                 case 2:
-                    #ifdef VER_64BIT
-                    *nrx1ptr = ((u64)channels->wavePointer << 6) + channels->length;
-                    #else
-                    *nrx1ptr = ((u32)channels->wavePointer << 6) + channels->length;
-                    #endif
+                    *nrx1ptr = ((uintptr_t)channels->wavePointer << 6) + channels->length;
                     goto init_env_step_time_dir;
                 case 3:
                     if (channels->wavePointer != channels->currentPointer)
@@ -994,11 +998,7 @@ void CgbSound(void)
                     break;
                 default:
                     *nrx1ptr = channels->length;
-                    #ifdef VER_64BIT
-                    *nrx3ptr = (u64)channels->wavePointer << 3;
-                    #else
-                    *nrx3ptr = (u32)channels->wavePointer << 3;
-                    #endif
+                    *nrx3ptr = (uintptr_t)channels->wavePointer << 3;
                 init_env_step_time_dir:
                     envelopeStepTimeAndDir = channels->attack + CGB_NRx2_ENV_DIR_INC;
                     if (channels->length)
@@ -1526,11 +1526,7 @@ void ply_xxx(struct MusicPlayerInfo *mplayInfo, struct MusicPlayerTrack *track)
 
 void ply_xwave(struct MusicPlayerInfo *mplayInfo, struct MusicPlayerTrack *track)
 {
-#ifdef VER_64BIT
-    u64 wav;
-#else
-    u32 wav;
-#endif
+    uintptr_t wav;
 
 #ifdef UBFIX
     wav = 0;
@@ -1599,26 +1595,26 @@ void ply_xswee(struct MusicPlayerInfo *mplayInfo, struct MusicPlayerTrack *track
     track->cmdPtr++;
 }
 
-void ply_xcmd_0C(struct MusicPlayerInfo *mplayInfo, struct MusicPlayerTrack *track)
+void ply_xwait(struct MusicPlayerInfo *mplayInfo, struct MusicPlayerTrack *track)
 {
-    u32 unk;
+    u32 len;
 
 #ifdef UBFIX
-    unk = 0;
+    len = 0;
 #endif
 
-    READ_XCMD_BYTE(unk, 0) // UB: uninitialized variable
-    READ_XCMD_BYTE(unk, 1)
+    READ_XCMD_BYTE(len, 0) // UB: uninitialized variable
+    READ_XCMD_BYTE(len, 1)
 
-    if (track->unk_3A < (u16)unk)
+    if (track->timer < (u16)len)
     {
-        track->unk_3A++;
+        track->timer++;
         track->cmdPtr -= 2;
         track->wait = 1;
     }
     else
     {
-        track->unk_3A = 0;
+        track->timer = 0;
         track->cmdPtr += 2;
     }
 }
@@ -1676,11 +1672,7 @@ start_song:
     gPokemonCrySongs[i].tone = tone;
     gPokemonCrySongs[i].part[0] = &gPokemonCrySongs[i].part0;
     gPokemonCrySongs[i].part[1] = &gPokemonCrySongs[i].part1;
-    #ifdef VER_64BIT
-    gPokemonCrySongs[i].gotoTarget = (u64)&gPokemonCrySongs[i].cont;
-    #else
-    gPokemonCrySongs[i].gotoTarget = (u32)&gPokemonCrySongs[i].cont;
-    #endif
+    gPokemonCrySongs[i].gotoTarget = (uintptr_t)&gPokemonCrySongs[i].cont;
 
     mplayInfo->ident = ID_NUMBER;
 
@@ -1710,7 +1702,7 @@ void SetPokemonCryPitch(s16 val)
 
 void SetPokemonCryLength(u16 val)
 {
-    gPokemonCrySong.unkCmd0CParam = val;
+    gPokemonCrySong.length = val;
 }
 
 void SetPokemonCryRelease(u8 val)

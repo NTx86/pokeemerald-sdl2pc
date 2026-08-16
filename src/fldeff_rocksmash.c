@@ -108,7 +108,7 @@ static void Task_DoFieldMove_WaitForMon(u8 taskId)
 
 static void Task_DoFieldMove_RunFunc(u8 taskId)
 {
-    gTasks[taskId].funcPtr();
+    gTasks[taskId].ptr.funcPtr();
     gPlayerAvatar.preventStep = FALSE;
     DestroyTask(taskId);
 }
@@ -148,7 +148,7 @@ bool8 FldEff_UseRockSmash(void)
 {
     u8 taskId = CreateFieldMoveTask();
 
-    gTasks[taskId].funcPtr = FieldMove_RockSmash;
+    gTasks[taskId].ptr.funcPtr = FieldMove_RockSmash;
     IncrementGameStat(GAME_STAT_USED_ROCK_SMASH);
     return FALSE;
 }

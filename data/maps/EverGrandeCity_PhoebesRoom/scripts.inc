@@ -9,7 +9,7 @@ EverGrandeCity_PhoebesRoom_OnWarp:
 	.short 0
 
 EverGrandeCity_PhoebesRoom_EventScript_PlayerTurnNorth::
-	turnobject OBJ_EVENT_ID_PLAYER, DIR_NORTH
+	turnobject LOCALID_PLAYER, DIR_NORTH
 	end
 
 EverGrandeCity_PhoebesRoom_OnFrame:

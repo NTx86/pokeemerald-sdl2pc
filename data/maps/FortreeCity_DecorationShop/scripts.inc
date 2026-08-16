@@ -29,9 +29,7 @@ FortreeCity_DecorationShop_PokemartDecor_Desks:
 	.short DECOR_BRICK_DESK
 	.short DECOR_CAMP_DESK
 	.short DECOR_HARD_DESK
-	.short DECOR_NONE
-	release
-	end
+	pokemartlistend
 
 FortreeCity_DecorationShop_EventScript_ClerkChairs::
 	lock
@@ -53,9 +51,7 @@ FortreeCity_DecorationShop_PokemartDecor_Chairs:
 	.short DECOR_BRICK_CHAIR
 	.short DECOR_CAMP_CHAIR
 	.short DECOR_HARD_CHAIR
-	.short DECOR_NONE
-	release
-	end
+	pokemartlistend
 
 FortreeCity_DecorationShop_Text_MerchandiseSentToPC:
 	.string "Merchandise you buy here is sent to\n"

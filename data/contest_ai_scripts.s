@@ -15,38 +15,38 @@
 
 	.align 2
 gContestAI_ScriptsTable::
-	.quad AI_CheckBadMove      /* CONTEST_AI_CHECK_BAD_MOVE*/
-	.quad AI_CheckCombo        /* CONTEST_AI_CHECK_COMBO*/
-	.quad AI_CheckBoring       /* CONTEST_AI_CHECK_BORING*/
-	.quad AI_CheckExcitement   /* CONTEST_AI_CHECK_EXCITEMENT*/
-	.quad AI_CheckOrder        /* CONTEST_AI_CHECK_ORDER*/
-	.quad AI_CheckGoodMove     /* CONTEST_AI_CHECK_GOOD_MOVE*/
-	.quad AI_Erratic           /* CONTEST_AI_ERRATIC*/
-	.quad AI_Nothing           /* CONTEST_AI_DUMMY_1*/
-	.quad AI_Nothing           /* CONTEST_AI_DUMMY_2*/
-	.quad AI_Nothing           /* CONTEST_AI_DUMMY_3*/
-	.quad AI_Nothing           /* CONTEST_AI_DUMMY_4*/
-	.quad AI_Nothing           /* CONTEST_AI_DUMMY_5*/
-	.quad AI_Nothing           /* CONTEST_AI_DUMMY_6*/
-	.quad AI_Nothing           /* CONTEST_AI_DUMMY_7*/
-	.quad AI_Nothing           /* CONTEST_AI_DUMMY_8*/
-	.quad AI_Nothing           /* CONTEST_AI_DUMMY_9*/
-	.quad AI_Nothing           /* CONTEST_AI_DUMMY_10*/
-	.quad AI_Nothing           /* CONTEST_AI_DUMMY_11*/
-	.quad AI_Nothing           /* CONTEST_AI_DUMMY_12*/
-	.quad AI_Nothing           /* CONTEST_AI_DUMMY_13*/
-	.quad AI_Nothing           /* CONTEST_AI_DUMMY_14*/
-	.quad AI_Nothing           /* CONTEST_AI_DUMMY_15*/
-	.quad AI_Nothing           /* CONTEST_AI_DUMMY_16*/
-	.quad AI_Nothing           /* CONTEST_AI_DUMMY_17*/
-	.quad AI_Nothing           /* CONTEST_AI_DUMMY_18*/
-	.quad AI_Nothing           /* CONTEST_AI_DUMMY_19*/
-	.quad AI_Nothing           /* CONTEST_AI_DUMMY_20*/
-	.quad AI_Nothing           /* CONTEST_AI_DUMMY_21*/
-	.quad AI_Nothing           /* CONTEST_AI_DUMMY_22*/
-	.quad AI_Nothing           /* CONTEST_AI_DUMMY_23*/
-	.quad AI_Nothing           /* CONTEST_AI_DUMMY_24*/
-	.quad AI_Nothing           /* CONTEST_AI_DUMMY_25*/
+	ptrvalue AI_CheckBadMove      /* CONTEST_AI_CHECK_BAD_MOVE*/
+	ptrvalue AI_CheckCombo        /* CONTEST_AI_CHECK_COMBO*/
+	ptrvalue AI_CheckBoring       /* CONTEST_AI_CHECK_BORING*/
+	ptrvalue AI_CheckExcitement   /* CONTEST_AI_CHECK_EXCITEMENT*/
+	ptrvalue AI_CheckOrder        /* CONTEST_AI_CHECK_ORDER*/
+	ptrvalue AI_CheckGoodMove     /* CONTEST_AI_CHECK_GOOD_MOVE*/
+	ptrvalue AI_Erratic           /* CONTEST_AI_ERRATIC*/
+	ptrvalue AI_Nothing           /* CONTEST_AI_DUMMY_1*/
+	ptrvalue AI_Nothing           /* CONTEST_AI_DUMMY_2*/
+	ptrvalue AI_Nothing           /* CONTEST_AI_DUMMY_3*/
+	ptrvalue AI_Nothing           /* CONTEST_AI_DUMMY_4*/
+	ptrvalue AI_Nothing           /* CONTEST_AI_DUMMY_5*/
+	ptrvalue AI_Nothing           /* CONTEST_AI_DUMMY_6*/
+	ptrvalue AI_Nothing           /* CONTEST_AI_DUMMY_7*/
+	ptrvalue AI_Nothing           /* CONTEST_AI_DUMMY_8*/
+	ptrvalue AI_Nothing           /* CONTEST_AI_DUMMY_9*/
+	ptrvalue AI_Nothing           /* CONTEST_AI_DUMMY_10*/
+	ptrvalue AI_Nothing           /* CONTEST_AI_DUMMY_11*/
+	ptrvalue AI_Nothing           /* CONTEST_AI_DUMMY_12*/
+	ptrvalue AI_Nothing           /* CONTEST_AI_DUMMY_13*/
+	ptrvalue AI_Nothing           /* CONTEST_AI_DUMMY_14*/
+	ptrvalue AI_Nothing           /* CONTEST_AI_DUMMY_15*/
+	ptrvalue AI_Nothing           /* CONTEST_AI_DUMMY_16*/
+	ptrvalue AI_Nothing           /* CONTEST_AI_DUMMY_17*/
+	ptrvalue AI_Nothing           /* CONTEST_AI_DUMMY_18*/
+	ptrvalue AI_Nothing           /* CONTEST_AI_DUMMY_19*/
+	ptrvalue AI_Nothing           /* CONTEST_AI_DUMMY_20*/
+	ptrvalue AI_Nothing           /* CONTEST_AI_DUMMY_21*/
+	ptrvalue AI_Nothing           /* CONTEST_AI_DUMMY_22*/
+	ptrvalue AI_Nothing           /* CONTEST_AI_DUMMY_23*/
+	ptrvalue AI_Nothing           /* CONTEST_AI_DUMMY_24*/
+	ptrvalue AI_Nothing           /* CONTEST_AI_DUMMY_25*/
 
 
 /* Unused. Encourages improving condition on the 1st appeal, or startling mons if the users turn is later*/

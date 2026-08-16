@@ -22,9 +22,7 @@ SootopolisCity_Mart_Pokemart:
 	.short ITEM_X_ATTACK
 	.short ITEM_X_DEFEND
 	.short ITEM_SHADOW_MAIL
-	.short ITEM_NONE
-	release
-	end
+	pokemartlistend
 
 SootopolisCity_Mart_EventScript_FatMan::
 	lock

@@ -7,7 +7,7 @@
 #include "mystery_event_script.h"
 #include "pokedex.h"
 #include "pokemon.h"
-#include "pokemon_size_record.h"
+#include "give_gift_ribbon_to_party.h"
 #include "script.h"
 #include "strings.h"
 #include "string_util.h"
@@ -59,11 +59,7 @@ static void InitMysteryEventScript(struct ScriptContext *ctx, u8 *script)
 {
     InitScriptContext(ctx, gMysteryEventScriptCmdTable, gMysteryEventScriptCmdTableEnd);
     SetupBytecodeScript(ctx, script);
-    #ifdef VER_64BIT
-    ctx->mScriptBase = (u64)script;
-    #else
-    ctx->mScriptBase = (u32)script;
-    #endif
+    ctx->mScriptBase = (uintptr_t)script;
     ctx->mOffset = 0;
     ctx->mStatus = MEVENT_STATUS_LOAD_OK;
     ctx->mValid = FALSE;
@@ -318,11 +314,7 @@ bool8 MEScrCmd_givepokemon(struct ScriptContext *ctx)
     struct Pokemon pokemon;
     u16 species;
     u16 heldItem;
-    #ifdef VER_64BIT
-    u64 data = ScriptReadQuadWord(ctx) - ctx->mOffset + ctx->mScriptBase;
-    #else
-    u32 data = ScriptReadWord(ctx) - ctx->mOffset + ctx->mScriptBase;
-    #endif
+    uintptr_t data = ScriptReadQuadWord(ctx) - ctx->mOffset + ctx->mScriptBase;
     void *pokemonPtr = (void *)data;
     void *mailPtr = (void *)(data + sizeof(struct Pokemon));
 
@@ -365,11 +357,7 @@ bool8 MEScrCmd_givepokemon(struct ScriptContext *ctx)
 
 bool8 MEScrCmd_addtrainer(struct ScriptContext *ctx)
 {
-    #ifdef VER_64BIT
-    u64 data = ScriptReadQuadWord(ctx) - ctx->mOffset + ctx->mScriptBase;
-    #else
-    u32 data = ScriptReadWord(ctx) - ctx->mOffset + ctx->mScriptBase;
-    #endif
+    uintptr_t data = ScriptReadQuadWord(ctx) - ctx->mOffset + ctx->mScriptBase;
     memcpy(&gSaveBlock2Ptr->frontier.ereaderTrainer, (void *)data, sizeof(gSaveBlock2Ptr->frontier.ereaderTrainer));
     ValidateEReaderTrainer();
     StringExpandPlaceholders(gStringVar4, gText_MysteryEventNewTrainer);

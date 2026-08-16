@@ -9,9 +9,11 @@
 #ifdef PORTABLE
 #define IWRAM_DATA
 #define EWRAM_DATA
+#define COMMON_DATA
 #else
 #define IWRAM_DATA __attribute__((section("iwram_data")))
 #define EWRAM_DATA __attribute__((section("ewram_data")))
+#define COMMON_DATA __attribute__((section("common_data")))
 #endif
 #define UNUSED __attribute__((unused))
 

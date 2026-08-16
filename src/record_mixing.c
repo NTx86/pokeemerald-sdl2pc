@@ -108,7 +108,7 @@ static void Task_MixingRecordsRecv(u8);
 static void Task_SendPacket(u8);
 static void Task_CopyReceiveBuffer(u8);
 static void Task_SendPacket_SwitchToReceive(u8);
-static void *LoadPtrFromTaskData(const void **);
+static void *LoadPtrFromTaskData(void **);
 static void StorePtrInTaskData(void *, void **);
 static u8 GetMultiplayerId_(void);
 static void *GetPlayerRecvBuffer(u8);
@@ -376,7 +376,7 @@ static void Task_RecordMixing_Main(u8 taskId)
 #undef tSoundTaskId
 
 // Task data for Task_MixingRecordsRecv and subsequent tasks
-#define tSentRecord    genericPtr[0]
+#define tSentRecord    ptr.genericPtr[0]
 #define tNumChunksSent data[4]
 #define tMultiplayerId data[5]
 #define tCopyTaskId    data[10]
@@ -384,7 +384,7 @@ static void Task_RecordMixing_Main(u8 taskId)
 // Task data for Task_CopyReceiveBuffer
 #define tParentTaskId     data[0]
 #define tNumChunksRecv(i) data[1 + (i)] // Number of chunks of the record received per player
-#define tRecvRecords      genericPtr[0]
+#define tRecvRecords      ptr.genericPtr[0]
 
 static void Task_MixingRecordsRecv(u8 taskId)
 {
@@ -580,7 +580,7 @@ static void Task_SendPacket_SwitchToReceive(u8 taskId)
     sReadyToReceive = TRUE;
 }
 
-static void *LoadPtrFromTaskData(const void **ptrPtr)
+static void *LoadPtrFromTaskData(void **ptrPtr)
 {
     return (void *)(*ptrPtr);
 }

@@ -17,9 +17,7 @@ LavaridgeTown_HerbShop_Pokemart:
 	.short ITEM_ENERGY_ROOT
 	.short ITEM_HEAL_POWDER
 	.short ITEM_REVIVAL_HERB
-	.short ITEM_NONE
-	release
-	end
+	pokemartlistend
 
 LavaridgeTown_HerbShop_EventScript_ExpertM::
 	msgbox LavaridgeTown_HerbShop_Text_HerbalMedicineWorksButMonWillDislike, MSGBOX_NPC

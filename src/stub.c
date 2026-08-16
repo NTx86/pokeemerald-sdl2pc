@@ -1,3 +1,4 @@
+#ifdef PORTABLE
 #include "global.h"
 #include "main.h"
 
@@ -121,3 +122,4 @@ STUB_FUNC(void MultiBootStartProbe(struct MultiBootParam *mp))
 STUB_FUNC(void MultiBootStartMaster(struct MultiBootParam *mp, const u8 *srcp, int length, u8 palette_color, s8 palette_speed))
 STUB_FUNC(int MultiBootCheckComplete(struct MultiBootParam *mp))
 //STUB_FUNC(IntrFunc IntrSIO32(void))
+#endif //PORTABLE

@@ -42,7 +42,7 @@ bool8 FldEff_SweetScent(void)
 
     SetWeatherScreenFadeOut();
     taskId = CreateFieldMoveTask();
-    gTasks[taskId].funcPtr = StartSweetScentFieldEffect;
+    gTasks[taskId].ptr.funcPtr = StartSweetScentFieldEffect;
     return FALSE;
 }
 

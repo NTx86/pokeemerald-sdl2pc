@@ -24,9 +24,7 @@ VerdanturfTown_Mart_Pokemart:
 	.short ITEM_REPEL
 	.short ITEM_X_SPECIAL
 	.short ITEM_FLUFFY_TAIL
-	.short ITEM_NONE
-	release
-	end
+	pokemartlistend
 
 VerdanturfTown_Mart_EventScript_Boy::
 	msgbox VerdanturfTown_Mart_Text_XSpecialIsCrucial, MSGBOX_NPC

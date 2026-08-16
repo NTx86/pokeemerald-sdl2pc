@@ -285,7 +285,7 @@ bool8 FldEff_UseCutOnGrass(void)
 {
     u8 taskId = CreateFieldMoveTask();
 
-    gTasks[taskId].funcPtr = StartCutGrassFieldEffect;
+    gTasks[taskId].ptr.funcPtr = StartCutGrassFieldEffect;
     IncrementGameStat(GAME_STAT_USED_CUT);
     return FALSE;
 }
@@ -300,7 +300,7 @@ bool8 FldEff_UseCutOnTree(void)
 {
     u8 taskId = CreateFieldMoveTask();
 
-    gTasks[taskId].funcPtr = StartCutTreeFieldEffect;
+    gTasks[taskId].ptr.funcPtr = StartCutTreeFieldEffect;
     IncrementGameStat(GAME_STAT_USED_CUT);
     return FALSE;
 }
@@ -351,9 +351,7 @@ bool8 FldEff_CutGrass(void)
 // set map grid metatile depending on x, y
 static void SetCutGrassMetatile(s16 x, s16 y)
 {
-    s32 metatileId = MapGridGetMetatileIdAt(x, y);
-
-    switch (metatileId)
+    switch (MapGridGetMetatileIdAt(x, y))
     {
     case METATILE_Fortree_LongGrass_Root:
     case METATILE_General_LongGrass:

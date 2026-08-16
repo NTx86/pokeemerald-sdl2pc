@@ -23,9 +23,7 @@ FortreeCity_Mart_Pokemart:
 	.short ITEM_REVIVE
 	.short ITEM_SUPER_REPEL
 	.short ITEM_WOOD_MAIL
-	.short ITEM_NONE
-	release
-	end
+	pokemartlistend
 
 FortreeCity_Mart_EventScript_Woman::
 	msgbox FortreeCity_Mart_Text_SuperRepelBetter, MSGBOX_NPC

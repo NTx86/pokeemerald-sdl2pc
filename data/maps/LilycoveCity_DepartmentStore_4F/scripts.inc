@@ -29,9 +29,7 @@ LilycoveCity_DepartmentStore_4F_Pokemart_AttackTMs:
 	.short ITEM_TM_THUNDER
 	.short ITEM_TM_BLIZZARD
 	.short ITEM_TM_HYPER_BEAM
-	.short ITEM_NONE
-	release
-	end
+	pokemartlistend
 
 LilycoveCity_DepartmentStore_4F_EventScript_ClerkRight::
 	lock
@@ -49,9 +47,7 @@ LilycoveCity_DepartmentStore_4F_Pokemart_DefenseTMs:
 	.short ITEM_TM_SAFEGUARD
 	.short ITEM_TM_REFLECT
 	.short ITEM_TM_LIGHT_SCREEN
-	.short ITEM_NONE
-	release
-	end
+	pokemartlistend
 
 LilycoveCity_DepartmentStore_4F_Text_AttackOrDefenseTM:
 	.string "Hmm…\p"
