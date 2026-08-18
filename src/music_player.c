@@ -209,6 +209,8 @@ void MP2KPlayerMain(void *voidPtrPlayer) {
     struct MP2KPlayerState *player = (struct MP2KPlayerState *)voidPtrPlayer;
     struct SoundMixerState *mixer = (struct SoundMixerState *)SOUND_INFO_PTR;
 
+    player->hasBeenRanOnce = TRUE;
+
     if (player->lockStatus != PLAYER_UNLOCKED) {
         return;
     }

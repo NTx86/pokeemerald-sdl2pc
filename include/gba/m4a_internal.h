@@ -371,6 +371,9 @@ struct MusicPlayerInfo
     u32 ident;
     MPlayMainFunc MPlayMainNext;
     struct MusicPlayerInfo *musicPlayerNext;
+#ifdef PORTABLE
+    bool8 hasBeenRanOnce;
+#endif
 };
 
 struct MusicPlayer

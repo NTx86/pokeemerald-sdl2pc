@@ -115,7 +115,9 @@ ifeq ($(PORTABLE),1)
     LEADING_UNDERSCORE_FLAG := -fleading-underscore
   endif
 
+  PLATFORM_LFLAGS :=
   PLATFORM_INCLUDES :=
+  PLATFORM_CFLAGS :=
   BUILD_FEXTENSION :=
   OS_CFLAGS :=
   OS_LFLAGS :=
@@ -132,20 +134,21 @@ ifeq ($(PORTABLE),1)
   #Windows only
   ifeq ($(TARGET_OS),WINDOWS)
     ifneq ($(NO_STD_LIB),1)
-      PLATFORM_INCLUDES += -lmingw32
+      PLATFORM_LFLAGS += -lmingw32
     endif
   endif
 
   ifeq ($(TARGET_PLATFORM), PLATFORM_SDL2)
-    PLATFORM_INCLUDES += -lSDL2main -lSDL2
+    PLATFORM_LFLAGS += -lSDL2main -lSDL2
   endif
 
   ifeq ($(TARGET_PLATFORM), PLATFORM_WIN32)
     ifeq ($(NO_STD_LIB),1)
-      PLATFORM_INCLUDES += -Wl,-e__main -nostdlib
+      PLATFORM_LFLAGS += -Wl,-e__main -nostdlib
       CPPFLAGS += -D NO_STD_LIB_ENABLED
     endif
-    PLATFORM_INCLUDES += -lkernel32 -luser32 -lgdi32
+    PLATFORM_LFLAGS += -lkernel32 -luser32 -lgdi32
+    PLATFORM_INCLUDES += -D SOUND_DISABLED
   endif
 else
   ASM_PSEUDO_OP_CONV := cat
@@ -234,11 +237,11 @@ ifeq ($(MODERN),0)
   LIBPATH := -L ../../tools/agbcc/lib
   LIB := $(LIBPATH) -lgcc -lc -L../../libagbsyscall -lagbsyscall
 else ifeq ($(PORTABLE),1)
-  CPPFLAGS += -D NONMATCHING -D PORTABLE -D $(TARGET_PLATFORM) -D $(TILE_RENDERER) -D UBFIX $(CPPFLAGS64) -I$(SDL_DIR)/include -L$(SDL_DIR)/lib
+  CPPFLAGS += -D NONMATCHING -D PORTABLE -D $(TARGET_PLATFORM) -D $(TILE_RENDERER) -D UBFIX $(CPPFLAGS64) $(PLATFORM_INCLUDES) -I$(SDL_DIR)/include -L$(SDL_DIR)/lib
   MODERNCC := $(PREFIX)gcc
   PATH_MODERNCC := PATH="$(PATH)" $(MODERNCC)
   CC1 	:= $(shell $(PREFIX)gcc --print-prog-name=cc1) -quiet
-  override CFLAGS += $(OS_CFLAGS) -Wno-trigraphs -Wimplicit -Wparentheses -Wunused -m$(BIT_WIDTH) -std=gnu99 $(LEADING_UNDERSCORE_FLAG) -fno-dce -fno-builtin -Wno-unused-function -DPORTABLE -DNONMATCHING -D UBFIX -DMODERN=$(MODERN)
+  override CFLAGS += $(OS_CFLAGS) $(PLATFORM_CFLAGS) -Wno-trigraphs -Wimplicit -Wparentheses -Wunused -m$(BIT_WIDTH) -std=gnu99 $(LEADING_UNDERSCORE_FLAG) -fno-dce -fno-builtin -Wno-unused-function -DPORTABLE -DNONMATCHING -D UBFIX -DMODERN=$(MODERN)
   LIB := $(LIBPATH) -lgcc -lc
 else
   # Note: The makefile must be set up to not call these if modern == 0
@@ -548,5 +551,5 @@ $(SYM): $(ELF)
 	$(OBJDUMP) -t $< | sort -u | grep -E "^0[2389]" | $(PERL) -p -e 's/^(\w{8}) (\w).{6} \S+\t(\w{8}) (\S+)$$/\1 \2 \3 \4/g' > $@
 else
 $(ROM): $(OBJS)
-	$(MODERNCC) $(CFLAGS) -Wl,--demangle $^ -static-libgcc -L$(SDL_DIR)/lib $(PLATFORM_INCLUDES) $(OS_LFLAGS) -o $@
+	$(MODERNCC) $(CFLAGS) -Wl,--demangle $^ -static-libgcc -L$(SDL_DIR)/lib $(PLATFORM_LFLAGS) $(OS_LFLAGS) -o $@
 endif
