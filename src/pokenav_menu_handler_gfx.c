@@ -1365,10 +1365,10 @@ static void SetMenuOptionGlow(void)
     int menuType = GetPokenavMenuType();
     int cursorPos = GetPokenavCursorPos();
     int r4 = sPokenavMenuOptionLabelGfx[menuType].deltaY * cursorPos + sPokenavMenuOptionLabelGfx[menuType].yStart - 8;
-    CpuFill16(0, gScanlineEffectRegBuffers[0], DisplayHeight() * 4);
-    CpuFill16(0, gScanlineEffectRegBuffers[1], DisplayHeight() * 4);
-    CpuFill16(RGB(16, 23, 28), &gScanlineEffectRegBuffers[0][r4], 0x40);
-    CpuFill16(RGB(16, 23, 28), &gScanlineEffectRegBuffers[1][r4], 0x40);
+    CpuFill32(0, gScanlineEffectRegBuffers[0], DisplayHeight() * 4);
+    CpuFill32(0, gScanlineEffectRegBuffers[1], DisplayHeight() * 4);
+    CpuFill32(WIN_RANGE(114, 240), &gScanlineEffectRegBuffers[0][r4], 0x40);
+    CpuFill32(WIN_RANGE(114, 240), &gScanlineEffectRegBuffers[1][r4], 0x40);
 }
 
 void ResetBldCnt_(void)
