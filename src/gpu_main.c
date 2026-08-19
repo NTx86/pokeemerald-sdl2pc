@@ -538,6 +538,7 @@ void GpuRefreshScanlineEffect(void)
         return;
 
     u32 value = eff->src[eff->position];
+    u32 value2;
 
     switch (eff->type)
     {
@@ -552,6 +553,12 @@ void GpuRefreshScanlineEffect(void)
         break;
     case GPU_SCANLINE_EFFECT_WINDOWX:
         SetGpuWindowX(eff->param, value);
+        break;
+    case GPU_SCANLINE_EFFECT_WINDOWX_TWOWIN: //sets two window values at the same time, required for pokenav
+        value = eff->src[eff->position*2];
+        value2 = eff->src[(eff->position*2)+1];
+        SetGpuWindowX(eff->param, value);
+        SetGpuWindowX(eff->param+1, value2);
         break;
     case GPU_SCANLINE_EFFECT_WINDOWY:
         SetGpuWindowY(eff->param, value);

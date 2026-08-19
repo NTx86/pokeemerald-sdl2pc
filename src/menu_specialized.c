@@ -81,7 +81,7 @@ static const u8 sEmptyItemName[] = _("");
 
 static const struct ScanlineEffectParams sConditionGraphScanline =
 {
-    .effTarget = GPU_SCANLINE_EFFECT_WINDOWY,
+    .effTarget = GPU_SCANLINE_EFFECT_WINDOWX_TWOWIN,
     .effParam = 0,
     .initState = 1,
 };
@@ -431,9 +431,9 @@ void ConditionGraph_Draw(struct ConditionGraph *graph)
         // Draw right half
         gScanlineEffectRegBuffers[1][(i + CONDITION_GRAPH_TOP_Y - 1) * 2 + 0] = // double assignment
         gScanlineEffectRegBuffers[0][(i + CONDITION_GRAPH_TOP_Y - 1) * 2 + 0] = (graph->scanlineRight[i][0] << 16) | (graph->scanlineRight[i][1]);
-        // Draw left half
-        gScanlineEffectRegBuffers[1][(i + CONDITION_GRAPH_TOP_Y - 1) * 2 + 1] = // double assignment
-        gScanlineEffectRegBuffers[0][(i + CONDITION_GRAPH_TOP_Y - 1) * 2 + 1] = (graph->scanlineLeft[i][0] << 16) | (graph->scanlineLeft[i][1]);
+        // Draw left half (shifted up by one because otherwise its misaligned for some reason, idk why its like that i couldn't figure it out)
+        gScanlineEffectRegBuffers[1][((i-1) + CONDITION_GRAPH_TOP_Y - 1) * 2 + 1] = // double assignment
+        gScanlineEffectRegBuffers[0][((i-1) + CONDITION_GRAPH_TOP_Y - 1) * 2 + 1] = (graph->scanlineLeft[i][0] << 16) | (graph->scanlineLeft[i][1]);
     }
 
     graph->needsDraw = FALSE;
