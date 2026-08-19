@@ -979,8 +979,14 @@ static bool8 SaveErrorTimer(void)
 
 static u8 SaveConfirmSaveCallback(void)
 {
-    ClearStdWindowAndFrame(GetStartMenuWindowId(), FALSE);
-    RemoveStartMenuWindow();
+#ifdef UBFIX //UB: If this function isn't called trough the start menu it will attempt to clear window 255 (WINDOW_NONE)
+    if (GetStartMenuWindowId() != WINDOW_NONE)
+#endif
+    {
+        ClearStdWindowAndFrame(GetStartMenuWindowId(), FALSE);
+        RemoveStartMenuWindow();
+    }
+
     ShowSaveInfoWindow();
 
     if (CurrentBattlePyramidLocation() != PYRAMID_LOCATION_NONE)
