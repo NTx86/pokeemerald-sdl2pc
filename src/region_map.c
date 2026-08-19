@@ -380,8 +380,8 @@ static const struct BgTemplate sFlyMapBgTemplates[] =
         .bg = 2,
         .charBaseIndex = 2,
         .mapBaseIndex = 28,
-        .screenWidth = 256,
-        .screenHeight = 512,
+        .screenWidth = 512,
+        .screenHeight = 256,
         .paletteMode = 1,
         .priority = 2
     }
