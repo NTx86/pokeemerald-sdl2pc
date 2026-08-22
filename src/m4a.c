@@ -1,8 +1,9 @@
 #include "global.h"
 #include "gba/m4a_internal.h"
 #include "sound_mixer.h"
-
 #include "cgb_audio.h"
+
+void RunMixerFrame(void);
 
 extern const u8 gCgb3Vol[];
 

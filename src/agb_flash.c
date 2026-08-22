@@ -238,6 +238,8 @@ u32 VerifyFlashSector(u16 sectorNum, u8 *src)
 
     return verifyFlashSector_Core(src, tgt, size);
 }
+#else
+u32 VerifyFlashSector(u16 sectorNum, u8 *src);
 #endif
 
 #ifndef PORTABLE
@@ -276,6 +278,8 @@ u32 VerifyFlashSectorNBytes(u16 sectorNum, u8 *src, u32 n)
 
     return verifyFlashSector_Core(src, tgt, n);
 }
+#else
+u32 VerifyFlashSectorNBytes(u16 sectorNum, u8 *src, u32 n);
 #endif
 
 u32 ProgramFlashSectorAndVerify(u16 sectorNum, u8 *src)

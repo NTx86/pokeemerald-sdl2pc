@@ -35,6 +35,10 @@
 #include "constants/union_room.h"
 #include "gpu_main.h"
 
+#ifdef PORTABLE
+#include "menu_helpers.h"
+#endif
+
 enum {
     WIN_MSG,
     WIN_CARD_TEXT,
