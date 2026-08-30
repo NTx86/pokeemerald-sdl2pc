@@ -1090,12 +1090,14 @@ bool8 FldEff_HallOfFameRecord(void)
 {
     u8 nPokemon;
     struct Task *task;
+    s16 screenOffsetX = (DisplayWidth() - BASE_DISPLAY_WIDTH) / 2;
+    s16 screenOffsetY = (DisplayHeight() - BASE_DISPLAY_HEIGHT) / 2;
 
     nPokemon = CalculatePlayerPartyCount();
     task = &gTasks[CreateTask(Task_HallOfFameRecord, 0xff)];
     task->tNumMons = nPokemon;
-    task->tFirstBallX = 117;
-    task->tFirstBallY = 52;
+    task->tFirstBallX = 117 + screenOffsetX;
+    task->tFirstBallY = 52 + screenOffsetY;
     return FALSE;
 }
 
@@ -1109,14 +1111,17 @@ static void Task_HallOfFameRecord(u8 taskId)
 static void HallOfFameRecordEffect_Init(struct Task *task)
 {
     u8 taskId;
+    s16 screenOffsetX = (DisplayWidth() - BASE_DISPLAY_WIDTH) / 2;
+    s16 screenOffsetY = (DisplayHeight() - BASE_DISPLAY_HEIGHT) / 2;
+
     task->tState++;
     task->tBallSpriteId = CreateGlowingPokeballsEffect(task->tNumMons, task->tFirstBallX, task->tFirstBallY, FALSE);
     taskId = FindTaskIdByFunc(Task_HallOfFameRecord);
-    CreateHofMonitorSprite(taskId, 120, 24, FALSE);
-    CreateHofMonitorSprite(taskId, 40, 8, TRUE);
-    CreateHofMonitorSprite(taskId, 72, 8, TRUE);
-    CreateHofMonitorSprite(taskId, 168, 8, TRUE);
-    CreateHofMonitorSprite(taskId, 200, 8, TRUE);
+    CreateHofMonitorSprite(taskId, 120 + screenOffsetX, 24 + screenOffsetY, FALSE);
+    CreateHofMonitorSprite(taskId, 40 + screenOffsetX, 8 + screenOffsetY, TRUE);
+    CreateHofMonitorSprite(taskId, 72 + screenOffsetX, 8 + screenOffsetY, TRUE);
+    CreateHofMonitorSprite(taskId, 168 + screenOffsetX, 8 + screenOffsetY, TRUE);
+    CreateHofMonitorSprite(taskId, 200 + screenOffsetX, 8 + screenOffsetY, TRUE);
 }
 
 static void HallOfFameRecordEffect_WaitForBallPlacement(struct Task *task)
