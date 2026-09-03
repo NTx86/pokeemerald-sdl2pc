@@ -1034,14 +1034,16 @@ bool8 FldEff_PokecenterHeal(void)
 {
     u8 nPokemon;
     struct Task *task;
+    s16 screenOffsetX = (DisplayWidth() - BASE_DISPLAY_WIDTH) / 2;
+    s16 screenOffsetY = (DisplayHeight() - BASE_DISPLAY_HEIGHT) / 2;
 
     nPokemon = CalculatePlayerPartyCount();
     task = &gTasks[CreateTask(Task_PokecenterHeal, 0xff)];
     task->tNumMons = nPokemon;
-    task->tFirstBallX = 93;
-    task->tFirstBallY = 36;
-    task->tMonitorX = 124;
-    task->tMonitorY = 24;
+    task->tFirstBallX = 93 + screenOffsetX;
+    task->tFirstBallY = 36 + screenOffsetY;
+    task->tMonitorX = 124 + screenOffsetX;
+    task->tMonitorY = 24 + screenOffsetY;
     return FALSE;
 }
 
