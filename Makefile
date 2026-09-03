@@ -128,7 +128,7 @@ ifeq ($(PORTABLE),1)
     BUILD_FEXTENSION := .exe
   else
     OS_CFLAGS :=
-    OS_LFLAGS := -no-pie
+    OS_LFLAGS := -no-pie -lm
   endif
 
   #Windows only
@@ -231,13 +231,13 @@ INCLUDE_SCANINC_ARGS := $(INCLUDE_DIRS:%=-I %)
 O_LEVEL ?= 2
 CPPFLAGS := $(INCLUDE_CPP_ARGS) -Wno-trigraphs -DMODERN=$(MODERN)
 ifeq ($(MODERN),0)
-  CPPFLAGS += -I tools/agbcc/include -I tools/agbcc -nostdinc -undef -std=gnu89
+  CPPFLAGS += -std=gnu99 -I tools/agbcc/include -I tools/agbcc -nostdinc -undef -std=gnu89
   CC1 := tools/agbcc/bin/agbcc$(EXE)
   override CFLAGS += -mthumb-interwork -Wimplicit -Wparentheses -Werror -O$(O_LEVEL) -fhex-asm -g
   LIBPATH := -L ../../tools/agbcc/lib
   LIB := $(LIBPATH) -lgcc -lc -L../../libagbsyscall -lagbsyscall
 else ifeq ($(PORTABLE),1)
-  CPPFLAGS += -D NONMATCHING -D PORTABLE -D $(TARGET_PLATFORM) -D $(TILE_RENDERER) -D UBFIX $(CPPFLAGS64) $(PLATFORM_INCLUDES) -I$(SDL_DIR)/include -L$(SDL_DIR)/lib
+  CPPFLAGS += -std=gnu99 -D NONMATCHING -D PORTABLE -D $(TARGET_PLATFORM) -D $(TILE_RENDERER) -D UBFIX $(CPPFLAGS64) $(PLATFORM_INCLUDES) -I$(SDL_DIR)/include -L$(SDL_DIR)/lib
   MODERNCC := $(PREFIX)gcc
   PATH_MODERNCC := PATH="$(PATH)" $(MODERNCC)
   CC1 	:= $(shell $(PREFIX)gcc --print-prog-name=cc1) -quiet
