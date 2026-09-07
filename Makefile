@@ -109,10 +109,11 @@ ifeq ($(PORTABLE),1)
     #FIX_UNDERSCORE is required for 32 bit windows
     ifeq ($(TARGET_OS),WINDOWS)
       FIX_UNDERSCORE := $(OBJCOPY) --prefix-symbol _
+      LEADING_UNDERSCORE_FLAG := -fleading-underscore
     else
       FIX_UNDERSCORE := $(OBJCOPY)
+      LEADING_UNDERSCORE_FLAG :=
     endif
-    LEADING_UNDERSCORE_FLAG := -fleading-underscore
   endif
 
   PLATFORM_LFLAGS :=
@@ -139,7 +140,10 @@ ifeq ($(PORTABLE),1)
   endif
 
   ifeq ($(TARGET_PLATFORM), PLATFORM_SDL2)
-    PLATFORM_LFLAGS += -lSDL2main -lSDL2
+    PLATFORM_LFLAGS += -lSDL2main -lSDL2 -lm
+    ifeq ($(IS64BIT),0)
+      PLATFORM_INCLUDES += -DSDL_DISABLE_IMMINTRIN_H -DSDL_DISABLE_MMINTRIN_H -DSDL_DISABLE_XMMINTRIN_H -DSDL_DISABLE_EMMINTRIN_H -DSDL_DISABLE_PMMINTRIN_H
+    endif
   endif
 
   ifeq ($(TARGET_PLATFORM), PLATFORM_WIN32)
@@ -231,15 +235,16 @@ INCLUDE_SCANINC_ARGS := $(INCLUDE_DIRS:%=-I %)
 O_LEVEL ?= 2
 CPPFLAGS := $(INCLUDE_CPP_ARGS) -Wno-trigraphs -DMODERN=$(MODERN)
 ifeq ($(MODERN),0)
-  CPPFLAGS += -I tools/agbcc/include -I tools/agbcc -nostdinc -undef -std=gnu89
+  CPPFLAGS += -std=gnu99 -I tools/agbcc/include -I tools/agbcc -nostdinc -undef -std=gnu89
   CC1 := tools/agbcc/bin/agbcc$(EXE)
   override CFLAGS += -mthumb-interwork -Wimplicit -Wparentheses -Werror -O$(O_LEVEL) -fhex-asm -g
   LIBPATH := -L ../../tools/agbcc/lib
   LIB := $(LIBPATH) -lgcc -lc -L../../libagbsyscall -lagbsyscall
 else ifeq ($(PORTABLE),1)
-  CPPFLAGS += -D NONMATCHING -D PORTABLE -D $(TARGET_PLATFORM) -D $(TILE_RENDERER) -D UBFIX $(CPPFLAGS64) $(PLATFORM_INCLUDES) -I$(SDL_DIR)/include -L$(SDL_DIR)/lib
+  CPPFLAGS += -std=gnu99 -D NONMATCHING -D PORTABLE -D $(TARGET_PLATFORM) -D $(TILE_RENDERER) -D UBFIX $(CPPFLAGS64) $(PLATFORM_INCLUDES) -I$(SDL_DIR)/include -L$(SDL_DIR)/lib
   MODERNCC := $(PREFIX)gcc
   PATH_MODERNCC := PATH="$(PATH)" $(MODERNCC)
+  CPP := $(PREFIX)cpp -m$(BIT_WIDTH)
   CC1 	:= $(shell $(PREFIX)gcc --print-prog-name=cc1) -quiet
   override CFLAGS += $(OS_CFLAGS) $(PLATFORM_CFLAGS) -Werror=implicit-function-declaration -Wno-error=incompatible-pointer-types -Wno-error=int-conversion -Wno-trigraphs -Wimplicit -Wparentheses -Wunused -m$(BIT_WIDTH) -std=gnu99 $(LEADING_UNDERSCORE_FLAG) -fno-dce -fno-builtin -Wno-unused-function -DPORTABLE -DNONMATCHING -D UBFIX -DMODERN=$(MODERN)
   LIB := $(LIBPATH) -lgcc -lc
