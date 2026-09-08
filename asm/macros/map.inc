@@ -109,9 +109,6 @@
 
 	@ Defines a background hidden item event for map data
 	.macro bg_hidden_item_event x:req, y:req, elevation:req, item:req, flag:req, quantity=1, underfoot=FALSE
-	.if \flag < FLAG_HIDDEN_ITEMS_START
-	.error "Hidden Item flag \flag is too small. Must be >= FLAG_HIDDEN_ITEMS_START."
-	.endif
 	.if \item >= (1 << 12)
 	.error "quantity \quantity too large"
 	.endif

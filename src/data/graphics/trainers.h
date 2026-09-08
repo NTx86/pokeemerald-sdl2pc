@@ -1100,19 +1100,19 @@ const struct TrainerPicInfo gTrainerPicInfo[TRAINER_PIC_COUNT] =
     },
     [TRAINER_PIC_ELITE_FOUR_LORELEI_FRLG] =
     {
-        .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_EliteFourLoreleiFrlg, gTrainerPalette_EliteFourLoreleiFrlg, -8, 0),
+        .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_EliteFourLoreleiFrlg, gTrainerPalette_EliteFourLoreleiFrlg),
     },
     [TRAINER_PIC_ELITE_FOUR_BRUNO_FRLG] =
     {
-        .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_EliteFourBrunoFrlg, gTrainerPalette_EliteFourBrunoFrlg, -10, 0),
+        .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_EliteFourBrunoFrlg, gTrainerPalette_EliteFourBrunoFrlg),
     },
     [TRAINER_PIC_ELITE_FOUR_AGATHA_FRLG] =
     {
-        .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_EliteFourAgathaFrlg, gTrainerPalette_EliteFourAgathaFrlg, 0, 0),
+        .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_EliteFourAgathaFrlg, gTrainerPalette_EliteFourAgathaFrlg),
     },
     [TRAINER_PIC_ELITE_FOUR_LANCE_FRLG] =
     {
-        .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_EliteFourLanceFrlg, gTrainerPalette_EliteFourLanceFrlg, -32, 0),
+        .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_EliteFourLanceFrlg, gTrainerPalette_EliteFourLanceFrlg),
     },
     [TRAINER_PIC_LEADER_BROCK_FRLG] =
     {
@@ -1152,7 +1152,7 @@ const struct TrainerPicInfo gTrainerPicInfo[TRAINER_PIC_COUNT] =
     },
     [TRAINER_PIC_CHAMPION_RIVAL_FRLG] =
     {
-        .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_ChampionRivalFrlg, gTrainerPalette_ChampionRivalFrlg, 0, 0),
+        .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_ChampionRivalFrlg, gTrainerPalette_ChampionRivalFrlg),
     },
     [TRAINER_PIC_CHANNELER_FRLG] =
     {

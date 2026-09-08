@@ -117,7 +117,7 @@ ifeq ($(PORTABLE),1)
     PREFIX :=
   endif # TARGET_OS
 else
-  PREFIX := arm-none-eabi-
+#  PREFIX := arm-none-eabi-
 endif
 
 OBJCOPY := $(PREFIX)objcopy
@@ -287,7 +287,6 @@ endif
 ARMCC := $(PREFIX)gcc
 PATH_ARMCC := PATH="$(PATH)" $(ARMCC)
 CC1 := $(shell $(PATH_ARMCC) --print-prog-name=cc1) -quiet
-override CFLAGS += -mthumb -mthumb-interwork -O$(O_LEVEL) -mabi=apcs-gnu -mtune=arm7tdmi -march=armv4t -fno-toplevel-reorder -Wno-pointer-to-int-cast -std=gnu17
 ifneq ($(LTO),0)
   ifneq ($(TEST),1)
     override CFLAGS += -flto=auto -fno-fat-lto-objects -fno-asynchronous-unwind-tables -ffunction-sections -fdata-sections
@@ -310,8 +309,6 @@ ifeq ($(DEPRECATED_ERROR),0)
   endif
 endif
 
-LIBPATH := -L "$(dir $(shell $(PATH_ARMCC) -mthumb -print-file-name=libgcc.a))" -L "$(dir $(shell $(PATH_ARMCC) -mthumb -print-file-name=libnosys.a))" -L "$(dir $(shell $(PATH_ARMCC) -mthumb -print-file-name=libc.a))"
-LIB := $(LIBPATH) -lc -lnosys -lgcc -L../../libagbsyscall -lagbsyscall
 endif
 
 # Enable debug info if set

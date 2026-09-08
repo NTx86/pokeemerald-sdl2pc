@@ -70,7 +70,7 @@ def extract_tm_litteracy_config() -> bool:
                 config = True
     return config
 
-def prepare_output(all_learnables: dict[str, set[str]], tms: list[str], tutors: list[str], special_movesets, repo_teaching_types, header: str) -> str:
+def prepare_output(all_learnables, tms, tutors, special_movesets, repo_teaching_types, header: str):
     """
     Build the file content for teachable_learnsets.h.
     """
@@ -120,7 +120,7 @@ def prepare_output(all_learnables: dict[str, set[str]], tms: list[str], tutors: 
 
     return new
 
-def prepare_header(h_align: int, tmshms: list[str], tutors: list[str], universals: list[str]) -> str:
+def prepare_header(h_align, tmshms, tutors, universals):
     universals_title = "Near-universal moves found in data/special_movesets.json:"
     tmhm_title = "TM/HM moves found in \"include/constants/tms_hms.h\":"
     tutor_title = "Tutor moves found from map scripts:"
