@@ -2,8 +2,9 @@ name: CI
 
 on:
   push:
-    branches: [ master ]
+    branches: [ pc_port ]
   pull_request:
+    branches: [ pc_port ]
 
 jobs:
   build:
@@ -54,17 +55,12 @@ jobs:
           COMPARE: 0
         run: make -j${nproc} all
 
-      - name: Move symfiles
-        if: ${{ github.event_name == 'push' }}
-        run: |
-          cp -v *.sym symbols/
-          echo "SYMBOLS_COMMIT_MSG=$( git log --format=%s ${GITHUB_SHA} )" >> $GITHUB_ENV
+      - name: Windows (64-bit)
+        env:
+          IS64BIT: 1
+        run: make -j${nproc} winwsl
 
-      - name: Update symfiles
-        if: ${{ github.event_name == 'push' }}
-        uses: EndBug/add-and-commit@v7
-        with:
-          branch: symbols
-          cwd: "./symbols"
-          add: "*.sym"
-          message: ${{ env.SYMBOLS_COMMIT_MSG }}
+      - name: Windows (32-bit)
+        env:
+          IS64BIT: 0
+        run: make -j${nproc} winwsl
