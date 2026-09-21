@@ -38,6 +38,7 @@ endif
 #Enable MODERN if compiling portable version
 ifeq ($(PORTABLE), 1)
   MODERN := 1
+  COMPARE := 0
 endif
 
 # Default make rule
@@ -70,8 +71,10 @@ ifeq ($(IS64BIT),1)
   CPPFLAGS64 := -D VER_64BIT
 endif
 
+PORTABLE_DIR_PREFIX := linux
 ifeq ($(PORTABLE),1)
   ifeq ($(TARGET_OS),WINDOWS)
+    PORTABLE_DIR_PREFIX := win
     ifeq ($(IS64BIT),1)
       PREFIX := x86_64-w64-mingw32-
     else
@@ -182,9 +185,7 @@ OBJ_DIR_NAME := $(BUILD_DIR)/emerald
 MODERN_ROM_NAME := $(FILE_NAME)_modern.gba
 MODERN_OBJ_DIR_NAME := $(BUILD_DIR)/modern
 PORTABLE_ROM_NAME := $(FILE_NAME)$(BIT_WIDTH)$(BUILD_FEXTENSION)
-PORTABLE_OBJ_DIR_NAME := $(BUILD_DIR)/pc$(BIT_WIDTH)
-PORTABLE_ROM_NAME_OTHER := $(FILE_NAME)$(OTHER_BIT_WIDTH)$(BUILD_FEXTENSION)
-PORTABLE_OBJ_DIR_NAME_OTHER := $(BUILD_DIR)/pc$(OTHER_BIT_WIDTH)
+PORTABLE_OBJ_DIR_NAME := $(BUILD_DIR)/$(PORTABLE_DIR_PREFIX)$(BIT_WIDTH)
 ASSETS_DIR_NAME := $(BUILD_DIR)/assets
 
 ELF_NAME := $(ROM_NAME:.gba=.elf)
@@ -400,12 +401,14 @@ tidymodern:
 	rm -rf $(MODERN_OBJ_DIR_NAME)
 
 tidyportable:
-	rm -f $(PORTABLE_ROM_NAME)
-	rm -f $(PORTABLE_ROM_NAME).exe
-	rm -rf $(PORTABLE_OBJ_DIR_NAME)
-	rm -f $(PORTABLE_ROM_NAME_OTHER)
-	rm -f $(PORTABLE_ROM_NAME_OTHER).exe
-	rm -rf $(PORTABLE_OBJ_DIR_NAME_OTHER)
+	rm -f $(FILE_NAME)win32.exe
+	rm -f $(FILE_NAME)win64.exe
+	rm -f $(FILE_NAME)linux32
+	rm -f $(FILE_NAME)linux64
+	rm -rf $(BUILD_DIR)/win32
+	rm -rf $(BUILD_DIR)/win64
+	rm -rf $(BUILD_DIR)/linux32
+	rm -rf $(BUILD_DIR)/linux64
 
 clean-platform:
 	rm -f $(PORTABLE_ROM_NAME)

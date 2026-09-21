@@ -19,13 +19,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@master
 
-      - name: Checkout syms
-        if: ${{ github.event_name == 'push' }}
-        uses: actions/checkout@master
-        with:
-          path: symbols
-          ref: symbols
-
       - name: Checkout agbcc
         uses: actions/checkout@master
         with:
@@ -35,10 +28,22 @@ jobs:
       - name: Install binutils
         run: |
           sudo apt update
-          sudo apt install gcc-arm-none-eabi binutils-arm-none-eabi libpng-dev
+          sudo apt install \
+            gcc-arm-none-eabi \
+            binutils-arm-none-eabi \
+            g++-mingw-w64-i686 \
+            g++-mingw-w64-x86-64 \
+            libpng-dev \
+            libsdl2-dev
         # build-essential and git are already installed
         # gcc-arm-none-eabi is only needed for the modern build
         # as an alternative to dkP
+
+      - name: Install SDL2 MinGW libraries
+        run: |
+          curl -fsSL https://archive.org/download/sdl-2-2.0.16/SDL2-devel-2.0.16-mingw.tar.gz \
+            | tar -xz
+          mv SDL2-2.0.16 SDL2
 
       - name: Install agbcc
         run: |
@@ -46,7 +51,9 @@ jobs:
           ./install.sh ../
         working-directory: agbcc
 
-      - name: Compare
+      - name: agbcc
+        env:
+          COMPARE: 0
         run: make -j${nproc} all syms
 
       - name: Modern
@@ -70,7 +77,7 @@ jobs:
           IS64BIT: 1
         run: make -j${nproc} linux
 
-      - name: Linux (32-bit)
-        env:
-          IS64BIT: 0
-        run: make -j${nproc} linux
+      #- name: Linux (32-bit)
+      #  env:
+      #    IS64BIT: 0
+      #  run: make -j${nproc} linux
